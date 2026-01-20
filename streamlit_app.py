@@ -1,17 +1,25 @@
-This version pulls the Ohio House roster live from the official Ohio Legislature “House Directory” page, then builds rep_email in the standard repXX@ohiohouse.gov format.  ￼
-
-It also derives “school districts per House district” from your uploaded master CSV (because there is no clean statewide one-to-one map between House districts and school districts without GIS).
-
 # streamlit_app.py
+# Class Action: Ohio (Streamlit)
+# Single-file master app:
+# - CSV upload + cleaning
+# - No KeyError on display_label
+# - Removes commas from names
+# - Live Ohio House roster fetch (used for statewide BCC list)
+# - Letter PDFs
+# - Email Draft PDFs where body text matches the Letter PDF text exactly
+# - BCC batching into multiple email drafts (respects common recipient caps)
+# - ZIP export
+# - Gamified XP + rank
 
-import streamlit as st
-import pandas as pd
-import re
 import io
+import re
 import zipfile
-import requests
 from datetime import date, datetime
 from typing import List, Dict, Tuple, Optional
+
+import pandas as pd
+import requests
+import streamlit as st
 
 try:
     from fpdf import FPDF
@@ -19,6 +27,9 @@ except Exception:
     FPDF = None
 
 
+# -----------------------------
+# 1) APP CONFIG
+# -----------------------------
 st.set_page_config(
     page_title="Class Action: Ohio",
     page_icon="⚖️",
@@ -54,6 +65,9 @@ div[data-testid="stMetric"]{
 st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
 
 
+# -----------------------------
+# 2) CONSTANTS
+# -----------------------------
 RANKS = [
     ("Substitute", 0),
     ("Teacher", 200),
@@ -64,6 +78,8 @@ RANKS = [
 XP_PER_LETTER = 100
 XP_PER_EMAIL = 60
 XP_PER_EXPORT = 50
+
+DEFAULT_BCC_BATCH_SIZE = 40  # conservative default
 
 REQUIRED_COLUMNS_MIN = [
     "zip_code",
@@ -76,6 +92,9 @@ REQUIRED_COLUMNS_MIN = [
 ]
 
 
+# -----------------------------
+# 3) SESSION STATE
+# -----------------------------
 def init_state():
     if "xp" not in st.session_state:
         st.session_state.xp = 0
@@ -92,6 +111,9 @@ def init_state():
 init_state()
 
 
+# -----------------------------
+# 4) TEXT HELPERS
+# -----------------------------
 def clean_whitespace(s: str) -> str:
     s = "" if s is None else str(s)
     s = s.replace("\u00a0", " ")
@@ -152,6 +174,29 @@ def coerce_percent_like(val) -> str:
     return s
 
 
+def unique_emails(emails: List[str]) -> List[str]:
+    seen = set()
+    out = []
+    for e in emails:
+        e2 = normalize_email(e)
+        if not e2:
+            continue
+        if e2 in seen:
+            continue
+        seen.add(e2)
+        out.append(e2)
+    return out
+
+
+def chunk_list(items: List[str], chunk_size: int) -> List[List[str]]:
+    if chunk_size <= 0:
+        return [items]
+    return [items[i : i + chunk_size] for i in range(0, len(items), chunk_size)]
+
+
+# -----------------------------
+# 5) DATA NORMALIZATION
+# -----------------------------
 def normalize_dataframe(df: pd.DataFrame) -> pd.DataFrame:
     df = df.copy()
     df.columns = [clean_whitespace(c).lower() for c in df.columns]
@@ -254,6 +299,9 @@ def reps_from_df(df: pd.DataFrame, zip_code: str, district: str) -> List[Dict]:
     return normalized
 
 
+# -----------------------------
+# 6) GAMIFICATION
+# -----------------------------
 def rank_for_xp(xp: int) -> Tuple[str, int, int]:
     current = RANKS[0][0]
     floor = 0
@@ -279,6 +327,9 @@ def add_action(action_type: str, detail: str, xp_gain: int):
     )
 
 
+# -----------------------------
+# 7) LETTER + EMAIL TEXT (PDF SOURCE OF TRUTH)
+# -----------------------------
 def build_letter_text(
     sender_name: str,
     sender_city: str,
@@ -329,16 +380,26 @@ def build_email_subject(issue: str) -> str:
     issue = clean_whitespace(issue)
     if not issue:
         return "Constituent message"
-    return (issue[:72] + "…") if len(issue) > 72 else issue
+    return (issue[:72] + "...") if len(issue) > 72 else issue
 
 
-def build_email_text(to_email: str, subject: str, body_text_same_as_letter: str) -> str:
+def build_email_text_with_bcc(
+    to_email: str,
+    subject: str,
+    bcc_emails: List[str],
+    body_text_same_as_letter: str,
+) -> str:
     to_email = normalize_email(to_email)
     subject = clean_whitespace(subject)
+    bcc_line = ", ".join(bcc_emails) if bcc_emails else ""
+
+    # Email Draft PDF text.
+    # Body equals the Letter PDF text exactly.
     return "\n".join(
         [
             f"To: {to_email}",
             f"Subject: {subject}",
+            (f"BCC: {bcc_line}" if bcc_line else "BCC:"),
             "",
             body_text_same_as_letter.strip(),
             "",
@@ -346,6 +407,9 @@ def build_email_text(to_email: str, subject: str, body_text_same_as_letter: str)
     )
 
 
+# -----------------------------
+# 8) PDF + ZIP
+# -----------------------------
 def pdf_from_text(title: str, text: str) -> bytes:
     if FPDF is None:
         return text.encode("utf-8")
@@ -385,50 +449,120 @@ def make_bundle_zip(files: List[Tuple[str, bytes]]) -> bytes:
     return buf.read()
 
 
+# -----------------------------
+# 9) LIVE OHIO HOUSE ROSTER (STATEWIDE BCC SOURCE)
+# -----------------------------
 def rep_email_for_district(d: int) -> str:
     return f"rep{d:02d}@ohiohouse.gov"
 
 
 @st.cache_data(ttl=6 * 60 * 60)
-def fetch_ohio_house_roster() -> Tuple[pd.DataFrame, str]:
+def fetch_ohio_house_roster() -> Tuple[pd.DataFrame, str, str]:
+    """
+    Returns: (roster_df, source_url, fetched_at)
+    Best effort parse.
+    """
     url = "https://www.legislature.ohio.gov/members/house-directory"
     fetched_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    headers = {
-        "User-Agent": "Mozilla/5.0",
-        "Accept": "text/html,application/xhtml+xml",
-    }
+    headers = {"User-Agent": "Mozilla/5.0", "Accept": "text/html,application/xhtml+xml"}
     r = requests.get(url, headers=headers, timeout=20)
     r.raise_for_status()
+
     html = r.text
 
-    pattern = re.compile(r">([^<]+?)\s+District\s+(\d+)\s*\|\s*([DRI])", re.IGNORECASE)
-    matches = pattern.findall(html)
-
+    # Try tables first
     rows = []
-    seen = set()
-    for name, dist, party in matches:
-        try:
-            d = int(dist)
-        except Exception:
-            continue
-        if d in seen:
-            continue
-        seen.add(d)
-        rows.append(
-            {
-                "rep_district": str(d),
-                "rep_name": titlecase_name(name),
-                "rep_party": party.upper(),
-                "rep_role": "State Rep",
-                "rep_email": rep_email_for_district(d),
-                "source": "legislature.ohio.gov house-directory",
-                "fetched_at": fetched_at,
-            }
-        )
+    try:
+        tables = pd.read_html(html)
+        # Look for a table that has "District" and "Member" columns
+        best = None
+        for t in tables:
+            cols = [str(c).lower() for c in t.columns]
+            if any("district" in c for c in cols) and any("member" in c or "name" in c for c in cols):
+                best = t
+                break
 
-    roster_df = pd.DataFrame(rows).sort_values(by="rep_district", key=lambda s: s.astype(int))
-    return roster_df, url
+        if best is not None and not best.empty:
+            cols = {str(c).lower(): c for c in best.columns}
+            district_col = cols.get("district", None)
+            member_col = None
+            for k in cols:
+                if "member" in k or "name" in k:
+                    member_col = cols[k]
+                    break
+
+            party_col = None
+            for k in cols:
+                if "party" in k:
+                    party_col = cols[k]
+                    break
+
+            for _, row in best.iterrows():
+                dist_raw = safe_str(row.get(district_col, "")) if district_col else ""
+                name_raw = safe_str(row.get(member_col, "")) if member_col else ""
+                party_raw = safe_str(row.get(party_col, "")) if party_col else ""
+
+                m = re.search(r"(\d+)", dist_raw)
+                if not m:
+                    continue
+                d = int(m.group(1))
+
+                party = party_raw[:1].upper() if party_raw else ""
+                rows.append(
+                    {
+                        "rep_district": str(d),
+                        "rep_name": titlecase_name(name_raw),
+                        "rep_party": party,
+                        "rep_role": "State Rep",
+                        "rep_email": rep_email_for_district(d),
+                        "source": "legislature.ohio.gov house-directory",
+                        "fetched_at": fetched_at,
+                    }
+                )
+    except Exception:
+        rows = []
+
+    # Fallback regex parse
+    if not rows:
+        pattern = re.compile(r">([^<]+?)\s+District\s+(\d+)\s*\|\s*([DRI])", re.IGNORECASE)
+        matches = pattern.findall(html)
+        seen = set()
+        for name, dist, party in matches:
+            try:
+                d = int(dist)
+            except Exception:
+                continue
+            if d in seen:
+                continue
+            seen.add(d)
+            rows.append(
+                {
+                    "rep_district": str(d),
+                    "rep_name": titlecase_name(name),
+                    "rep_party": party.upper(),
+                    "rep_role": "State Rep",
+                    "rep_email": rep_email_for_district(d),
+                    "source": "legislature.ohio.gov house-directory",
+                    "fetched_at": fetched_at,
+                }
+            )
+
+    roster_df = pd.DataFrame(rows)
+    if not roster_df.empty:
+        roster_df = roster_df.dropna(subset=["rep_district"]).copy()
+        roster_df["rep_district_int"] = roster_df["rep_district"].astype(int)
+        roster_df = roster_df.sort_values("rep_district_int").drop(columns=["rep_district_int"])
+
+    return roster_df, url, fetched_at
+
+
+def build_bcc_list_from_roster(roster_df: pd.DataFrame) -> List[str]:
+    if roster_df is None or roster_df.empty:
+        return []
+    if "rep_email" not in roster_df.columns:
+        return []
+    return unique_emails(roster_df["rep_email"].astype(str).tolist())
 
 
 def school_districts_by_house_district(local_df: pd.DataFrame) -> pd.DataFrame:
@@ -438,9 +572,8 @@ def school_districts_by_house_district(local_df: pd.DataFrame) -> pd.DataFrame:
     tmp = local_df.copy()
     tmp["rep_district"] = tmp["rep_district"].astype(str).str.strip()
 
-    grp = tmp.groupby("rep_district", dropna=False)
     out_rows = []
-    for rep_dist, g in grp:
+    for rep_dist, g in tmp.groupby("rep_district", dropna=False):
         dists = sorted([x for x in g["school_district"].dropna().unique().tolist() if str(x).strip()])
         zips = sorted([x for x in g["zip_code"].dropna().unique().tolist() if str(x).strip()])
         out_rows.append(
@@ -454,6 +587,9 @@ def school_districts_by_house_district(local_df: pd.DataFrame) -> pd.DataFrame:
     return pd.DataFrame(out_rows)
 
 
+# -----------------------------
+# 10) SIDEBAR
+# -----------------------------
 with st.sidebar:
     st.header("Roster")
 
@@ -461,16 +597,21 @@ with st.sidebar:
     if refresh_roster:
         fetch_ohio_house_roster.clear()
 
+    roster_df = None
+    roster_url = ""
+    roster_fetched_at = ""
     try:
-        roster_df, roster_url = fetch_ohio_house_roster()
+        roster_df, roster_url, roster_fetched_at = fetch_ohio_house_roster()
         st.session_state.roster_df = roster_df
-        st.caption("Roster source")
-        st.write(roster_url)
-        st.caption("Last fetch")
-        st.write(roster_df["fetched_at"].iloc[0] if not roster_df.empty else "Unknown")
     except Exception as e:
         st.session_state.roster_df = None
         st.error(f"Roster fetch failed: {e}")
+
+    if st.session_state.roster_df is not None and not st.session_state.roster_df.empty:
+        st.caption("Roster source")
+        st.write(roster_url)
+        st.caption("Last fetch")
+        st.write(roster_fetched_at)
 
     st.divider()
     st.header("Data")
@@ -488,8 +629,8 @@ with st.sidebar:
     st.divider()
     st.header("Mission")
 
-    issue = st.text_input("Issue", value="Protect public schools and retain educators")
-    story = st.text_area("Your experience", value="", height=120)
+    issue = st.text_input("Issue (short)", value="Protect public schools and retain educators")
+    story = st.text_area("Your experience (short)", value="", height=120)
 
     ask_1 = st.text_input("Ask 1", value="Support a fair evaluation and staffing process that protects students.")
     ask_2 = st.text_input("Ask 2", value="Oppose policy changes that weaken teacher quality or stability.")
@@ -505,36 +646,39 @@ with st.sidebar:
     st.caption("Drafts and exports only. You control delivery.")
 
 
+# -----------------------------
+# 11) LOAD DATA
+# -----------------------------
 def load_sample_df() -> pd.DataFrame:
-    rows = [
-        {
-            "zip_code": "45011",
-            "school_district": "Hamilton City Schools",
-            "rep_name": "Thomas Hall",
-            "rep_email": "rep46@ohiohouse.gov",
-            "rep_role": "State Rep",
-            "rep_district": "46",
-            "rep_party": "R",
-            "rep_stance": "Unknown",
-        },
-        {
-            "zip_code": "45202",
-            "school_district": "Cincinnati Public Schools",
-            "rep_name": "Dani Isaacsohn",
-            "rep_email": "rep24@ohiohouse.gov",
-            "rep_role": "State Rep",
-            "rep_district": "24",
-            "rep_party": "D",
-            "rep_stance": "Unknown",
-        },
-    ]
-    return pd.DataFrame(rows)
+    return pd.DataFrame(
+        [
+            {
+                "zip_code": "45011",
+                "school_district": "Hamilton City Schools",
+                "rep_name": "Hall, Thomas",
+                "rep_email": "rep46@ohiohouse.gov",
+                "rep_role": "State Rep",
+                "rep_district": "46",
+                "rep_party": "R",
+                "rep_stance": "Unknown",
+            },
+            {
+                "zip_code": "45202",
+                "school_district": "Cincinnati Public Schools",
+                "rep_name": "Isaacsohn, Dani",
+                "rep_email": "rep24@ohiohouse.gov",
+                "rep_role": "State Rep",
+                "rep_district": "24",
+                "rep_party": "D",
+                "rep_stance": "Unknown",
+            },
+        ]
+    )
 
 
 try:
     if sample_btn:
-        df_raw = load_sample_df()
-        st.session_state.loaded_df = normalize_dataframe(df_raw)
+        st.session_state.loaded_df = normalize_dataframe(load_sample_df())
 
     if uploaded is not None:
         df_raw = pd.read_csv(uploaded, dtype=str, keep_default_na=False)
@@ -551,14 +695,17 @@ df = st.session_state.loaded_df
 roster_df = st.session_state.roster_df
 
 
+# -----------------------------
+# 12) HEADER + DASHBOARD
+# -----------------------------
 st.title("Class Action: Ohio")
-st.write("War Room roster. Draft builder. ZIP exports.")
+st.write("Draft letters. Draft emails. Export clean packets. Track your progress.")
 
 rank, floor, ceil = rank_for_xp(st.session_state.xp)
 c1, c2, c3 = st.columns(3)
 c1.metric("Rank", rank)
 c2.metric("XP", st.session_state.xp)
-c3.metric("Actions", len(st.session_state.actions))
+c3.metric("Actions logged", len(st.session_state.actions))
 
 if ceil > floor:
     progress = (st.session_state.xp - floor) / (ceil - floor)
@@ -566,8 +713,19 @@ if ceil > floor:
 else:
     st.progress(1.0)
 
+st.markdown(
+    '<div class="warroom-card"><div class="small-muted">'
+    "Letters and email drafts add XP in this session."
+    "</div></div>",
+    unsafe_allow_html=True,
+)
+
 st.divider()
 
+
+# -----------------------------
+# 13) TABS
+# -----------------------------
 tab_roster, tab_warroom, tab_builder, tab_logs = st.tabs(
     ["Ohio House Roster", "War Room", "Builder", "Logs"]
 )
@@ -578,7 +736,11 @@ with tab_roster:
     if roster_df is None or roster_df.empty:
         st.warning("Roster not available right now.")
     else:
-        st.dataframe(roster_df[["rep_district", "rep_name", "rep_party", "rep_email"]], use_container_width=True)
+        st.dataframe(
+            roster_df[["rep_district", "rep_name", "rep_party", "rep_email"]],
+            use_container_width=True,
+            hide_index=True,
+        )
 
         roster_csv = roster_df.to_csv(index=False).encode("utf-8")
         st.download_button(
@@ -601,11 +763,11 @@ with tab_roster:
             merged = sd_map
 
         cols = ["rep_district"]
-        if "rep_name" in merged.columns:
-            cols += ["rep_name", "rep_party", "rep_email"]
-        cols += ["school_district_count", "zip_count", "school_districts"]
+        for c in ["rep_name", "rep_party", "rep_email", "school_district_count", "zip_count", "school_districts"]:
+            if c in merged.columns:
+                cols.append(c)
 
-        st.dataframe(merged[cols], use_container_width=True)
+        st.dataframe(merged[cols], use_container_width=True, hide_index=True)
 
         merged_csv = merged.to_csv(index=False).encode("utf-8")
         st.download_button(
@@ -647,13 +809,10 @@ with tab_warroom:
         st.write(f"Selected targets: {len(selected_reps)}")
 
         if selected_reps:
-            st.dataframe(
-                pd.DataFrame(selected_reps)[
-                    ["rep_name", "rep_email", "rep_role", "rep_district", "rep_party", "rep_stance"]
-                ],
-                use_container_width=True,
-                hide_index=True,
-            )
+            keep_cols = ["rep_name", "rep_email", "rep_role", "rep_district", "rep_party", "rep_stance"]
+            view_df = pd.DataFrame(selected_reps)
+            keep_cols = [c for c in keep_cols if c in view_df.columns]
+            st.dataframe(view_df[keep_cols], use_container_width=True, hide_index=True)
 
 with tab_builder:
     st.subheader("Draft builder")
@@ -669,7 +828,9 @@ with tab_builder:
     with b1:
         zip_choice_b = st.selectbox("ZIP (builder)", [""] + zips, index=0, key="zip_builder")
     with b2:
-        district_choice_b = st.selectbox("School district (builder)", [""] + districts, index=0, key="dist_builder")
+        district_choice_b = st.selectbox(
+            "School district (builder)", [""] + districts, index=0, key="dist_builder"
+        )
 
     reps_b = reps_from_df(df, zip_choice_b, district_choice_b)
     if not reps_b:
@@ -701,9 +862,33 @@ with tab_builder:
     )
 
     email_subject = build_email_subject(issue)
-    email_text = build_email_text(
-        to_email=chosen_rep.get("rep_email", ""),
+
+    # BCC settings
+    st.divider()
+    st.subheader("BCC settings")
+
+    bcc_enabled = st.checkbox("Include statewide BCC list in email drafts", value=True)
+    bcc_batch_size = st.number_input(
+        "BCC batch size",
+        min_value=1,
+        max_value=200,
+        value=DEFAULT_BCC_BATCH_SIZE,
+        step=5,
+    )
+
+    statewide_bcc = build_bcc_list_from_roster(roster_df) if bcc_enabled else []
+    primary_to = normalize_email(chosen_rep.get("rep_email", ""))
+    statewide_bcc = [e for e in statewide_bcc if e != primary_to]
+    bcc_batches = chunk_list(statewide_bcc, int(bcc_batch_size)) if statewide_bcc else [[]]
+
+    st.write(f"Total statewide BCC emails: {len(statewide_bcc)}")
+    st.write(f"Email draft batches: {len(bcc_batches)}")
+
+    # Build an email draft preview for batch 1
+    email_text_preview = build_email_text_with_bcc(
+        to_email=primary_to,
         subject=email_subject,
+        bcc_emails=bcc_batches[0] if bcc_batches else [],
         body_text_same_as_letter=letter_text,
     )
 
@@ -712,8 +897,8 @@ with tab_builder:
         st.markdown("Letter preview")
         st.text_area("", value=letter_text, height=420, key="letter_preview")
     with p2:
-        st.markdown("Email draft preview (same body text)")
-        st.text_area("", value=email_text, height=420, key="email_preview")
+        st.markdown("Email draft preview (matches PDFs)")
+        st.text_area("", value=email_text_preview, height=420, key="email_preview")
 
     st.divider()
     st.subheader("Generate files")
@@ -722,16 +907,16 @@ with tab_builder:
     with colA:
         gen_letter_pdf = st.button("Generate letter PDF")
     with colB:
-        gen_email_pdf = st.button("Generate email draft PDF")
+        gen_email_pdfs = st.button("Generate email draft PDF(s)")
     with colC:
         gen_bundle = st.button("Generate ZIP (letters + email drafts)")
+
+    ext = "pdf" if FPDF is not None else "txt"
 
     if gen_letter_pdf:
         title = f"Letter — {chosen_rep.get('rep_name','Representative')}"
         data = pdf_from_text(title, letter_text)
         add_action("Letter draft", f"{chosen_rep.get('rep_name','')}", XP_PER_LETTER)
-
-        ext = "pdf" if FPDF is not None else "txt"
         st.download_button(
             "Download letter file",
             data=data,
@@ -739,28 +924,50 @@ with tab_builder:
             mime="application/pdf" if ext == "pdf" else "text/plain",
         )
 
-    if gen_email_pdf:
-        title = f"Email Draft — {chosen_rep.get('rep_name','Representative')}"
-        data = pdf_from_text(title, email_text)
-        add_action("Email draft", f"{chosen_rep.get('rep_name','')}", XP_PER_EMAIL)
+    if gen_email_pdfs:
+        # One PDF per batch
+        files_out = []
+        for i, bcc_batch in enumerate(bcc_batches, start=1):
+            email_text = build_email_text_with_bcc(
+                to_email=primary_to,
+                subject=email_subject,
+                bcc_emails=bcc_batch,
+                body_text_same_as_letter=letter_text,
+            )
+            title = f"Email Draft — {chosen_rep.get('rep_name','Representative')} — Batch {i:03d}"
+            data = pdf_from_text(title, email_text)
+            files_out.append((f"{filename_safe(title)}.{ext}", data))
 
-        ext = "pdf" if FPDF is not None else "txt"
-        st.download_button(
-            "Download email draft file",
-            data=data,
-            file_name=f"{filename_safe(title)}.{ext}",
-            mime="application/pdf" if ext == "pdf" else "text/plain",
-        )
+        add_action("Email drafts", f"{chosen_rep.get('rep_name','')} ({len(files_out)} batch)", XP_PER_EMAIL)
+
+        if len(files_out) == 1:
+            st.download_button(
+                "Download email draft file",
+                data=files_out[0][1],
+                file_name=files_out[0][0],
+                mime="application/pdf" if ext == "pdf" else "text/plain",
+            )
+        else:
+            z = make_bundle_zip(files_out)
+            st.download_button(
+                "Download email draft ZIP",
+                data=z,
+                file_name=f"email_drafts_{date.today().isoformat()}.zip",
+                mime="application/zip",
+            )
 
     if gen_bundle:
         batch_reps = reps_b
-        files = []
-        ext = "pdf" if FPDF is not None else "txt"
+        files: List[Tuple[str, bytes]] = []
+
+        # Build statewide list once per bundle
+        statewide_bcc_all = build_bcc_list_from_roster(roster_df) if bcc_enabled else []
 
         for r in batch_reps:
             rep_name = safe_str(r.get("rep_name")) or "Representative"
             rep_role = safe_str(r.get("rep_role"))
             rep_dist = safe_str(r.get("rep_district"))
+            rep_email = normalize_email(r.get("rep_email", ""))
 
             lt = build_letter_text(
                 sender_name=sender_name_clean,
@@ -778,20 +985,24 @@ with tab_builder:
             )
 
             subj = build_email_subject(issue)
-            et = build_email_text(
-                to_email=r.get("rep_email", ""),
-                subject=subj,
-                body_text_same_as_letter=lt,
-            )
 
+            # Letter PDF
             letter_title = f"Letter — {rep_name}"
-            email_title = f"Email Draft — {rep_name}"
+            files.append((f"letters/{filename_safe(letter_title)}.{ext}", pdf_from_text(letter_title, lt)))
 
-            letter_bytes = pdf_from_text(letter_title, lt)
-            email_bytes = pdf_from_text(email_title, et)
+            # Email Draft PDFs in BCC batches (body equals letter text)
+            bcc_list = [e for e in unique_emails(statewide_bcc_all) if e and e != rep_email]
+            batches = chunk_list(bcc_list, int(bcc_batch_size)) if bcc_list else [[]]
 
-            files.append((f"letters/{filename_safe(letter_title)}.{ext}", letter_bytes))
-            files.append((f"emails/{filename_safe(email_title)}.{ext}", email_bytes))
+            for i, bcc_batch in enumerate(batches, start=1):
+                email_text = build_email_text_with_bcc(
+                    to_email=rep_email,
+                    subject=subj,
+                    bcc_emails=bcc_batch,
+                    body_text_same_as_letter=lt,
+                )
+                email_title = f"Email Draft — {rep_name} — Batch {i:03d}"
+                files.append((f"emails/{filename_safe(email_title)}.{ext}", pdf_from_text(email_title, email_text)))
 
         if st.session_state.actions:
             log_df = pd.DataFrame(st.session_state.actions)
@@ -828,13 +1039,18 @@ with tab_logs:
         st.write(f"Last export: {st.session_state.last_export_at or 'None'}")
 
 
+# -----------------------------
+# 14) DATA HEALTH CHECKS
+# -----------------------------
 with st.expander("Data health checks", expanded=False):
     if df is None:
         st.write("No dataset loaded.")
     else:
         st.write("Columns found:")
         st.write(list(df.columns))
+
         st.write("Row count:", len(df))
         st.write("ZIP count:", df["zip_code"].nunique())
         st.write("District count:", df["school_district"].nunique())
+
         st.dataframe(df.head(20), use_container_width=True, hide_index=True)
