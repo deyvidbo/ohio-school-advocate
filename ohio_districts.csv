@@ -140,3 +140,6 @@ zip_code,school_district,rep_name,rep_email,rep_role,rep_district,rep_party,rep_
 43420,Fremont City Schools,Gary Click,rep88@ohiohouse.gov,State Rep,88,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",3900,55%,35%,$62000,12,58%
 44883,Tiffin City Schools,Gary Click,rep88@ohiohouse.gov,State Rep,88,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",2600,42%,15%,$61000,13,60%
 43302,Marion City Schools,Tracy Richardson,rep86@ohiohouse.gov,State Rep,86,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",4100,85%,25%,$61000,12,55%
+00000,Ohio Executive Branch,Mike DeWine,governor@ohio.gov,Governor,Statewide,R,Hostile,Term-Limited,"77 S High St, 30th Floor, Columbus, OH 43215",1600000,48%,32%,$67000,14,68%
+00000,Ohio Executive Branch,Jon Husted,ltgovernor@ohio.gov,Lt. Governor,Statewide,R,Hostile,Career,"77 S High St, 30th Floor, Columbus, OH 43215",1600000,48%,32%,$67000,14,68%
+00000,Ohio Dept of Education,Stephen Dackin,contact.center@education.ohio.gov,DEW Director,Statewide,N/A,Hostile,Appointed,"25 S Front St, Columbus, OH 43215",1600000,48%,32%,$67000,14,68%
