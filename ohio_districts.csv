@@ -1,11 +1,7 @@
-zip_code,school_district,rep_name,rep_email,rep_role,rep_district,rep_party,rep_stance,rep_career
-45011,Hamilton City Schools,Sara Carruthers,rep47@ohiohouse.gov,State Rep,47,R,Hostile,Re-election
-45013,Hamilton City Schools,Sara Carruthers,rep47@ohiohouse.gov,State Rep,47,R,Hostile,Re-election
-45014,Fairfield City Schools,Thomas Hall,rep46@ohiohouse.gov,State Rep,46,R,Hostile,Re-election
-45042,Middletown City Schools,Thomas Hall,rep46@ohiohouse.gov,State Rep,46,R,Hostile,Re-election
-45056,Talawanda School District,Sara Carruthers,rep47@ohiohouse.gov,State Rep,47,R,Hostile,Re-election
-45202,Cincinnati Public Schools,Dani Isaacsohn,isaacsohn@ohiohouse.gov,State Rep,24,D,Friendly,Re-election
-43215,Columbus City Schools,Dontavius Jarrells,rep01@ohiohouse.gov,State Rep,1,D,Friendly,Re-election
-44113,Cleveland Metro Schools,Terrance Upchurch,rep20@ohiohouse.gov,State Rep,20,D,Friendly,Re-election
-43604,Toledo Public Schools,Elgin Rogers,rep44@ohiohouse.gov,State Rep,44,D,Friendly,Re-election
-45402,Dayton Public Schools,Willis Blackshear,rep38@ohiohouse.gov,State Rep,38,D,Friendly,Re-election
+zip_code,school_district,rep_name,rep_email,rep_role,rep_district,rep_party,rep_stance,rep_career,rep_address,enrollment,poverty_rate,minority_rate
+45011,Hamilton City Schools,Sara Carruthers,rep47@ohiohouse.gov,State Rep,47,R,Hostile,Re-election,"77 S High St, Columbus, OH",8900,100%,45%
+45013,Hamilton City Schools,Sara Carruthers,rep47@ohiohouse.gov,State Rep,47,R,Hostile,Re-election,"77 S High St, Columbus, OH",8900,100%,45%
+45056,Talawanda City Schools,Sara Carruthers,rep47@ohiohouse.gov,State Rep,47,R,Hostile,Re-election,"77 S High St, Columbus, OH",2850,32%,12%
+45014,Fairfield City Schools,Thomas Hall,rep46@ohiohouse.gov,State Rep,46,R,Hostile,Re-election,"77 S High St, Columbus, OH",9200,48%,40%
+45202,Cincinnati Public Schools,Dani Isaacsohn,isaacsohn@ohiohouse.gov,State Rep,24,D,Friendly,Re-election,"77 S High St, Columbus, OH",33000,78%,65%
+43215,Columbus City Schools,Dontavius Jarrells,rep01@ohiohouse.gov,State Rep,1,D,Friendly,Re-election,"77 S High St, Columbus, OH",46000,100%,70%
