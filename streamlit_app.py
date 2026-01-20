@@ -12,7 +12,6 @@ st.set_page_config(page_title="Class Action Ohio", page_icon="⚖️", layout="w
 if 'xp_points' not in st.session_state: st.session_state.xp_points = 0
 if 'hall_of_fame' not in st.session_state: st.session_state.hall_of_fame = ["David M. Bothast"]
 
-# Persistence Defaults
 defaults = {
     'u_name': "David M. Bothast", 'u_role': "K-8 Visual Arts Teacher", 'u_targets': ["📍 Local Rep"],
     'is_parent': False, 'child_count': 0, 'is_homeowner': True, 'is_renter': False,
@@ -26,10 +25,7 @@ for key, val in defaults.items():
 @st.cache_data
 def load_data():
     try:
-        df = pd.read_csv("ohio_districts.csv", 
-                         dtype={'zip_code': str, 'rep_district': str}, 
-                         quotechar='"', 
-                         on_bad_lines='warn')
+        df = pd.read_csv("ohio_districts.csv", dtype={'zip_code': str, 'rep_district': str}, quotechar='"', on_bad_lines='warn')
         df.fillna("N/A", inplace=True)
         return df
     except Exception as e:
@@ -38,13 +34,13 @@ def load_data():
 
 df = load_data()
 
-# --- 4. ULTIMATE PDF ENGINE (Integrating Fiscal & Personal Data) ---
+# --- 4. BULK PDF ENGINE (One Page Per Representative) ---
 def create_bulk_pdf(recipients_list, user_info, data, id_badges, custom_text):
     pdf = FPDF(orientation='P', unit='in', format='Letter')
     pdf.set_margins(left=1.0, top=1.0, right=1.0)
     pdf.set_auto_page_break(auto=True, margin=1.0)
     
-    # 1. Identity Sentence Construction
+    # Identity Sentence Logic
     badges = []
     if id_badges['voter']: badges.append("active voter")
     if id_badges['taxpayer']: badges.append("dedicated taxpayer")
@@ -59,7 +55,7 @@ def create_bulk_pdf(recipients_list, user_info, data, id_badges, custom_text):
         pdf.add_page()
         pdf.set_font("Times", '', 12)
         
-        # Header Blocks
+        # Block Format Header
         pdf.cell(0, 0.2, txt=user_info['name'], ln=True)
         pdf.cell(0, 0.2, txt=user_info['role'], ln=True)
         pdf.cell(0, 0.2, txt=f"Zip Code: {user_info['zip']}", ln=True); pdf.ln(0.2)
@@ -72,39 +68,32 @@ def create_bulk_pdf(recipients_list, user_info, data, id_badges, custom_text):
         pdf.cell(0, 0.2, txt=f"Dear {rec['role']} {last_name}:")
         pdf.ln(0.3)
         
-        # --- BODY CONSTRUCTION ---
-        # Paragraph 1: The Personal Hook
+        # Body Construction with ODEW Data
         opening = f"My name is {user_info['name']}. I live in House District {data['rep_district']}, home of the {data['school_district']}."
         identity_line = f"As an {id_base}{parent_part}{residency_part} I am writing to you today regarding the future of our public schools."
         
-        # Paragraph 2: The Personal Anecdote (Seamless Integration)
         custom_section = ""
         if custom_text.strip():
             custom_section = f"To provide a personal perspective from my experience: {custom_text.strip()}"
             if not custom_section.endswith(('.', '!', '?')): custom_section += "."
 
-        # Paragraph 3: The Fiscal/Demographic Reality (ODEW Data Integration)
         fiscal_detail = (
-            f"Currently, {data['school_district']} serves {data['enrollment']} students, with a poverty rate of {data['poverty_rate']}. "
+            f"Currently, {data['school_district']} serves {data['enrollment']} students with a poverty rate of {data['poverty_rate']}. "
             f"Our instructional quality is driven by a veteran workforce averaging {data['avg_teacher_ex']} years of experience, "
-            f"with {data['percent_masters']} of our faculty holding Master's degrees and an average salary of {data['avg_teacher_salary']}. "
-            "Maintaining this professional stability and predictable local funding is vital, yet it is currently threatened by the rapid expansion of school vouchers."
+            f"with {data['percent_masters']} of our faculty holding Master's degrees. "
+            "Predictable local funding is vital; voucher expansion threatens this professional stability."
         )
 
-        # Paragraph 4: The Call to Action
-        action = f"I urge you, as a {rec['role']}, to prioritize public education funding for our community and our students. Thank you for your consideration."
+        action = f"I urge you, as a {rec['role']}, to prioritize public education funding. Thank you for your consideration."
         
         full_body = [opening, identity_line]
         if custom_section: full_body.append(custom_section)
         full_body.extend([fiscal_detail, action])
         
         for p in full_body:
-            # Handle non-latin characters and smart quotes
-            safe_p = p.replace('’', "'").replace('“', '"').replace('”', '"')
-            pdf.multi_cell(0, 0.2, txt=safe_p, align='L')
+            pdf.multi_cell(0, 0.2, txt=p.replace('’', "'").replace('“', '"').replace('”', '"'), align='L')
             pdf.ln(0.2)
         
-        # Sign-off
         pdf.ln(0.2); pdf.cell(0, 0.2, txt="Sincerely,", ln=True); pdf.ln(0.8) 
         pdf.set_font("Times", 'B', 12); pdf.cell(0, 0.2, txt=user_info['name'], ln=True)
         
@@ -124,15 +113,11 @@ if zip_input:
     if not res.empty:
         data = res.iloc[0].to_dict()
         
-        # DISTRICT DATA PREVIEW (Visual confirmation for user)
-        st.info(f"📍 **District Match Found:** {data['school_district']} (House District {data['rep_district']})")
-        
         st.header("1. Personalize Your Identity")
         c1, c2 = st.columns(2)
         with c1: st.session_state.u_name = st.text_input("Full Name:", value=st.session_state.u_name)
-        with c2: st.session_state.u_role = st.text_input("Professional Role:", value=st.session_state.u_role)
+        with c2: st.session_state.u_role = st.text_input("Role:", value=st.session_state.u_role)
 
-        # Residency & Badges
         r1, r2 = st.columns(2)
         with r1: st.session_state.years_ohio = st.number_input("Years in Ohio:", min_value=0, value=st.session_state.years_ohio)
         with r2: st.session_state.years_district = st.number_input(f"Years in Dist. {data['rep_district']}:", min_value=0, value=st.session_state.years_district)
@@ -150,25 +135,43 @@ if zip_input:
             if st.session_state.is_parent:
                 st.session_state.child_count = st.number_input("Children:", min_value=1, value=max(1, st.session_state.child_count))
 
-        st.header("2. Personal Perspective")
-        st.session_state.custom_note = st.text_area("Add a personal story or specific concern (Integrated into the letter):", 
-                                                   value=st.session_state.custom_note)
+        st.header("2. Add Personal Perspective")
+        st.session_state.custom_note = st.text_area("Custom Message:", value=st.session_state.custom_note)
 
-        st.header("3. Advocacy Pack")
-        st.session_state.u_targets = st.multiselect("Address to:", ["📍 Local Rep", "🏛️ Governor", "🛡️ Friendly Caucus", "🚫 Opposition Leadership"], default=st.session_state.u_targets)
+        st.header("3. Advocacy Action Center")
+        st.session_state.u_targets = st.multiselect("Select Targets for Print & Email:", ["📍 Local Rep", "🏛️ Governor", "🛡️ Friendly Caucus", "🚫 Opposition Leadership"], default=st.session_state.u_targets)
 
+        # Map Recipients
         final_recs = []
-        if "📍 Local Rep" in st.session_state.u_targets: final_recs.append({"name": data['rep_name'], "role": data['rep_role'], "address": data['rep_address']})
-        if "🏛️ Governor" in st.session_state.u_targets: final_recs.append({"name": "Mike DeWine", "role": "Governor", "address": "77 S. High St, 30th Floor, Columbus, OH 43215"})
-        if "🛡️ Friendly Caucus" in st.session_state.u_targets: final_recs.append({"name": "C. Allison Russo", "role": "Minority Leader", "address": "77 S. High St, 14th Floor, Columbus, OH 43215"})
-        if "🚫 Opposition Leadership" in st.session_state.u_targets: final_recs.append({"name": "Matt Huffman", "role": "Speaker (Designate)", "address": "77 S. High St, 14th Floor, Columbus, OH 43215"})
+        if "📍 Local Rep" in st.session_state.u_targets: final_recs.append({"name": data['rep_name'], "role": data['rep_role'], "email": data['rep_email'], "address": data['rep_address']})
+        if "🏛️ Governor" in st.session_state.u_targets: final_recs.append({"name": "Mike DeWine", "role": "Governor", "email": "governor@ohio.gov", "address": "77 S. High St, 30th Floor, Columbus, OH 43215"})
+        if "🛡️ Friendly Caucus" in st.session_state.u_targets: final_recs.append({"name": "C. Allison Russo", "role": "Minority Leader", "email": "rep07@ohiohouse.gov", "address": "77 S. High St, 14th Floor, Columbus, OH 43215"})
+        if "🚫 Opposition Leadership" in st.session_state.u_targets: final_recs.append({"name": "Matt Huffman", "role": "Speaker (Designate)", "email": "rep78@ohiohouse.gov", "address": "77 S. High St, 14th Floor, Columbus, OH 43215"})
 
         if st.session_state.u_name and final_recs:
-            id_badges = {
-                'voter': st.session_state.is_voter, 'taxpayer': st.session_state.is_taxpayer,
-                'homeowner': st.session_state.is_homeowner, 'renter': st.session_state.is_renter,
-                'parent': st.session_state.is_parent, 'count': st.session_state.child_count,
-                'y_ohio': st.session_state.years_ohio, 'y_dist': st.session_state.years_district
-            }
-            pdf_data = create_bulk_pdf(final_recs, {"name": st.session_state.u_name, "role": st.session_state.u_role, "zip": zip_input}, data, id_badges, st.session_state.custom_note)
-            st.download_button(label=f"📄 DOWNLOAD {len(final_recs)} PERSONALIZED LETTERS", data=pdf_data, file_name=f"Ohio_Advocacy_Pack.pdf", mime="application/pdf")
+            id_badges = {'voter': st.session_state.is_voter, 'taxpayer': st.session_state.is_taxpayer, 'homeowner': st.session_state.is_homeowner, 'renter': st.session_state.is_renter, 'parent': st.session_state.is_parent, 'count': st.session_state.child_count, 'y_ohio': st.session_state.years_ohio, 'y_dist': st.session_state.years_district}
+            
+            c_email, c_pdf = st.columns(2)
+            
+            with c_pdf:
+                # 1. BULK PDF DOWNLOAD
+                pdf_data = create_bulk_pdf(final_recs, {"name": st.session_state.u_name, "role": st.session_state.u_role, "zip": zip_input}, data, id_badges, st.session_state.custom_note)
+                st.download_button(label=f"📄 DOWNLOAD {len(final_recs)} PRINT-READY LETTERS", data=pdf_data, file_name=f"Ohio_Advocacy_Pack.pdf", mime="application/pdf")
+
+            with c_email:
+                # 2. BCC EMAIL GENERATOR
+                emails = [r['email'] for r in final_recs]
+                bcc_string = ",".join(emails)
+                subject = f"Constituent Advocacy: {data['school_district']} (District {data['rep_district']})"
+                
+                # Use a placeholder body for the mailto link (most browsers have char limits)
+                email_body = f"Please find my attached advocacy regarding House District {data['rep_district']}."
+                mailto_link = f"mailto:?bcc={bcc_string}&subject={urllib.parse.quote(subject)}&body={urllib.parse.quote(email_body)}"
+                
+                st.markdown(f'''<a href="{mailto_link}" style="text-decoration:none;">
+                    <div style="background-color:#B22234;color:white;padding:15px;text-align:center;border-radius:10px;font-weight:bold;">✉️ BCC ALL REPRESENTATIVES</div></a>''', unsafe_allow_html=True)
+                st.caption(f"BCC Targets: {', '.join(emails)}")
+
+            if st.button("✅ Log All Actions (+100 XP per Target)"):
+                st.session_state.xp_points += (100 * len(final_recs))
+                st.balloons(); st.rerun()
