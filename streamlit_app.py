@@ -32,24 +32,36 @@ st.markdown("""
         margin-bottom: 10px; transition: all 0.3s;
     }
     .deploy-btn:hover { background-color: #8b1a29; transform: translateY(-2px); }
+    
+    /* Tab Styling */
+    .stTabs [data-baseweb="tab-list"] { gap: 10px; }
+    .stTabs [data-baseweb="tab"] { border-radius: 5px; padding: 10px 20px; }
     </style>
     """, unsafe_allow_html=True)
 
-# --- 2. PERSISTENT SESSION STATE (Memory) ---
-if 'xp_points' not in st.session_state: st.session_state.xp_points = 0
-if 'u_targets' not in st.session_state: st.session_state.u_targets = []
-
-# Universal Defaults (No Personal Data)
-defaults = {
-    'u_name': "", 'u_role': "", 
-    'is_parent': False, 'child_count': 0, 'is_homeowner': False, 'is_renter': False,
-    'is_taxpayer': False, 'is_voter': False, 'years_ohio': 0, 'years_district': 0,
-    'custom_note': ""
+# --- 2. PERSISTENT SESSION STATE INITIALIZATION ---
+# Initialize all keys if they don't exist to prevent "KeyError"
+initial_state = {
+    'xp_points': 0,
+    'u_name': "", 
+    'u_role': "", 
+    'is_voter': False,
+    'is_taxpayer': False,
+    'is_homeowner': False,
+    'is_renter': False,
+    'is_parent': False,
+    'child_count': 0,
+    'years_ohio': 0,
+    'years_district': 0,
+    'custom_note': "",
+    'u_targets': []
 }
-for key, val in defaults.items():
-    if key not in st.session_state: st.session_state[key] = val
 
-# --- 3. AUDIT-PROTECTED DATA ENGINE ---
+for key, val in initial_state.items():
+    if key not in st.session_state:
+        st.session_state[key] = val
+
+# --- 3. DATA ENGINE ---
 @st.cache_data
 def load_data():
     try:
@@ -69,7 +81,7 @@ def create_bulk_pdf(recipients_list, user_info, data, id_badges, custom_text):
     pdf.set_margins(left=1.0, top=1.0, right=1.0)
     pdf.set_auto_page_break(auto=True, margin=1.0)
     
-    # 1. Build Identity Sentence
+    # Build Identity Sentence
     badges = [b for b, active in [("active voter", id_badges['voter']), ("dedicated taxpayer", id_badges['taxpayer']), ("homeowner", id_badges['homeowner']), ("local resident", id_badges['renter'])] if active]
     
     id_base = ", ".join(badges[:-1]) + (" and " + badges[-1] if len(badges) > 1 else badges[0] if badges else "resident")
@@ -154,7 +166,7 @@ with st.sidebar:
     st.markdown(f"📱 [Text a Friend](sms:?&body={msg})")
     
     if st.button("🔄 Reset User Data"):
-        for key, val in defaults.items(): st.session_state[key] = val
+        for key, val in initial_state.items(): st.session_state[key] = val
         st.rerun()
 
 # --- 6. MAIN DASHBOARD ---
@@ -167,44 +179,42 @@ with c_head:
     st.markdown("# CLASS ACTION: OHIO")
     st.markdown("### The Statewide Public Education Advocacy Engine")
 
-# Zip Code Entry (The Trigger)
-zip_input = st.text_input("📍 DEPLOY BY ZIP CODE:", max_chars=5, help="Enter your 5-digit Ohio zip code.")
+# Zip Code Entry
+zip_input = st.text_input("📍 DEPLOY BY ZIP CODE:", max_chars=5, help="Enter your 5-digit Ohio zip code to load local data.")
 
 if zip_input and not df.empty:
     res = df[df['zip_code'] == zip_input]
     if not res.empty:
         data = res.iloc[0].to_dict()
         
-        # SUCCESS BANNER
         st.success(f"TARGET ACQUIRED: {data['school_district']} (House District {data['rep_district']})")
         
-        # TABBED WORKFLOW
         t_id, t_msg, t_deploy = st.tabs(["👤 IDENTITY", "📝 MESSAGE", "🚀 DEPLOY"])
         
-        # TAB 1: IDENTITY
+        # TAB 1: IDENTITY (Direct Key Binding Fix)
         with t_id:
             c1, c2 = st.columns(2)
-            with c1: st.session_state.u_name = st.text_input("Full Name:", value=st.session_state.u_name)
-            with c2: st.session_state.u_role = st.text_input("Title (e.g. Teacher, Parent):", value=st.session_state.u_role)
+            with c1: st.text_input("Full Name:", key="u_name") 
+            with c2: st.text_input("Title (e.g. Teacher, Parent):", key="u_role")
             
             st.subheader("Constituent Badges")
             b1, b2, b3 = st.columns(3)
             with b1:
-                st.session_state.is_voter = st.checkbox("Voter", value=st.session_state.is_voter)
-                st.session_state.is_taxpayer = st.checkbox("Taxpayer", value=st.session_state.is_taxpayer)
+                st.checkbox("Voter", key="is_voter")
+                st.checkbox("Taxpayer", key="is_taxpayer")
             with b2:
-                st.session_state.is_homeowner = st.checkbox("Homeowner", value=st.session_state.is_homeowner)
-                st.session_state.is_parent = st.checkbox("Parent", value=st.session_state.is_parent)
+                st.checkbox("Homeowner", key="is_homeowner")
+                st.checkbox("Parent", key="is_parent")
                 if st.session_state.is_parent:
-                    st.session_state.child_count = st.number_input("Children:", min_value=1, value=max(1, st.session_state.child_count))
+                    st.number_input("Children:", min_value=1, key="child_count")
             with b3:
-                st.session_state.years_ohio = st.number_input("Years in Ohio:", value=st.session_state.years_ohio)
-                st.session_state.years_district = st.number_input(f"Years in Dist. {data['rep_district']}:", value=st.session_state.years_district)
+                st.number_input("Years in Ohio:", min_value=0, key="years_ohio")
+                st.number_input(f"Years in Dist. {data['rep_district']}:", min_value=0, key="years_district")
 
         # TAB 2: MESSAGE & TARGETS
         with t_msg:
             st.markdown("#### Add Your Voice")
-            st.session_state.custom_note = st.text_area("Personal Anecdote (Integrated into your letter):", value=st.session_state.custom_note)
+            st.text_area("Personal Anecdote (Integrated into your letter):", key="custom_note")
             
             st.markdown("#### Select Targets")
             all_options = ["📍 Local Rep", "🏛️ Governor", "🛡️ Friendly Caucus", "🚫 Opposition Leadership"]
@@ -219,12 +229,12 @@ if zip_input and not df.empty:
                     st.session_state.u_targets = []
                     st.rerun()
             
-            st.session_state.u_targets = st.multiselect("Recipients:", all_options, default=st.session_state.u_targets)
+            st.multiselect("Recipients:", all_options, key="u_targets")
 
         # TAB 3: DEPLOYMENT (Action Center)
         with t_deploy:
             if st.session_state.u_targets:
-                # 2026 Leadership Logic (Updated 136th GA)
+                # 2026 Leadership Logic
                 target_map = {
                     "📍 Local Rep": {"name": data['rep_name'], "email": data['rep_email'], "address": data['rep_address'], "role": data['rep_role']},
                     "🏛️ Governor": {"name": "Mike DeWine", "email": "governor@ohio.gov", "address": "77 S. High St, 30th Floor, Columbus, OH 43215", "role": "Governor"},
