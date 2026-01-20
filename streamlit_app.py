@@ -3,185 +3,159 @@ import pandas as pd
 from fpdf import FPDF
 from datetime import date
 import base64
+import urllib.parse
 
-# --- CONFIGURATION & DATA ---
+# --- 1. THE DATA BRAIN (Database) ---
 
-# 1. THE LEGISLATOR DATABASE (Sample - You would expand this via CSV)
-# "Stance" logic: 'Hostile' = Voted for EdChoice/Funding Freeze. 'Friendly' = Voted No.
+# A. Legislator Database (The Politicians)
+# NOTE: You would eventually replace this with a full CSV file.
 legislators_db = pd.DataFrame([
-    {"name": "Matt Huffman", "role": "House Speaker", "district": 78, "email": "rep78@ohiohouse.gov", "party": "R", "stance": "Hostile", "career_stage": "Re-election"},
-    {"name": "Andrew Brenner", "role": "Senate Education Chair", "district": 19, "email": "brenner@ohiosenate.gov", "party": "R", "stance": "Hostile", "career_stage": "Re-election"},
-    {"name": "Jerry Cirino", "role": "Senator", "district": 18, "email": "cirino@ohiosenate.gov", "party": "R", "stance": "Hostile", "career_stage": "Retiring"}, # Example status
-    {"name": "Generic Friendly Rep", "role": "Rep", "district": 1, "email": "rep1@ohiohouse.gov", "party": "D", "stance": "Friendly", "career_stage": "Re-election"},
+    # HAMILTON / BUTLER COUNTY REPS
+    {"name": "Thomas Hall", "role": "State Rep", "district": "46", "email": "rep46@ohiohouse.gov", "party": "R", "stance": "Hostile", "career_stage": "Re-election"},
+    {"name": "George Lang", "role": "State Senator", "district": "4", "email": "lang@ohiohouse.gov", "party": "R", "stance": "Hostile", "career_stage": "Re-election"},
+    
+    # LEADERSHIP (Always included)
+    {"name": "Matt Huffman", "role": "House Speaker", "district": "78", "email": "rep78@ohiohouse.gov", "party": "R", "stance": "Hostile", "career_stage": "Legacy"},
+    {"name": "Andrew Brenner", "role": "Senate Education Chair", "district": "19", "email": "brenner@ohiosenate.gov", "party": "R", "stance": "Hostile", "career_stage": "Legacy"},
 ])
 
-# 2. THE DISTRICT MAP (Sample - Links Districts to Rep District IDs)
-# In production, this would be a full CSV of all 600+ Ohio districts
-district_map = {
-    "Hamilton City Schools": {"House": 47, "Senate": 4},
-    "Linden Local Schools": {"House": 78, "Senate": 19}, # Targeted example
-    "Columbus City Schools": {"House": 1, "Senate": 15},
+# B. Zip Code to District Map (The "Auto-Connect" Feature)
+# This maps a Zip Code -> School District Name
+zip_code_map = {
+    # Hamilton / Fairfield Area
+    "45011": "Hamilton City Schools",
+    "45013": "Hamilton City Schools",
+    "45015": "Hamilton City Schools",
+    "45014": "Fairfield City Schools",
+    # Columbus Area (Samples)
+    "43215": "Columbus City Schools",
+    "43081": "Westerville City Schools",
 }
 
-# --- LOGIC FUNCTIONS ---
+# C. District to Legislative District Map
+# This maps School District Name -> The House/Senate District Numbers
+district_to_politics_map = {
+    "Hamilton City Schools": {"House": "46", "Senate": "4"}, 
+    "Fairfield City Schools": {"House": "51", "Senate": "4"},
+    "Columbus City Schools": {"House": "1", "Senate": "15"},
+    "Westerville City Schools": {"House": "19", "Senate": "19"},
+}
 
-def get_reps(district_name):
-    """Finds the reps for a selected school district."""
-    if district_name not in district_map:
+# --- 2. LOGIC FUNCTIONS ---
+
+def get_reps_by_district(school_district_name):
+    """Finds the politicians for a specific school district."""
+    if school_district_name not in district_to_politics_map:
         return []
     
-    mapping = district_map[district_name]
+    mapping = district_to_politics_map[school_district_name]
     
-    # Filter DB for matching districts
-    reps = legislators_db[
-        (legislators_db['district'] == mapping['House']) & (legislators_db['role'].str.contains("House")) |
-        (legislators_db['district'] == mapping['Senate']) & (legislators_db['role'].str.contains("Sen"))
+    # 1. Find Local Reps
+    local_reps = legislators_db[
+        (legislators_db['district'] == mapping['House']) | 
+        (legislators_db['district'] == mapping['Senate'])
     ]
     
-    # ALWAYS add Leadership (Huffman/Brenner) if not present, as they control the budget
-    leadership = legislators_db[legislators_db['name'].isin(["Matt Huffman", "Andrew Brenner"])]
+    # 2. Find Leadership (They affect everyone)
+    leadership = legislators_db[legislators_db['role'].isin(["House Speaker", "Senate Education Chair"])]
     
-    combined = pd.concat([reps, leadership]).drop_duplicates(subset=['email'])
+    # Combine and remove duplicates
+    combined = pd.concat([local_reps, leadership]).drop_duplicates(subset=['name'])
     return combined.to_dict('records')
 
 def generate_message(rep, user_name, user_district):
-    """The Persuasion Engine: Generates text based on Rep attributes."""
+    """Generates the persuasive text."""
     today = date.today().strftime("%B %d, %Y")
     
-    # --- TEMPLATE LOGIC ---
-    
     if rep['stance'] == "Hostile":
-        subject = f"URGENT: The Financial Stability of {user_district}"
-        
-        opening = f"Dear {rep['role']} {rep['name']},"
-        
-        core_issue = (
-            f"\n\nI am writing as a concerned educator and voter in {user_district}. "
-            f"The decision to freeze public school 'base cost' inputs at 2022 levels, effectively cutting "
-            f"our real-dollar funding while fully funding universal EdChoice vouchers, is devastating our classrooms."
+        subject = f"URGENT: Financial Distress in {user_district}"
+        body = (
+            f"Dear {rep['role']} {rep['name']},\n\n"
+            f"I am a voter in {user_district}. The decision to freeze public school funding "
+            f"at 2022 levels while expanding EdChoice vouchers is draining our classrooms.\n\n"
         )
-        
-        # PSYCHOLOGICAL TRIGGER: Re-election vs Legacy
         if rep['career_stage'] == "Re-election":
-            closer = (
-                "\n\nWe are organizing. Teachers, parents, and community members are paying close attention "
-                "to who supports our public schools and who undermines them. "
-                "I urge you to reverse course on the EdChoice expansion and update the Fair School Funding Plan inputs immediately."
-            )
-        else: # Retiring
-            closer = (
-                "\n\nAs you look toward your legacy in Ohio, ask yourself: Do you want to be remembered as a leader "
-                "who upheld our constitutional promise to public education, or one who oversaw its dismantling? "
-                "Please, do the right thing before your term ends."
-            )
-            
-    else: # Friendly
-        subject = f"Support Needed: Protect {user_district} Funding"
-        opening = f"Dear {rep['role']} {rep['name']},"
-        core_issue = (
-            f"\n\nThank you for your continued support of public education. However, the current budget's "
-            f"refusal to update 'base cost' inputs is hurting {user_district}."
-        )
-        closer = (
-            "\n\nPlease be our voice. We need you to aggressively push specifically for the update of "
-            "funding inputs to current economic data and to call for a cap on voucher spending."
-        )
+            body += "We are organizing locally for the upcoming election. We need you to support public schools now."
+        else:
+            body += "Please consider your legacy. Do not be the leader who dismantled Ohio's public education."
+    else:
+        subject = f"Support Needed: {user_district}"
+        body = f"Dear {rep['role']} {rep['name']},\n\nThank you for supporting {user_district}. Please keep fighting to update the Fair School Funding Plan inputs."
 
-    full_body = f"{opening}\n{core_issue}\n{closer}\n\nSincerely,\n{user_name}\n{user_district} Educator & Voter"
-    
-    return subject, full_body
+    full_text = f"{body}\n\nSincerely,\n{user_name}\n{user_district} Resident"
+    return subject, full_text
 
-def create_pdf(rep, user_name, user_address, content):
-    """Generates a professional PDF letter."""
+def create_pdf(rep, user_name, user_addr, content):
+    """Generates a PDF letter."""
     pdf = FPDF()
     pdf.add_page()
-    pdf.set_font("Arial", size=11)
-    
-    # Header
-    pdf.set_font("Arial", 'B', 14)
-    pdf.cell(200, 10, txt=user_name, ln=1, align='C')
-    pdf.set_font("Arial", size=10)
-    pdf.cell(200, 5, txt=user_address, ln=1, align='C')
-    pdf.cell(200, 5, txt=date.today().strftime("%B %d, %Y"), ln=1, align='C')
+    pdf.set_font("Arial", size=12)
+    pdf.cell(200, 10, txt=f"From: {user_name}", ln=1)
+    pdf.cell(200, 10, txt=f"To: {rep['role']} {rep['name']}", ln=1)
     pdf.ln(10)
-    
-    # Recipient
-    pdf.set_font("Arial", 'B', 11)
-    pdf.cell(0, 5, txt=f"The Honorable {rep['name']}", ln=1)
-    pdf.set_font("Arial", size=11)
-    pdf.cell(0, 5, txt="Ohio Statehouse", ln=1) # Simplified address
-    pdf.cell(0, 5, txt="Columbus, OH 43215", ln=1)
-    pdf.ln(10)
-    
-    # Body
-    pdf.multi_cell(0, 6, txt=content)
-    
+    pdf.multi_cell(0, 10, txt=content)
     return pdf.output(dest='S').encode('latin-1')
 
-# --- APP INTERFACE ---
+# --- 3. THE APP INTERFACE ---
 
 st.set_page_config(page_title="Ohio School Advocate", page_icon="🏫")
 
 st.title("📢 Ohio Legislator Communicator")
-st.markdown("""
-**Empowering Ohio Educators to Demand Fair Funding.**
-Select your district to identify your representatives. The app automatically drafts targeted messages based on their voting record.
-""")
+st.markdown("Enter your **Zip Code** to automatically find your School District and Representatives.")
 
+# SIDEBAR INPUTS
 with st.sidebar:
-    st.header("Your Information")
-    user_name = st.text_input("Name", "David M. Bothast")
-    user_addr = st.text_input("City/State (For Letters)", "Hamilton, OH")
-    user_district = st.selectbox("Select School District", list(district_map.keys()))
+    st.header("1. Your Info")
+    user_name = st.text_input("Your Name", "Concerned Citizen")
+    user_addr = st.text_input("Your City", "Hamilton, OH")
     
-    st.info("ℹ️ **Privacy Note:** Your data is not stored. It is only used to generate the draft.")
+    st.header("2. Find Your District")
+    # THE NEW ZIP CODE SEARCH
+    zip_code = st.text_input("Enter Zip Code", max_chars=5)
+    
+    # Logic: Auto-select based on Zip, or fall back to manual
+    detected_district = zip_code_map.get(zip_code, None)
+    
+    if detected_district:
+        st.success(f"📍 Found: {detected_district}")
+        selected_district = detected_district
+    else:
+        if zip_code:
+            st.warning("Zip not in database yet. Please select manually.")
+        selected_district = st.selectbox("Or Select District", list(district_to_politics_map.keys()))
 
-# Main Execution
-if user_district:
-    targets = get_reps(user_district)
+# MAIN AREA
+if selected_district:
+    reps = get_reps_by_district(selected_district)
     
-    st.subheader(f"Representatives for {user_district}")
+    st.divider()
+    st.subheader(f"Representatives for {selected_district}")
+    st.info(f"These officials control the funding for **{selected_district}**.")
     
-    for rep in targets:
-        # Determine Color Coding
-        color = "red" if rep['stance'] == "Hostile" else "green"
-        emoji = "🚫" if rep['stance'] == "Hostile" else "✅"
-        
-        with st.expander(f"{emoji} {rep['role']} {rep['name']} ({rep['party']})"):
-            # Generate the content
-            subject, body = generate_message(rep, user_name, user_district)
-            
-            # Display Context
+    for rep in reps:
+        with st.expander(f"{rep['role']} {rep['name']} ({rep['party']})"):
+            # Color code the stance
             if rep['stance'] == "Hostile":
-                st.error(f"**Voting Record:** Voted YES on EdChoice Expansion & Funding Freeze.\n\n**Strategy:** Pressure them on {rep['career_stage']}.")
+                st.error("⚠️ Voted for EdChoice / Funding Cuts")
             else:
-                st.success("**Voting Record:** Supporter of Public Schools.\n\n**Strategy:** Encourage them to fight harder.")
-            
-            # --- ACTION BUTTONS ---
-            col1, col2 = st.columns(2)
-            
-            # 1. EMAIL BUTTON
-            with col1:
-                # Mailto links must be URL encoded
-                import urllib.parse
-                safe_subject = urllib.parse.quote(subject)
-                safe_body = urllib.parse.quote(body)
-                mailto_link = f"mailto:{rep['email']}?subject={safe_subject}&body={safe_body}"
+                st.success("✅ Public School Supporter")
                 
-                st.markdown(f"""
-                <a href="{mailto_link}" target="_blank" style="text-decoration:none;">
-                    <button style="width:100%; background-color:#FF4B4B; color:white; border:none; padding:10px; border-radius:5px; cursor:pointer;">
-                        ✉️ Open Email Draft
-                    </button>
-                </a>
-                """, unsafe_allow_html=True)
-
-            # 2. PRINT LETTER BUTTON
-            with col2:
-                pdf_bytes = create_pdf(rep, user_name, user_addr, body)
-                b64 = base64.b64encode(pdf_bytes).decode()
-                href = f'<a href="data:application/octet-stream;base64,{b64}" download="Letter_to_{rep["name"].replace(" ", "_")}.pdf">📄 Download PDF Letter</a>'
-                st.markdown(href, unsafe_allow_html=True)
+            subject, body = generate_message(rep, user_name, selected_district)
             
-            # Preview
-            st.text_area("Preview Message:", value=body, height=200, key=rep['email'])
+            # Email Link
+            safe_sub = urllib.parse.quote(subject)
+            safe_body = urllib.parse.quote(body)
+            mailto = f"mailto:{rep['email']}?subject={safe_sub}&body={safe_body}"
+            
+            st.markdown(f"[**✉️ Send Email Now**]({mailto})")
+            
+            # PDF Button
+            pdf_data = create_pdf(rep, user_name, user_addr, body)
+            b64 = base64.b64encode(pdf_data).decode()
+            href = f'<a href="data:application/octet-stream;base64,{b64}" download="Letter_to_{rep["name"]}.pdf">📄 Download PDF Letter</a>'
+            st.markdown(href, unsafe_allow_html=True)
+            
+            st.text_area("Preview:", body, height=150)
+
+else:
+    st.info("👈 Please enter your Zip Code to begin.")
