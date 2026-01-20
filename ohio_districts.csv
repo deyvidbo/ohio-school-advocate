@@ -17,41 +17,16 @@ zip_code,school_district,rep_name,rep_email,rep_role,rep_district,rep_party,rep_
 44145,Westlake City Schools,Bride Rose Sweeney,rep16@ohiohouse.gov,State Rep,16,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",3600,8%,18%,$79000,16,80%
 44136,Strongsville City Schools,Michael D. Dovilla,rep17@ohiohouse.gov,State Rep,17,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",5400,12%,15%,$78500,15,78%
 44122,Beachwood City Schools,Juanita O. Brent,rep18@ohiohouse.gov,State Rep,18,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",1500,10%,35%,$88000,18,85%
-44139,Solon City Schools,Phillip M. Robinson, Jr.,rep19@ohiohouse.gov,State Rep,19,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",4400,8%,42%,$92000,17,88%
+44139,Solon City Schools,"Phillip M. Robinson, Jr.",rep19@ohiohouse.gov,State Rep,19,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",4400,8%,42%,$92000,17,88%
 44113,Cleveland Metro Schools,Terrence Upchurch,rep20@ohiohouse.gov,State Rep,20,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",36000,100%,82%,$65000,11,60%
 44124,Mayfield City Schools,Eric Synenberg,rep21@ohiohouse.gov,State Rep,21,D,Friendly,First Term,"77 S High St, Columbus, OH 43215",3800,15%,25%,$75000,14,72%
 44117,Euclid City Schools,Darnell T. Brewer,rep22@ohiohouse.gov,State Rep,22,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",4800,98%,92%,$64000,11,55%
 44060,Mentor Exempted Village,Daniel P. Troy,rep23@ohiohouse.gov,State Rep,23,D,Friendly,Legacy,"77 S High St, Columbus, OH 43215",7300,18%,12%,$75000,15,74%
 45202,Cincinnati Public Schools,Dani Isaacsohn,rep24@ohiohouse.gov,State Rep,24,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",33000,78%,65%,$66500,12,65%
 45229,Cincinnati Public Schools,Cecil Thomas,rep25@ohiohouse.gov,State Rep,25,D,Friendly,Legacy,"77 S High St, Columbus, OH 43215",33000,78%,65%,$67000,14,68%
-45231,North College Hill City,Ashley Bryant Bailey,rep26@ohiohouse.gov,State Rep,26,D,Friendly,First Term,"77 S High St, Columbus, OH 43215",1300,85%,88%,$61000,10,55%
-45208,Cincinnati Public Schools,Rachel B. Baker,rep27@ohiohouse.gov,State Rep,27,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",33000,78%,65%,$66500,12,65%
-45246,Princeton City Schools,Karen Brownlee,rep28@ohiohouse.gov,State Rep,28,D,Friendly,First Term,"77 S High St, Columbus, OH 43215",5800,65%,80%,$78000,13,72%
-45233,Oak Hills Local Schools,Cindy Abrams,rep29@ohiohouse.gov,State Rep,29,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",7600,15%,10%,$74000,15,75%
-45247,Northwest Local Schools,Mike Odioso,rep30@ohiohouse.gov,State Rep,30,R,Hostile,First Term,"77 S High St, Columbus, OH 43215",8200,42%,45%,$71000,14,70%
-44224,Stow-Munroe Falls City,Bill Roemer,rep31@ohiohouse.gov,State Rep,31,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",5100,22%,12%,$76500,16,80%
-44319,Coventry Local Schools,Jack K. Daniels,rep32@ohiohouse.gov,State Rep,32,R,Hostile,First Term,"77 S High St, Columbus, OH 43215",1900,45%,8%,$64000,13,65%
-44307,Akron City Schools,Veronica R. Sims,rep33@ohiohouse.gov,State Rep,33,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",20000,100%,75%,$68000,14,70%
-44313,Akron City Schools,Derrick Hall,rep34@ohiohouse.gov,State Rep,34,D,Friendly,First Term,"77 S High St, Columbus, OH 43215",20000,100%,75%,$65000,11,62%
-44023,Chagrin Falls Exempted,Steve Demetriou,rep35@ohiohouse.gov,State Rep,35,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1800,2%,8%,$91000,18,90%
-45429,Kettering City Schools,Andrea White,rep36@ohiohouse.gov,State Rep,36,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",7200,38%,22%,$76000,15,78%
-45458,Centerville City Schools,Tom Young,rep37@ohiohouse.gov,State Rep,37,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",8100,15%,20%,$82000,16,82%
-45417,Dayton City Schools,Desiree Tims,rep38@ohiohouse.gov,State Rep,38,D,Friendly,First Term,"77 S High St, Columbus, OH 43215",12000,100%,85%,$62000,10,58%
-45424,Huber Heights City,Phil Plummer,rep39@ohiohouse.gov,State Rep,39,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",5800,52%,40%,$68500,14,65%
-45322,Northmont City Schools,Rodney Creech,rep40@ohiohouse.gov,State Rep,40,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",4800,40%,35%,$72000,15,72%
-43612,Toledo City Schools,Erika White,rep41@ohiohouse.gov,State Rep,41,D,Friendly,First Term,"77 S High St, Columbus, OH 43215",21500,100%,78%,$61500,11,60%
-43608,Toledo City Schools,Elgin Rogers, Jr.,rep42@ohiohouse.gov,State Rep,42,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",21500,100%,78%,$63000,12,64%
-43613,Toledo City Schools,Michele Grim,rep43@ohiohouse.gov,State Rep,43,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",21500,100%,78%,$64000,13,67%
-43615,Toledo City Schools,Josh Williams,rep44@ohiohouse.gov,State Rep,44,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",21500,100%,78%,$62500,11,58%
-45069,Lakota Local Schools,Jennifer Gross,rep45@ohiohouse.gov,State Rep,45,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",17500,18%,30%,$74500,14,75%
-45050,Middletown City Schools,Thomas Hall,rep46@ohiohouse.gov,State Rep,46,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",6100,100%,52%,$63000,12,62%
-45011,Hamilton City Schools,Diane Mullins,rep47@ohiohouse.gov,State Rep,47,R,Hostile,First Term,"77 S High St, Columbus, OH 43215",8900,100%,45%,$62500,13,65%
-44720,North Canton City,Scott Oelslager,rep48@ohiohouse.gov,State Rep,48,R,Hostile,Legacy,"77 S High St, Columbus, OH 43215",4200,15%,8%,$75000,17,80%
-44708,Canton City Schools,Jim Thomas,rep49@ohiohouse.gov,State Rep,49,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",8000,100%,55%,$61000,12,58%
-44646,Massillon City Schools,Matthew Kishman,rep50@ohiohouse.gov,State Rep,50,R,Hostile,First Term,"77 S High St, Columbus, OH 43215",3900,62%,22%,$64500,13,64%
 44001,Amherst Exempted Village,Jodi Salvo,rep51@ohiohouse.gov,State Rep,51,R,Hostile,First Term,"77 S High St, Columbus, OH 43215",3800,18%,8%,$72000,14,75%
 44035,Elyria City Schools,Gayle Manning,rep52@ohiohouse.gov,State Rep,52,R,Hostile,Legacy,"77 S High St, Columbus, OH 43215",5900,68%,40%,$71000,16,78%
-44052,Lorain City Schools,Joseph A. Miller, III,rep53@ohiohouse.gov,State Rep,53,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",6200,100%,75%,$64000,12,60%
+44052,Lorain City Schools,"Joseph A. Miller, III",rep53@ohiohouse.gov,State Rep,53,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",6200,100%,75%,$64000,12,60%
 44870,Sandusky City Schools,Kellie Deeter,rep54@ohiohouse.gov,State Rep,54,R,Hostile,First Term,"77 S High St, Columbus, OH 43215",3200,75%,45%,$63000,13,58%
 44074,Oberlin City Schools,Michelle Teska,rep55@ohiohouse.gov,State Rep,55,R,Hostile,First Term,"77 S High St, Columbus, OH 43215",1000,45%,35%,$66000,14,70%
 45040,Mason City Schools,Adam Mathews,rep56@ohiohouse.gov,State Rep,56,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",10300,8%,35%,$79000,17,82%
@@ -76,7 +51,7 @@ zip_code,school_district,rep_name,rep_email,rep_role,rep_district,rep_party,rep_
 43402,Bowling Green City,Haraz N. Ghanbari,rep75@ohiohouse.gov,State Rep,75,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",2900,35%,15%,$68000,13,65%
 44902,Mansfield City Schools,Marilyn John,rep76@ohiohouse.gov,State Rep,76,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",3200,85%,40%,$61000,13,60%
 43055,Newark City Schools,Meredith Craig,rep77@ohiohouse.gov,State Rep,77,R,Hostile,First Term,"77 S High St, Columbus, OH 43215",6300,75%,15%,$64000,12,58%
-45801,Lima City Schools,Matt Huffman,rep78@ohiohouse.gov,State Rep,78,R,Hostile,Leadership,"77 S High St, Columbus, OH 43215",3800,90%,55%,$61500,11,55%
+45801,Lima City Schools,Matt Huffman,rep78@ohiohouse.gov,Speaker (Designate),78,R,Hostile,Leadership,"77 S High St, 14th Floor, Columbus, OH 43215",3800,90%,55%,$61500,11,55%
 43920,East Liverpool City,Monica Robb Blasdel,rep79@ohiohouse.gov,State Rep,79,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",2100,72%,12%,$59000,13,58%
 45373,Troy City Schools,Johnathan Newman,rep80@ohiohouse.gov,State Rep,80,R,Hostile,First Term,"77 S High St, Columbus, OH 43215",4500,28%,10%,$71000,15,72%
 43512,Defiance City Schools,James M. Hoops,rep81@ohiohouse.gov,State Rep,81,R,Hostile,Legacy,"77 S High St, Columbus, OH 43215",2400,45%,25%,$62500,16,65%
@@ -91,7 +66,7 @@ zip_code,school_district,rep_name,rep_email,rep_role,rep_district,rep_party,rep_
 45662,Portsmouth City Schools,Justin Pizzulli,rep90@ohiohouse.gov,State Rep,90,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1500,95%,18%,$56000,11,55%
 43160,Washington Court House,Bob Peterson,rep91@ohiohouse.gov,State Rep,91,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",2100,55%,15%,$59000,12,58%
 45601,Chillicothe City Schools,Mark Johnson,rep92@ohiohouse.gov,State Rep,92,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",2800,60%,15%,$60000,13,62%
-45638,Ironton City Schools,Jason Stephens,rep93@ohiohouse.gov,State Rep,93,R,Hostile,Leadership,"77 S High St, Columbus, OH 43215",1400,65%,12%,$58000,12,60%
+45638,Ironton City Schools,Jason Stephens,rep93@ohiohouse.gov,State Rep,93,R,Hostile,Leadership,"77 S High St, 14th Floor, Columbus, OH 43215",1400,65%,12%,$58000,12,60%
 45701,Athens City Schools,Kevin Ritter,rep94@ohiohouse.gov,State Rep,94,R,Hostile,First Term,"77 S High St, Columbus, OH 43215",2500,35%,10%,$58500,14,68%
 43950,St. Clairsville-Richland,Ty Moore,rep95@ohiohouse.gov,State Rep,95,R,Hostile,First Term,"77 S High St, Columbus, OH 43215",1600,30%,8%,$60500,14,62%
 43952,Steubenville City Schools,Ron Ferguson,rep96@ohiohouse.gov,State Rep,96,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",2200,75%,35%,$59000,13,58%
