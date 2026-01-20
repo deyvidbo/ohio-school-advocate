@@ -10,25 +10,25 @@ st.set_page_config(
     page_title="Class Action Ohio",
     page_icon="⚖️",
     layout="wide",
-    initial_sidebar_state="auto" # 'auto' is better for mobile than 'expanded'
+    initial_sidebar_state="auto"
 )
 
-# Custom CSS for Mobile Touch Targets
+# Mobile CSS: Bigger buttons, tab spacing, and status banners
 st.markdown("""
     <style>
-    .stTabs [data-baseweb="tab-list"] { gap: 8px; }
-    .stTabs [data-baseweb="tab"] { font-size: 16px; padding: 12px; flex-grow: 1; text-align: center; }
+    .stTabs [data-baseweb="tab-list"] { gap: 5px; }
+    .stTabs [data-baseweb="tab"] { font-size: 16px; padding: 10px; flex-grow: 1; text-align: center; }
     .deploy-btn { 
-        display: block; width: 100%; padding: 18px; 
+        display: block; width: 100%; padding: 15px; 
         background-color: #B22234; color: white !important; 
-        text-align: center; border-radius: 12px; 
-        font-weight: bold; text-decoration: none; font-size: 1.2em;
-        margin-bottom: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        text-align: center; border-radius: 10px; 
+        font-weight: bold; text-decoration: none; font-size: 1.1em;
+        margin-bottom: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.2);
     }
     .status-banner {
-        padding: 15px; background-color: #ecfdf5; 
+        padding: 10px; background-color: #ecfdf5; 
         border: 1px solid #10b981; color: #065f46; 
-        border-radius: 10px; text-align: center; font-weight: bold; margin-bottom: 10px;
+        border-radius: 8px; text-align: center; font-weight: bold; margin-bottom: 10px;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -37,19 +37,32 @@ st.markdown("""
 if 'xp_points' not in st.session_state: st.session_state.xp_points = 0
 if 'u_targets' not in st.session_state: st.session_state.u_targets = []
 
-# --- 3. ROBUST DATA ENGINE ---
-@st.cache_data
-def load_data():
-    try:
-        # Handles complex CSVs with quoted strings
-        df = pd.read_csv("ohio_districts.csv", dtype={'zip_code': str, 'rep_district': str}, quotechar='"', on_bad_lines='warn')
-        df.fillna("N/A", inplace=True)
-        return df
-    except Exception as e:
-        st.error(f"Data Error: {e}")
-        return pd.DataFrame()
+# --- 3. FAIL-SAFE DATA ENGINE ---
+# This ensures the app works even if the CSV is missing.
+BACKUP_DATA = {
+    "45011": {"school_district": "Hamilton City Schools", "enrollment": "9,800", "rep_name": "Diane Mullins", "rep_district": "47", "rep_email": "rep47@ohiohouse.gov", "rep_address": "77 S. High St, Columbus, OH 43215"},
+    "45013": {"school_district": "Hamilton City Schools", "enrollment": "9,800", "rep_name": "Diane Mullins", "rep_district": "47", "rep_email": "rep47@ohiohouse.gov", "rep_address": "77 S. High St, Columbus, OH 43215"},
+    "45044": {"school_district": "Middletown City Schools", "enrollment": "6,200", "rep_name": "Thomas Hall", "rep_district": "46", "rep_email": "rep46@ohiohouse.gov", "rep_address": "77 S. High St, Columbus, OH 43215"},
+    "45056": {"school_district": "Talawanda City Schools", "enrollment": "2,900", "rep_name": "Diane Mullins", "rep_district": "47", "rep_email": "rep47@ohiohouse.gov", "rep_address": "77 S. High St, Columbus, OH 43215"},
+    "43215": {"school_district": "Columbus City Schools", "enrollment": "46,000", "rep_name": "Allison Russo", "rep_district": "7", "rep_email": "rep07@ohiohouse.gov", "rep_address": "77 S. High St, Columbus, OH 43215"}
+}
 
-df = load_data()
+@st.cache_data
+def get_district_data(zip_code):
+    # 1. Try to load CSV
+    try:
+        df = pd.read_csv("ohio_districts.csv", dtype={'zip_code': str})
+        matches = df[df['zip_code'] == zip_code]
+        if not matches.empty:
+            return matches.to_dict('records') # Returns list of dicts (handles collisions)
+    except:
+        pass # Fall through to backup
+    
+    # 2. Use Backup Dictionary
+    if zip_code in BACKUP_DATA:
+        return [BACKUP_DATA[zip_code]]
+    
+    return []
 
 # --- 4. UNICODE SANITIZER (Prevents PDF Crashes) ---
 def safe_encode(text):
@@ -58,9 +71,9 @@ def safe_encode(text):
         '\u2018': "'", '\u2019': "'", '\u201c': '"', '\u201d': '"',
         '\u2013': '-', '\u2014': '-', '\u2026': '...', '\u00a0': ' '
     }
+    if not isinstance(text, str): text = str(text)
     for unicode_char, safe_char in replacements.items():
         text = text.replace(unicode_char, safe_char)
-    # Final fallback: encode to latin-1, replacing unknowns with '?'
     return text.encode('latin-1', 'replace').decode('latin-1')
 
 # --- 5. PDF GENERATOR ---
@@ -105,21 +118,21 @@ def create_bulk_pdf(recipients_list, user_info, data, custom_text):
 
 # --- 6. MOBILE INTERFACE ---
 logo_url = "https://github.com/deyvidbo/ohio-school-advocate/blob/main/Class_action_Logo.jpg?raw=true"
-c1, c2 = st.columns([1, 4])
+c1, c2 = st.columns([1, 5])
 with c1: 
-    try: st.image(logo_url, width=80) 
+    try: st.image(logo_url, width=60) 
     except: st.title("⚖️")
 with c2: st.markdown("### Class Action: Ohio\n**Mobile Command Center**")
 
 # SIDEBAR: GAMIFICATION
 with st.sidebar:
     rank = "Substitute" if st.session_state.xp_points < 100 else "Teacher" if st.session_state.xp_points < 300 else "THE SUPERINTENDENT"
-    st.metric("Action XP", st.session_state.xp_points, delta=None)
-    st.write(f"**Current Rank:** {rank}")
+    st.metric("Action XP", st.session_state.xp_points)
+    st.write(f"**Rank:** {rank}")
     st.markdown("---")
     st.markdown(" **Share:**")
     site_url = "https://classactionohio.org"
-    msg = urllib.parse.quote(f"I'm an advocacy {rank} for Ohio schools! Join me: {site_url}")
+    msg = urllib.parse.quote(f"Advocating for Ohio schools! Join me: {site_url}")
     st.markdown(f"📱 [Text/SMS](sms:?&body={msg})")
     st.markdown(f"🐦 [X/Twitter](https://twitter.com/intent/tweet?text={msg})")
 
@@ -127,22 +140,23 @@ with st.sidebar:
 zip_input = st.text_input("📍 ENTER ZIP CODE:", max_chars=5, help="Auto-connects to your district.")
 
 if zip_input:
-    # Filter for matches in CSV
-    matches = df[df['zip_code'] == zip_input]
+    # Use Fail-Safe Data Lookup
+    results = get_district_data(zip_input)
     
-    if matches.empty:
-        st.warning("Zip code not found. Please check your entry.")
+    if not results:
+        st.error("Zip code not found. Please try 45011, 45056, or 43215 for testing.")
     else:
-        # COLLISION HANDLING: If zip has >1 district, ask user.
-        if len(matches) > 1:
-            district_choice = st.selectbox("Select Your School District:", matches['school_district'].unique())
-            data = matches[matches['school_district'] == district_choice].iloc[0].to_dict()
+        # COLLISION HANDLING
+        if len(results) > 1:
+            opts = [r['school_district'] for r in results]
+            choice = st.selectbox("Select Your School District:", opts)
+            data = next(r for r in results if r['school_district'] == choice)
         else:
-            data = matches.iloc[0].to_dict()
+            data = results[0]
             
-        st.markdown(f'<div class="status-banner">✅ CONNECTED: {data['school_district']}</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="status-banner">✅ CONNECTED: {data["school_district"]}</div>', unsafe_allow_html=True)
 
-        # MOBILE TABS (The Fix for Scrolling)
+        # MOBILE TABS
         t_id, t_msg, t_deploy = st.tabs(["👤 YOU", "📝 MSG", "🚀 GO"])
 
         with t_id:
@@ -152,7 +166,7 @@ if zip_input:
             st.checkbox("Taxpayer", key="is_taxpayer")
 
         with t_msg:
-            st.text_area("Your Story:", key="custom_note", height=150, placeholder="How does this impact your students?")
+            st.text_area("Your Story:", key="custom_note", height=120, placeholder="How does this impact your classroom?")
             
             # 2026 Leadership Targets
             target_options = ["📍 Local Rep", "🏛️ Governor DeWine", "🛡️ Minority Leader Russo", "🚫 Speaker Huffman"]
@@ -165,7 +179,7 @@ if zip_input:
             if st.session_state.u_targets and st.session_state.u_name:
                 # Map selections to data
                 target_map = {
-                    "📍 Local Rep": {"name": data['rep_name'], "email": data['rep_email'], "address": data['rep_address'], "role": "Representative"},
+                    "📍 Local Rep": {"name": data['rep_name'], "email": data['rep_email'], "address": data.get('rep_address', '77 S. High St, Columbus, OH 43215'), "role": "Representative"},
                     "🏛️ Governor DeWine": {"name": "Mike DeWine", "email": "governor@ohio.gov", "address": "77 S. High St, 30th Floor, Columbus, OH 43215", "role": "Governor"},
                     "🛡️ Minority Leader Russo": {"name": "Allison Russo", "email": "rep07@ohiohouse.gov", "address": "77 S. High St, 14th Floor, Columbus, OH 43215", "role": "Minority Leader"},
                     "🚫 Speaker Huffman": {"name": "Matt Huffman", "email": "rep78@ohiohouse.gov", "address": "77 S. High St, 14th Floor, Columbus, OH 43215", "role": "Speaker"}
