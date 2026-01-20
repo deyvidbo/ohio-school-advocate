@@ -140,7 +140,7 @@ else:
     target_emails = ["governor@ohio.gov"]
     subject, body = generate_message({}, user_context, mode="Leadership")
 
-# Email Launch Button
+# Advocacy Email Launch Button
 email_string = ",".join([str(e) for e in target_emails if str(e) != "nan" and str(e) != ""])
 safe_sub = urllib.parse.quote(subject)
 safe_body = urllib.parse.quote(body)
@@ -155,7 +155,7 @@ if st.button("STEP 2: ✅ I SENT IT! (+100 XP)"):
     st.balloons()
     st.rerun()
 
-# --- 7. SOCIAL SHARING (Expanded) ---
+# --- 7. SOCIAL & PERSONAL SHARING ---
 st.markdown("---")
 st.header("3. Spread the Word")
 st.write(f"Current Rank: **{st.session_state.badge_level}**")
@@ -164,25 +164,37 @@ share_url = "https://ohio-advocate.streamlit.app"
 share_text = f"I just reached the rank of {st.session_state.badge_level} on Class Action! Join me in standing up for Ohio's public schools: {share_url}"
 encoded_share = urllib.parse.quote(share_text)
 
-# Direct Links (FB, X, LinkedIn)
-col1, col2, col3 = st.columns(3)
-with col1:
+# ROW 1: Social Media
+st.write("📢 **Social Media**")
+s1, s2, s3 = st.columns(3)
+with s1:
     fb_url = f"https://www.facebook.com/sharer/sharer.php?u={share_url}"
     st.markdown(f'<a href="{fb_url}" target="_blank" style="text-decoration:none;"><div style="background-color:#1877F2;color:white;padding:10px;text-align:center;border-radius:5px;font-weight:bold;">Facebook</div></a>', unsafe_allow_html=True)
-with col2:
+with s2:
     tw_url = f"https://twitter.com/intent/tweet?text={encoded_share}"
     st.markdown(f'<a href="{tw_url}" target="_blank" style="text-decoration:none;"><div style="background-color:#000000;color:white;padding:10px;text-align:center;border-radius:5px;font-weight:bold;">Twitter (X)</div></a>', unsafe_allow_html=True)
-with col3:
+with s3:
     li_url = f"https://www.linkedin.com/sharing/share-offsite/?url={share_url}"
     st.markdown(f'<a href="{li_url}" target="_blank" style="text-decoration:none;"><div style="background-color:#0A66C2;color:white;padding:10px;text-align:center;border-radius:5px;font-weight:bold;">LinkedIn</div></a>', unsafe_allow_html=True)
 
-# Copy Paste Support (IG, TikTok)
-st.write("")
-st.write("📱 **For Instagram & TikTok:**")
-st.code(share_text, language=None)
-st.caption("Copy the text above to use in your Story or Video caption!")
+# ROW 2: Personal (SMS & Email)
+st.write("📲 **Direct Messages**")
+p1, p2 = st.columns(2)
+with p1:
+    sms_url = f"sms:?&body={encoded_share}"
+    st.markdown(f'<a href="{sms_url}" style="text-decoration:none;"><div style="background-color:#25D366;color:white;padding:10px;text-align:center;border-radius:5px;font-weight:bold;">Text Friend (SMS)</div></a>', unsafe_allow_html=True)
+with p2:
+    share_email_sub = urllib.parse.quote("Check out Class Action Ohio")
+    share_email_body = urllib.parse.quote(f"Hey! I'm using this tool called Class Action to defend Ohio's public schools. I'm currently at the rank of {st.session_state.badge_level}. Try it out: {share_url}")
+    email_share_url = f"mailto:?subject={share_email_sub}&body={share_email_body}"
+    st.markdown(f'<a href="{email_share_url}" style="text-decoration:none;"><div style="background-color:#D44638;color:white;padding:10px;text-align:center;border-radius:5px;font-weight:bold;">Email Friend</div></a>', unsafe_allow_html=True)
 
-if st.button("✅ I Shared My Rank! (+100 XP)"):
+# ROW 3: Visual Platforms
+st.write("📱 **Instagram & TikTok**")
+st.code(share_text, language=None)
+st.caption("Copy the text above for your Story or Caption!")
+
+if st.button("✅ I Shared This App! (+100 XP)"):
     st.session_state.xp_points += 100
     update_status()
     st.success("Rank XP updated!")
