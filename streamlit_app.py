@@ -24,52 +24,81 @@ def get_rep_from_zip(zip_input):
     if not match.empty: return match.iloc[0].to_dict()
     return None
 
-def generate_message(rep, user_name, user_district, mode="District"):
-    """Generates text. Mode can be 'District' or 'Statewide'."""
+def generate_message(target_rep, user_info, mode):
+    """
+    Generates text. 
+    target_rep: The specific politician (or {} if mass email)
+    user_info: Dictionary containing user's name, district name, and STATS
+    mode: 'District', 'Ally', or 'Hostile'
+    """
     
-    if mode == "Statewide":
-        subject = "URGENT: Statewide Call to Fund Public Schools"
+    # 1. CONSTRUCT THE "DATA HOOK"
+    # This paragraph is now used in ALL email types.
+    data_hook = ""
+    if user_info.get('enrollment'):
+        data_hook = (
+            f"I am a voter in {user_info['district']} (Zip: {user_info['zip']}). "
+            f"Our district serves {user_info['enrollment']} students, "
+            f"{user_info['poverty']}% of whom are economically disadvantaged. "
+            f"These students rely on stable public funding, not privatization schemes.\n\n"
+        )
+    else:
+        # Fallback if CSV is missing stats
+        data_hook = f"I am a voter in {user_info['district']} (Zip: {user_info['zip']}).\n\n"
+
+    # --- MODE 1: EMAIL DEFENDERS (ALLIES) ---
+    if mode == "Ally":
+        subject = f"Thank You for Standing with {user_info['district']}"
         body = (
-            f"Dear Ohio Legislators,\n\n"
-            f"I am an Ohio voter and education advocate writing to demand immediate action on the "
-            f"Fair School Funding Plan. The decision to freeze 'base cost' inputs at outdated 2022 levels "
-            f"is a functional budget cut for districts across the state.\n\n"
-            f"Simultaneously, the uncapped expansion of EdChoice vouchers is draining the general fund. "
-            f"I urge you to freeze voucher expansion and update the public school funding formula to reflect "
-            f"current inflation and economic realities.\n\n"
-            f"Ohio's students deserve a constitutional system of funding.\n\n"
-            f"Sincerely,\n{user_name}\nOhio Resident"
+            f"Dear Legislator,\n\n"
+            f"{data_hook}" # <--- INSERTING STATS HERE
+            f"I am writing to thank you for your continued defense of Ohio's public schools. "
+            f"In a time when our districts are facing budget freezes and voucher expansion pressures, "
+            f"your vote matters deeply to our specific community.\n\n"
+            f"Please continue to fight for us. We are organizing locally to ensure that representatives "
+            f"who support public education return to Columbus. We have your back.\n\n"
+            f"Sincerely,\n{user_info['name']}\nPublic Education Advocate"
         )
         return subject, body
 
-    # DISTRICT SPECIFIC LOGIC
-    if rep.get('rep_stance') == "Hostile":
-        subject = f"URGENT: Financial Distress in {user_district}"
+    # --- MODE 2: EMAIL OPPONENTS (HOSTILE) ---
+    if mode == "Hostile":
+        subject = f"URGENT: Stop Undermining {user_info['district']}"
         body = (
-            f"Dear {rep['rep_role']} {rep['rep_name']},\n\n"
-            f"I am a voter in {user_district} (Zip: {rep['zip_code']}). "
+            f"Dear Legislator,\n\n"
+            f"{data_hook}" # <--- INSERTING STATS HERE
+            f"I am writing to express my strong opposition to budget decisions that harm our specific students. "
+            f"By freezing 'base cost' inputs at 2022 levels while expanding universal EdChoice vouchers, "
+            f"you are actively dismantling the resources our students need.\n\n"
+            f"We are watching the voting records closely. I urge you to freeze new voucher appropriations "
+            f"and vote to update the Fair School Funding Plan inputs immediately.\n\n"
+            f"Sincerely,\n{user_info['name']}\nConcerned Voter"
         )
-        
-        # Data Hook
-        if str(rep.get('enrollment')) != "":
-            body += (
-                f"Our district serves {rep['enrollment']} students, "
-                f"{rep['poverty_rate']} of whom are economically disadvantaged. "
-            )
-            
-        body += (
-            "The decision to freeze public school funding at 2022 levels while expanding "
-            "EdChoice vouchers is draining our classrooms.\n\n"
+        return subject, body
+
+    # --- MODE 3: SINGLE DISTRICT REP ---
+    # Standard logic, but now using the passed user_info stats
+    if target_rep.get('rep_stance') == "Hostile":
+        subject = f"URGENT: Financial Distress in {user_info['district']}"
+        body = (
+            f"Dear {target_rep['rep_role']} {target_rep['rep_name']},\n\n"
+            f"{data_hook}"
+            f"The decision to freeze public school funding at 2022 levels while expanding "
+            f"EdChoice vouchers is draining our classrooms.\n\n"
         )
-        if rep.get('rep_career') == "Re-election":
-            body += "We are organizing locally for the upcoming election. We need you to support public schools now."
+        if target_rep.get('rep_career') == "Re-election":
+            body += "We are organizing locally. We need you to support public schools now."
         else:
             body += "Please consider your legacy. Do not be the leader who dismantled Ohio's public education."
     else:
-        subject = f"Support Needed: {user_district}"
-        body = f"Dear {rep['rep_role']} {rep['rep_name']},\n\nThank you for supporting {user_district}. Please keep fighting to update the Fair School Funding Plan inputs."
+        subject = f"Support Needed: {user_info['district']}"
+        body = (
+            f"Dear {target_rep['rep_role']} {target_rep['rep_name']},\n\n"
+            f"{data_hook}"
+            f"Thank you for your support. Please keep fighting to update the Fair School Funding Plan inputs."
+        )
 
-    full_text = f"{body}\n\nSincerely,\n{user_name}\n{user_district} Resident"
+    full_text = f"{body}\n\nSincerely,\n{user_info['name']}\n{user_info['district']} Resident"
     return subject, full_text
 
 def create_pdf(rep, user_name, content):
@@ -77,8 +106,9 @@ def create_pdf(rep, user_name, content):
     pdf.add_page()
     pdf.set_font("Arial", size=11)
     pdf.cell(0, 5, txt=f"From: {user_name}", ln=1)
-    if isinstance(rep, dict): # Single Rep
-        pdf.cell(0, 5, txt=f"Constituent of {rep['school_district']}", ln=1)
+    
+    if isinstance(rep, dict) and 'rep_name' in rep: # Single Rep
+        pdf.cell(0, 5, txt=f"Constituent of {rep.get('school_district', 'Ohio')}", ln=1)
         pdf.ln(5)
         pdf.set_font("Arial", 'B', 11)
         pdf.cell(0, 5, txt=f"To: {rep['rep_role']} {rep['rep_name']}", ln=1)
@@ -86,7 +116,7 @@ def create_pdf(rep, user_name, content):
         safe_address = str(rep.get('rep_address', 'Ohio Statehouse'))
         pdf.cell(0, 5, txt=safe_address, ln=1)
     else: # Statewide
-        pdf.cell(0, 5, txt="To: The Ohio General Assembly", ln=1)
+        pdf.cell(0, 5, txt="To: Members of the Ohio General Assembly", ln=1)
         
     pdf.ln(10)
     pdf.multi_cell(0, 6, txt=content)
@@ -106,100 +136,120 @@ if df.empty:
     st.error("⚠️ System Error: CSV not found.")
     st.stop()
 
-# --- SIDEBAR CONTROLS ---
+# --- SIDEBAR: GLOBAL INPUTS ---
+# We move these to the top so we ALWAYS know the user's district stats
 with st.sidebar:
-    st.header("⚙️ Settings")
-    mode = st.radio("Choose Mode:", ["📍 My District", "📢 Email ALL Reps"])
-    st.markdown("---")
+    st.header("1. Your Context")
+    zip_code = st.text_input("Your Zip Code", max_chars=5, placeholder="45011")
     user_name = st.text_input("Your Name", "Concerned Citizen")
-
-# --- MODE 1: MY DISTRICT ---
-if mode == "📍 My District":
-    st.subheader("Find Your Representative")
-    zip_code = st.text_input("Enter Zip Code", max_chars=5, placeholder="45011")
     
-    rep_match = get_rep_from_zip(zip_code)
+    # Try to find user's district data immediately
+    user_data = get_rep_from_zip(zip_code)
+    
+    # Store this for later use
+    user_context = {
+        "name": user_name,
+        "zip": zip_code,
+        "district": user_data['school_district'] if user_data else "Ohio Public Schools",
+        "enrollment": str(user_data['enrollment']) if user_data else "",
+        "poverty": str(user_data['poverty_rate']).replace("%","") if user_data else ""
+    }
+
     st.markdown("---")
+    st.header("2. Select Action")
+    mode = st.radio("Choose Mode:", [
+        "📍 Find My Rep", 
+        "🛡️ Email Defenders", 
+        "🚫 Email Opponents"
+    ])
 
-    if rep_match:
-        # District Stats
-        st.caption(f"📍 District: {rep_match['school_district']}")
-        if str(rep_match.get('enrollment')) != "":
-            c1, c2, c3 = st.columns(3)
-            c1.metric("Students", rep_match['enrollment'])
-            c2.metric("Poverty", rep_match['poverty_rate'])
-            c3.metric("Minority", rep_match['minority_rate'])
+# --- MAIN DISPLAY ---
+
+# If we don't have a valid zip yet, show the "Waiting" screen
+if not user_data:
+    st.info("👈 Please enter your **Zip Code** in the sidebar to load your district's statistics.")
+    st.stop()
+
+# Show the User's Context (The "Power Card")
+st.success(f"📍 **Context Loaded:** {user_context['district']}")
+if user_context['enrollment']:
+    c1, c2 = st.columns(2)
+    c1.metric("Your Students", user_context['enrollment'])
+    c2.metric("Econ. Disadvantaged", user_context['poverty'] + "%")
+st.markdown("---")
+
+# --- MODE 1: FIND MY REP ---
+if mode == "📍 Find My Rep":
+    st.subheader(f"Representative for {user_context['district']}")
+    
+    # Rep Card
+    with st.container():
+        st.markdown(f"### Rep. {user_data['rep_name']}")
+        if user_data.get('rep_stance') == "Hostile":
+            st.error(f"❌ Record: Voted for Cuts")
+        else:
+            st.success(f"✅ Record: Education Ally")
+            
+        subject, body = generate_message(user_data, user_context, mode="District")
         
-        # Rep Card
-        with st.container():
-            st.markdown(f"### Rep. {rep_match['rep_name']}")
-            if rep_match.get('rep_stance') == "Hostile":
-                st.error(f"❌ Record: Voted for Cuts")
-            else:
-                st.success(f"✅ Record: Education Ally")
-                
-            subject, body = generate_message(rep_match, user_name, rep_match['school_district'])
+        # Buttons
+        safe_sub = urllib.parse.quote(subject)
+        safe_body = urllib.parse.quote(body)
+        mailto = f"mailto:{user_data['rep_email']}?subject={safe_sub}&body={safe_body}"
+        
+        c1, c2 = st.columns(2)
+        with c1:
+                st.markdown(f'<a href="{mailto}" target="_blank"><button style="width:100%; padding:10px; background:#FF4B4B; color:white; border:none; border-radius:5px;">✉️ Email Rep</button></a>', unsafe_allow_html=True)
+        with c2:
+            pdf_bytes = create_pdf(user_data, user_name, body)
+            b64 = base64.b64encode(pdf_bytes).decode()
+            st.markdown(f'<a href="data:application/octet-stream;base64,{b64}" download="Letter.pdf"><button style="width:100%; padding:10px; background:#F0F2F6; border:1px solid #ccc; border-radius:5px;">📄 PDF Letter</button></a>', unsafe_allow_html=True)
             
-            # Buttons
-            safe_sub = urllib.parse.quote(subject)
-            safe_body = urllib.parse.quote(body)
-            mailto = f"mailto:{rep_match['rep_email']}?subject={safe_sub}&body={safe_body}"
-            
-            c1, c2 = st.columns(2)
-            with c1:
-                 st.markdown(f'<a href="{mailto}" target="_blank"><button style="width:100%; padding:10px; background:#FF4B4B; color:white; border:none; border-radius:5px;">✉️ Email Rep</button></a>', unsafe_allow_html=True)
-            with c2:
-                pdf_bytes = create_pdf(rep_match, user_name, body)
-                b64 = base64.b64encode(pdf_bytes).decode()
-                st.markdown(f'<a href="data:application/octet-stream;base64,{b64}" download="Letter.pdf"><button style="width:100%; padding:10px; background:#F0F2F6; border:1px solid #ccc; border-radius:5px;">📄 PDF Letter</button></a>', unsafe_allow_html=True)
-                
-            with st.expander("Preview"):
-                st.text_area("msg", body, height=200, label_visibility="collapsed")
-                
-    elif zip_code:
-        st.warning("Zip not found yet.")
+        with st.expander("Preview"):
+            st.text_area("msg", body, height=200, label_visibility="collapsed")
 
-# --- MODE 2: EMAIL ALL ---
+# --- MODE 2 & 3: MASS EMAIL ---
 else:
-    st.subheader("📢 Statewide Advocacy")
-    st.info("This tool targets every legislator currently in our database.")
+    if mode == "🛡️ Email Defenders":
+        target_stance = "Friendly"
+        header_title = "🛡️ Rally the Defenders"
+        msg_mode = "Ally"
+    else:
+        target_stance = "Hostile"
+        header_title = "🚫 Pressure the Opponents"
+        msg_mode = "Hostile"
+
+    st.subheader(header_title)
     
-    # 1. Gather all emails
-    all_emails = df['rep_email'].unique().tolist()
-    # Filter out any accidental empty ones
-    all_emails = [x for x in all_emails if str(x) != "nan" and str(x) != ""]
+    # Filter Emails
+    target_emails = df[df['rep_stance'] == target_stance]['rep_email'].unique().tolist()
+    target_emails = [x for x in target_emails if str(x) != "nan" and str(x) != ""]
+    email_string = ", ".join(target_emails)
     
-    email_string = ", ".join(all_emails)
-    count = len(all_emails)
+    st.write(f"**Found {len(target_emails)} Representatives.**")
     
-    st.write(f"**Found {count} Unique Representatives.**")
+    # Generate Message (NOW INCLUDES USER STATS!)
+    subject, body = generate_message({}, user_context, mode=msg_mode)
     
-    # 2. Generate Generic Message
-    subject, body = generate_message({}, user_name, "Ohio", mode="Statewide")
-    
-    # 3. DISPLAY COPY/PASTE TOOLS
+    # Display Tools
     st.markdown("### Step 1: Copy Email List")
-    st.caption("Copy these addresses and paste them into the **BCC** field of your email.")
-    st.text_area("Recipient List (BCC)", value=email_string, height=100)
+    st.caption("Paste into **BCC** line.")
+    st.text_area("Recipients", value=email_string, height=100)
     
     st.markdown("### Step 2: Copy Message")
-    st.text_input("Subject Line", value=subject)
-    st.text_area("Email Body", value=body, height=250)
+    st.text_input("Subject", value=subject)
+    st.text_area("Body", value=body, height=250)
     
-    # 4. OPTIONAL: MASS MAILTO LINK (May not work if list is huge)
-    # We try to put them in BCC to avoid spamming the 'To' field
+    # Mailto
     safe_sub = urllib.parse.quote(subject)
     safe_body = urllib.parse.quote(body)
-    # Note: Browsers truncate generic mailto links > 2000 chars. 
-    # The copy/paste method above is safer, but we provide this for smaller lists.
     mailto_all = f"mailto:?bcc={email_string}&subject={safe_sub}&body={safe_body}"
     
     st.markdown("---")
     st.markdown(f"""
     <a href="{mailto_all}" target="_blank">
         <button style="width:100%; padding:15px; background-color:#FF4B4B; color:white; border:none; border-radius:8px; font-weight:bold; cursor:pointer;">
-            🚀 Try Auto-Open Email App (BCC All)
+            🚀 Auto-Open Email (BCC)
         </button>
     </a>
     """, unsafe_allow_html=True)
-    st.caption("*Note: If the button doesn't work (due to too many recipients), use the Copy/Paste boxes above.*")
