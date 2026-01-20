@@ -18,9 +18,19 @@ st.markdown("""
     <style>
     /* Tab Styling for Touch Targets */
     .stTabs [data-baseweb="tab-list"] { gap: 5px; }
-    .stTabs [data-baseweb="tab"] { font-size: 16px; padding: 12px; flex-grow: 1; text-align: center; }
-    
-    /* High-Impact Action Buttons */
+    .stTabs [data-baseweb="tab"] { 
+        font-size: 16px; 
+        padding: 12px; 
+        flex-grow: 1; 
+        text-align: center;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+    }
+    .stTabs [aria-selected="true"] {
+        background-color: #e2e8f0;
+        font-weight: bold;
+    }
+    /* Action Buttons */
     .deploy-btn { 
         display: block; width: 100%; padding: 18px; 
         background-color: #B22234; color: white !important; 
@@ -28,14 +38,12 @@ st.markdown("""
         font-weight: bold; text-decoration: none; font-size: 1.1em;
         margin-bottom: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.15);
     }
-    
     /* Status Banners */
     .status-banner {
         padding: 12px; background-color: #ecfdf5; 
         border: 1px solid #10b981; color: #065f46; 
         border-radius: 8px; text-align: center; font-weight: bold; margin-bottom: 15px;
     }
-    
     /* Rank Card */
     .rank-card {
         background-color: #1e3a8a; color: white; 
@@ -49,8 +57,8 @@ st.markdown("""
 if 'xp_points' not in st.session_state: st.session_state.xp_points = 0
 if 'u_targets' not in st.session_state: st.session_state.u_targets = []
 
-# --- 3. ROBUST DATA ENGINE ---
-# Backup data ensures the app works immediately, even if CSV is missing.
+# --- 3. ROBUST DATA ENGINE (CRASH-PROOF) ---
+# Backup data ensures the app works immediately, even if CSV is missing or corrupt.
 BACKUP_DATA = {
     "45011": [
         {"display_label": "Rep. Diane Mullins (District 47)", "rep_name": "Diane Mullins", "rep_district": "47", "school_district": "Hamilton City Schools", "enrollment": "9,800", "rep_email": "rep47@ohiohouse.gov"},
@@ -63,6 +71,9 @@ BACKUP_DATA = {
     "45044": [
         {"display_label": "Rep. Thomas Hall (District 46)", "rep_name": "Thomas Hall", "rep_district": "46", "school_district": "Middletown City Schools", "enrollment": "6,200", "rep_email": "rep46@ohiohouse.gov"}
     ],
+    "45056": [
+        {"display_label": "Rep. Diane Mullins (District 47)", "rep_name": "Diane Mullins", "rep_district": "47", "school_district": "Talawanda City Schools", "enrollment": "2,900", "rep_email": "rep47@ohiohouse.gov"}
+    ],
     "43215": [
         {"display_label": "Rep. Allison Russo (District 7)", "rep_name": "Allison Russo", "rep_district": "7", "school_district": "Columbus City Schools", "enrollment": "46,000", "rep_email": "rep07@ohiohouse.gov"}
     ]
@@ -70,25 +81,33 @@ BACKUP_DATA = {
 
 @st.cache_data
 def get_reps_for_zip(zip_code):
-    """Finds all Representatives linked to a specific Zip Code."""
-    # 1. Try CSV
+    """Finds reps for a zip code, checking CSV first, then Backup."""
+    
+    # 1. Try Loading from CSV with Crash Protection
     try:
-        df = pd.read_csv("ohio_districts.csv", dtype={'zip_code': str}, quotechar='"')
+        df = pd.read_csv(
+            "ohio_districts.csv", 
+            dtype={'zip_code': str}, 
+            quotechar='"',
+            on_bad_lines='skip'  # <--- THIS FIXES THE CRASH
+        )
         matches = df[df['zip_code'] == zip_code]
         if not matches.empty:
             records = matches.to_dict('records')
             for r in records:
+                # Ensure display label exists
                 r['display_label'] = f"Rep. {r['rep_name']} (District {r['rep_district']})"
             return records
-    except:
-        pass # Fallback to backup logic if CSV fails
+    except Exception:
+        # If CSV is missing or totally broken, silently ignore and use backup
+        pass 
     
-    # 2. Backup Dict
+    # 2. Fallback to Backup Data
     return BACKUP_DATA.get(zip_code, [])
 
-# --- 4. UTILITIES (CRASH PROTECTION) ---
+# --- 4. UTILITIES (Sanitizer & PDF) ---
 def safe_encode(text):
-    """Cleans text to prevent PDF generation crashes."""
+    """Cleans emojis & smart quotes to prevent PDF generation crashes."""
     if not isinstance(text, str): text = str(text)
     replacements = {'\u2018': "'", '\u2019': "'", '\u201c': '"', '\u201d': '"', '\u2013': '-', '\u2014': '-', '\u2026': '...'}
     for u, s in replacements.items(): text = text.replace(u, s)
@@ -98,7 +117,7 @@ def create_bulk_pdf(recipients_list, user_info, data, id_badges, custom_text):
     pdf = FPDF(orientation='P', unit='in', format='Letter')
     pdf.set_margins(1.0, 1.0, 1.0)
     
-    # Re-Integrated Identity Bridge
+    # Identity Bridge
     badges = [b for b, active in [("active voter", id_badges['voter']), ("taxpayer", id_badges['taxpayer']), ("homeowner", id_badges['homeowner'])] if active]
     id_base = ", ".join(badges[:-1]) + (" and " + badges[-1] if len(badges) > 1 else badges[0] if badges else "resident")
     residency_part = f" Having lived in Ohio for {id_badges['y_ohio']} years,"
@@ -110,14 +129,13 @@ def create_bulk_pdf(recipients_list, user_info, data, id_badges, custom_text):
         # Header
         pdf.cell(0, 0.2, txt=safe_encode(user_info['name']), ln=True)
         pdf.cell(0, 0.2, txt=safe_encode(user_info['role']), ln=True)
-        pdf.cell(0, 0.2, txt=safe_encode(f"Zip Code: {user_info['zip']}"), ln=True); pdf.ln(0.2)
+        pdf.cell(0, 0.2, txt=f"Zip Code: {user_info['zip']}", ln=True); pdf.ln(0.2)
         pdf.cell(0, 0.2, txt=date.today().strftime("%B %d, %Y"), ln=True); pdf.ln(0.3)
         
         # Recipient Block
         pdf.set_font("Times", 'B', 12)
         pdf.cell(0, 0.2, txt=safe_encode(f"{rec['role']} {rec['name']}"), ln=True)
         pdf.set_font("Times", '', 12)
-        # Safe Address Handling
         addr = rec.get('address', '77 S. High St, Columbus, OH 43215')
         pdf.multi_cell(0, 0.2, txt=safe_encode(addr)); pdf.ln(0.3)
         
@@ -125,7 +143,7 @@ def create_bulk_pdf(recipients_list, user_info, data, id_badges, custom_text):
         last_name = rec['name'].split()[-1]
         pdf.cell(0, 0.2, txt=safe_encode(f"Dear {rec['role']} {last_name}:")); pdf.ln(0.3)
         
-        # Body Copy
+        # Body
         body = (f"My name is {user_info['name']}. I live in {data['school_district']} (District {data['rep_district']}). "
                 f"As an {id_base}{residency_part} I am writing because our public schools serve {data['enrollment']} students "
                 f"and face an existential crisis. {custom_text} "
@@ -136,7 +154,6 @@ def create_bulk_pdf(recipients_list, user_info, data, id_badges, custom_text):
         pdf.set_font("Times", 'B', 12)
         pdf.cell(0, 0.2, txt=safe_encode(user_info['name']), ln=True)
     
-    # CRITICAL FIX: Return as binary bytes, not string
     return pdf.output(dest="S").encode('latin-1')
 
 # --- 5. MOBILE INTERFACE ---
@@ -197,7 +214,6 @@ if zip_input:
 
         with t_deploy:
             if st.session_state.u_targets and st.session_state.u_name:
-                # 2026 Leadership Integration
                 target_map = {
                     "📍 Local Rep": {"name": data['rep_name'], "email": data['rep_email'], "address": "77 S. High St, Columbus, OH 43215", "role": "Representative"},
                     "🏛️ Governor DeWine": {"name": "Mike DeWine", "email": "governor@ohio.gov", "address": "77 S. High St, Columbus, OH 43215", "role": "Governor"},
@@ -209,7 +225,6 @@ if zip_input:
                 # A. Email Blast
                 bcc = ",".join([r['email'] for r in selected])
                 subj = urllib.parse.quote(f"Public Schools in {data['school_district']}")
-                # Custom note is integrated here
                 body = urllib.parse.quote(f"Regarding District {data['rep_district']}:\n\n{st.session_state.custom_note}\n\n{st.session_state.u_name}")
                 st.markdown(f'<a href="mailto:?bcc={bcc}&subject={subj}&body={body}" class="deploy-btn">✉️ LAUNCH EMAIL APP</a>', unsafe_allow_html=True)
                 
