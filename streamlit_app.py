@@ -10,10 +10,9 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# --- 2. SESSION STATE & URL MAGIC (Save System) ---
+# --- 2. SESSION STATE & URL MAGIC ---
 params = st.query_params
 if 'xp_points' not in st.session_state:
-    # Load XP from URL if it exists, otherwise start at 0
     start_xp = int(params.get("xp", 0))
     st.session_state.xp_points = start_xp
 
@@ -22,9 +21,7 @@ if 'badge_level' not in st.session_state:
 
 def update_status():
     xp = st.session_state.xp_points
-    # Update URL so user can bookmark their progress
     st.query_params["xp"] = str(xp)
-    
     if xp >= 300:
         st.session_state.badge_level = "🎓 The Superintendent"
     elif xp >= 200:
@@ -83,16 +80,13 @@ with col1:
     st.markdown("<h4 style='color:#3C3B6E;'>Don't just watch. Take action.</h4>", unsafe_allow_html=True)
 with col2:
     logo_url = "https://github.com/deyvidbo/ohio-school-advocate/blob/main/Class_action_Logo.jpg?raw=true"
-    try:
-        st.image(logo_url, width=100)
-    except:
-        st.write("⚖️")
+    st.image(logo_url, width=100)
 
 if df.empty:
     st.error("⚠️ Error: ohio_districts.csv missing from repository.")
     st.stop()
 
-# MAIN INPUTS (Centered for easy access)
+# MAIN INPUTS
 st.markdown("---")
 st.header("1. Identify Your District")
 c1, c2 = st.columns(2)
@@ -132,7 +126,6 @@ st.success(f"📍 District Loaded: **{user_context['district']}**")
 st.header("2. Take Action")
 mode = st.radio("Select Your Advocacy Task:", ["📍 Find My Rep", "🛡️ Email Defenders", "🚫 Email Opponents", "🏛️ Email Governor"], horizontal=True)
 
-# Email Routing Logic
 target_emails = []
 if mode == "📍 Find My Rep":
     target_emails = [user_data['rep_email']] if user_data else []
@@ -144,7 +137,7 @@ elif mode == "🚫 Email Opponents":
     target_emails = df[df['rep_stance'] == "Hostile"]['rep_email'].unique().tolist()
     subject, body = generate_message({}, user_context, mode="Hostile")
 else:
-    target_emails = ["governor@ohio.gov"] # Placeholder for Governor
+    target_emails = ["governor@ohio.gov"]
     subject, body = generate_message({}, user_context, mode="Leadership")
 
 # Email Launch Button
@@ -153,13 +146,7 @@ safe_sub = urllib.parse.quote(subject)
 safe_body = urllib.parse.quote(body)
 mailto_link = f"mailto:?bcc={email_string}&subject={safe_sub}&body={safe_body}"
 
-st.markdown(f"""
-    <a href="{mailto_link}" target="_blank" style="text-decoration:none;">
-        <div style="background-color:#B22234;color:white;padding:20px;text-align:center;border-radius:10px;font-weight:bold;font-size:1.2em;">
-            STEP 1: OPEN EMAIL CLIENT ✉️
-        </div>
-    </a>
-    """, unsafe_allow_html=True)
+st.markdown(f'<a href="{mailto_link}" target="_blank" style="text-decoration:none;"><div style="background-color:#B22234;color:white;padding:20px;text-align:center;border-radius:10px;font-weight:bold;font-size:1.2em;">STEP 1: OPEN EMAIL CLIENT ✉️</div></a>', unsafe_allow_html=True)
 
 st.write("")
 if st.button("STEP 2: ✅ I SENT IT! (+100 XP)"):
@@ -168,25 +155,35 @@ if st.button("STEP 2: ✅ I SENT IT! (+100 XP)"):
     st.balloons()
     st.rerun()
 
-# --- 7. SOCIAL SHARING ---
+# --- 7. SOCIAL SHARING (Expanded) ---
 st.markdown("---")
 st.header("3. Spread the Word")
 st.write(f"Current Rank: **{st.session_state.badge_level}**")
 
-share_text = f"I just reached the rank of {st.session_state.badge_level} on Class Action! I'm standing up for Ohio's public schools. Join me: https://ohio-advocate.streamlit.app"
+share_url = "https://ohio-advocate.streamlit.app"
+share_text = f"I just reached the rank of {st.session_state.badge_level} on Class Action! Join me in standing up for Ohio's public schools: {share_url}"
 encoded_share = urllib.parse.quote(share_text)
 
-col_fb, col_tw = st.columns(2)
-with col_fb:
-    fb_url = "https://www.facebook.com/sharer/sharer.php?u=https://ohio-advocate.streamlit.app"
-    st.markdown(f'<a href="{fb_url}" target="_blank" style="text-decoration:none;"><div style="background-color:#1877F2;color:white;padding:10px;text-align:center;border-radius:5px;font-weight:bold;">Post to Facebook</div></a>', unsafe_allow_html=True)
-
-with col_tw:
+# Direct Links (FB, X, LinkedIn)
+col1, col2, col3 = st.columns(3)
+with col1:
+    fb_url = f"https://www.facebook.com/sharer/sharer.php?u={share_url}"
+    st.markdown(f'<a href="{fb_url}" target="_blank" style="text-decoration:none;"><div style="background-color:#1877F2;color:white;padding:10px;text-align:center;border-radius:5px;font-weight:bold;">Facebook</div></a>', unsafe_allow_html=True)
+with col2:
     tw_url = f"https://twitter.com/intent/tweet?text={encoded_share}"
-    st.markdown(f'<a href="{tw_url}" target="_blank" style="text-decoration:none;"><div style="background-color:#000000;color:white;padding:10px;text-align:center;border-radius:5px;font-weight:bold;">Share on X (Twitter)</div></a>', unsafe_allow_html=True)
+    st.markdown(f'<a href="{tw_url}" target="_blank" style="text-decoration:none;"><div style="background-color:#000000;color:white;padding:10px;text-align:center;border-radius:5px;font-weight:bold;">Twitter (X)</div></a>', unsafe_allow_html=True)
+with col3:
+    li_url = f"https://www.linkedin.com/sharing/share-offsite/?url={share_url}"
+    st.markdown(f'<a href="{li_url}" target="_blank" style="text-decoration:none;"><div style="background-color:#0A66C2;color:white;padding:10px;text-align:center;border-radius:5px;font-weight:bold;">LinkedIn</div></a>', unsafe_allow_html=True)
+
+# Copy Paste Support (IG, TikTok)
+st.write("")
+st.write("📱 **For Instagram & TikTok:**")
+st.code(share_text, language=None)
+st.caption("Copy the text above to use in your Story or Video caption!")
 
 if st.button("✅ I Shared My Rank! (+100 XP)"):
     st.session_state.xp_points += 100
     update_status()
-    st.success("Rank XP updated! Keep it up.")
+    st.success("Rank XP updated!")
     st.rerun()
