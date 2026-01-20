@@ -138,4 +138,6 @@ with st.sidebar:
     st.markdown("---")
     if xp > 0:
         st.write("**Don't lose your rank!**")
-if st.button("🔖 Bookmark My Progress"):
+        if st.button("🔖 Bookmark My Progress"):
+            st.toast("📌 **Action Required!** Press Ctrl+D (or Cmd+D) to bookmark this page right now. Use that bookmark to return with your rank!", icon="💾")
+            st.info("Your unique 'save code' is now in your browser's address bar.")
