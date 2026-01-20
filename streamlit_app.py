@@ -98,7 +98,7 @@ with col1:
     st.markdown("<h4 style='color:#3C3B6E;'>Don't just watch. Take action.</h4>", unsafe_allow_html=True)
 with col2:
     # REPLACE THIS LINK WITH YOUR RAW GITHUB LINK AFTER UPLOADING
-    logo_url = "YOUR_RAW_GITHUB_LOGO_LINK_HERE"
+    logo_url = "https://github.com/deyvidbo/ohio-school-advocate/blob/main/Class_action_Logo.jpg?raw=true"
     try:
         st.image(logo_url, width=100)
     except:
