@@ -138,4 +138,4 @@ with st.sidebar:
     st.markdown("---")
     if xp > 0:
         st.write("**Don't lose your rank!**")
-        if st.button("🔖 Bookmark My Progress
+if st.button("🔖 Bookmark My Progress"):
