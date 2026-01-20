@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd
 import urllib.parse
 from fpdf import FPDF
-import base64
 
 # --- 1. CONFIGURATION ---
 st.set_page_config(
@@ -44,24 +43,61 @@ def load_data():
 
 df = load_data()
 
-# --- 4. PDF GENERATOR FUNCTION ---
-def create_pdf(target_name, district, content, user_name):
+# --- 4. ENHANCED PDF GENERATOR (With Mailing Address) ---
+def create_pdf(target_rep, district, content, user_name):
     pdf = FPDF()
     pdf.add_page()
+    
+    # Header
     pdf.set_font("Arial", 'B', 16)
     pdf.cell(200, 10, txt="CLASS ACTION: OHIO ADVOCACY", ln=True, align='C')
-    pdf.set_font("Arial", size=12)
+    pdf.ln(5)
+    
+    # Rep Info
+    pdf.set_font("Arial", 'B', 12)
+    pdf.cell(200, 7, txt=f"To: {target_rep.get('rep_role', 'Honorable')} {target_rep.get('rep_name', 'Legislator')}", ln=True)
+    pdf.set_font("Arial", '', 10)
+    # Restore Physical Address support
+    address = target_rep.get('rep_address', '77 S. High St, Columbus, OH 43215')
+    pdf.multi_cell(0, 5, txt=address)
+    
     pdf.ln(10)
-    pdf.cell(200, 10, txt=f"To: {target_name}", ln=True)
-    pdf.cell(200, 10, txt=f"Regarding: {district} Funding", ln=True)
-    pdf.ln(10)
-    pdf.multi_cell(0, 10, txt=content)
-    pdf.ln(10)
+    pdf.set_font("Arial", 'B', 12)
+    pdf.cell(200, 10, txt=f"Regarding: Emergency Funding Support for {district}", ln=True)
+    
+    pdf.ln(5)
+    pdf.set_font("Arial", '', 12)
+    pdf.multi_cell(0, 8, txt=content)
+    
+    pdf.ln(15)
     pdf.cell(200, 10, txt=f"Sincerely,", ln=True)
+    pdf.set_font("Arial", 'B', 12)
     pdf.cell(200, 10, txt=user_name, ln=True)
+    
     return pdf.output(dest="S").encode("latin-1")
 
-# --- 5. APP INTERFACE ---
+# --- 5. MESSAGE GENERATION LOGIC (RESTORED) ---
+def generate_advocacy_content(target_rep, user_info, mode):
+    student_hook = f"I am a voter in {user_info['district']} (Zip: {user_info['zip']})."
+    if user_info.get('enrollment'):
+        student_hook += f" Our district serves {user_info['enrollment']} students who depend on fair state funding."
+
+    if mode == "🏛️ Governor":
+        subject = "URGENT: Executive Action on School Funding"
+        body = f"Dear Governor DeWine,\n\n{student_hook}\n\nI urge you to line-item veto voucher expansion and prioritize the Fair School Funding Plan. Public dollars belong in public schools.\n\nSincerely,\n{user_info['name']}"
+    elif mode == "🛡️ Defenders":
+        subject = f"Thank you for supporting {user_info['district']}"
+        body = f"Dear Legislator,\n\n{student_hook}\n\nThank you for standing as a defender of public education. We appreciate your support for the students of {user_info['district']}.\n\nSincerely,\n{user_info['name']}"
+    elif mode == "🚫 Opponents":
+        subject = "Opposition to Voucher Expansion"
+        body = f"Dear Legislator,\n\n{student_hook}\n\nI am writing to express my strong opposition to current voucher expansion efforts that drain resources from our local classrooms.\n\nSincerely,\n{user_info['name']}"
+    else: # Local Rep
+        subject = f"Constituent Concern: {user_info['district']}"
+        body = f"Dear {target_rep.get('rep_role', 'Rep')} {target_rep.get('rep_name', '')},\n\n{student_hook}\n\nAs your constituent, I ask you to prioritize local public school funding over private interests.\n\nSincerely,\n{user_info['name']}"
+    
+    return subject, body
+
+# --- 6. APP INTERFACE ---
 logo_url = "https://github.com/deyvidbo/ohio-school-advocate/blob/main/Class_action_Logo.jpg?raw=true"
 st.markdown("<center>", unsafe_allow_html=True)
 try:
@@ -87,28 +123,45 @@ with c1:
 with c2:
     user_name = st.text_input("Enter Your Name", "Concerned Educator")
 
-# ADVOCACY LOGIC
+# RESTORED ACTION LOGIC
 if zip_code:
     res = df[df['zip_code'] == zip_code]
     if not res.empty:
         user_data = res.iloc[0].to_dict()
         dist_name = user_data['school_district']
-        st.success(f"📍 District: **{dist_name}**")
+        user_info = {
+            "name": user_name, "zip": zip_code, 
+            "district": dist_name, "enrollment": user_data.get('enrollment', '')
+        }
+        
+        st.success(f"📍 District: **{dist_name}** ({user_data.get('enrollment', 'Unknown')} Students)")
         
         st.header("2. Take Action")
         mode = st.radio("Task:", ["📍 Local Rep", "🛡️ Defenders", "🚫 Opponents", "🏛️ Governor"], horizontal=True)
         
-        # Content Generation
-        target_name = user_data['rep_name'] if mode == "📍 Local Rep" else "Legislator"
-        content = f"I am a voter in {dist_name}. I urge you to prioritize public school funding and update the Fair School Funding Plan inputs. Our students deserve a fully funded education."
+        # Generate restored personalized content
+        subject, content = generate_advocacy_content(user_data, user_info, mode)
         
-        # STEP 1: Email
+        # Routing Emails
+        if mode == "🛡️ Defenders":
+            emails = df[df['rep_stance'] == "Friendly"]['rep_email'].unique().tolist()
+        elif mode == "🚫 Opponents":
+            emails = df[df['rep_stance'] == "Hostile"]['rep_email'].unique().tolist()
+        elif mode == "🏛️ Governor":
+            emails = ["governor@ohio.gov"]
+        else:
+            emails = [user_data['rep_email']]
+
+        # STEP 1: RESTORED BCC EMAIL
+        email_list = ",".join([str(e) for e in emails if str(e) != "nan"])
+        safe_sub = urllib.parse.quote(subject)
         safe_body = urllib.parse.quote(content)
-        mailto_link = f"mailto:{user_data['rep_email']}?subject=Action Needed&body={safe_body}"
-        st.markdown(f'<a href="{mailto_link}" target="_blank" style="text-decoration:none;"><div style="background-color:#B22234;color:white;padding:15px;text-align:center;border-radius:10px;font-weight:bold;">✉️ SEND EMAIL</div></a>', unsafe_allow_html=True)
+        mailto_link = f"mailto:?bcc={email_list}&subject={safe_sub}&body={safe_body}"
         
-        # NEW: STEP 2: Print/PDF
-        pdf_data = create_pdf(target_name, dist_name, content, user_name)
+        st.markdown(f'<a href="{mailto_link}" target="_blank" style="text-decoration:none;"><div style="background-color:#B22234;color:white;padding:15px;text-align:center;border-radius:10px;font-weight:bold;">✉️ SEND EMAIL (BCC ALL)</div></a>', unsafe_allow_html=True)
+        
+        # STEP 2: PRINTABLE PDF (With Restored Address Data)
+        pdf_data = create_pdf(user_data, dist_name, content, user_name)
         st.download_button(label="📄 GENERATE PRINTABLE LETTER", data=pdf_data, file_name="Class_Action_Letter.pdf", mime="application/pdf")
         
         if st.button("✅ TASK COMPLETE (+100 XP)"):
@@ -116,25 +169,14 @@ if zip_code:
             st.session_state.district_stats[dist_name] = st.session_state.district_stats.get(dist_name, 0) + 1
             st.rerun()
 
-# --- 6. LEADERBOARD ---
+# --- 7. LEADERBOARD & SOCIAL (Same as before) ---
 st.markdown("---")
 st.header("🏆 District Leaderboard")
 if st.session_state.district_stats:
     leader_df = pd.DataFrame(list(st.session_state.district_stats.items()), columns=['District', 'Actions'])
     st.table(leader_df.sort_values(by='Actions', ascending=False).head(5))
 
-# --- 7. VISUAL BADGE & SOCIAL ---
-st.markdown("---")
-st.header("3. Spread the Word")
-st.markdown(f"""
-    <div style="background-color:white; border:5px solid #B22234; padding:30px; border-radius:15px; text-align:center; box-shadow: 10px 10px 0px #3C3B6E;">
-        <h2 style="color:#B22234;">CLASS ACTION</h2>
-        <h3 style="color:#3C3B6E;">{rank_title}</h3>
-        <p>I am defending Ohio's public schools!</p>
-    </div>
-""", unsafe_allow_html=True)
-
-# Share Buttons
+# Social Buttons
 encoded_msg = urllib.parse.quote(f"I reached {rank_title} on Class Action! Join me: https://ohio-advocate.streamlit.app")
 st.write("📲 **Recruit Peers**")
 s1, s2, s3 = st.columns(3)
