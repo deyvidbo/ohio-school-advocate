@@ -3,6 +3,42 @@ import pandas as pd
 from fpdf import FPDF
 import base64
 import urllib.parse
+import time
+
+# --- CONFIGURATION ---
+st.set_page_config(
+    page_title="Ohio Ed Shield",
+    page_icon="🛡️",
+    layout="centered",
+    initial_sidebar_state="expanded",
+    menu_items={
+        'Get Help': 'https://www.legislature.ohio.gov/',
+        'About': "Built by an Ohio educator to defend public schools."
+    }
+)
+
+# --- SESSION STATE (The Game Engine) ---
+# This remembers the user's progress ONLY while the tab is open.
+if 'actions_taken' not in st.session_state:
+    st.session_state.actions_taken = 0
+if 'badge_level' not in st.session_state:
+    st.session_state.badge_level = "🛡️ The Observer"
+if 'xp_points' not in st.session_state:
+    st.session_state.xp_points = 0
+
+# --- GAMIFICATION LOGIC ---
+def update_status():
+    # Simple logic: Every action is worth 100 XP
+    xp = st.session_state.xp_points
+    
+    if xp >= 300:
+        st.session_state.badge_level = "🏆 Ohio Champion"
+    elif xp >= 200:
+        st.session_state.badge_level = "📣 The Amplifier"
+    elif xp >= 100:
+        st.session_state.badge_level = "📨 The Messenger"
+    else:
+        st.session_state.badge_level = "🛡️ The Observer"
 
 # --- 1. DATA LOADER ---
 @st.cache_data
@@ -16,17 +52,9 @@ def load_data():
 
 df = load_data()
 
-# --- 2. LOGIC FUNCTIONS ---
-
-def get_rep_from_zip(zip_input):
-    if df.empty: return None
-    match = df[df['zip_code'] == zip_input]
-    if not match.empty: return match.iloc[0].to_dict()
-    return None
-
+# --- 2. MESSAGE GENERATOR ---
 def generate_message(target_rep, user_info, mode):
-    
-    # 1. STUDENT DATA HOOK
+    # Student Data Hook
     student_hook = ""
     if user_info.get('enrollment'):
         student_hook = (
@@ -37,126 +65,94 @@ def generate_message(target_rep, user_info, mode):
     else:
         student_hook = f"I am a voter in {user_info['district']} (Zip: {user_info['zip']}). "
 
-    # 2. TEACHER DATA HOOK
+    # Teacher Data Hook
     teacher_hook = ""
     if user_info.get('teacher_exp') and str(user_info['teacher_exp']) != "":
         teacher_hook = (
-            f"Our teaching staff averages {user_info['teacher_exp']} years of experience "
-            f"and {user_info['teacher_masters']} hold Master's degrees. Despite this expertise, our average teacher salary "
-            f"is only {user_info['teacher_salary']}. The state's refusal to update funding inputs disrespects their service.\n\n"
+            f"Our teaching staff averages {user_info['teacher_exp']} years of experience. "
+            f"Despite this expertise, our average teacher salary is only {user_info['teacher_salary']}. "
+            f"The state's refusal to update funding inputs disrespects their service.\n\n"
         )
-    else:
-        teacher_hook = "Our teachers are working harder than ever with fewer resources.\n\n"
-
-    # --- MODE 1: LEADERSHIP (GOVERNOR) ---
+    
+    # Message Body Construction
     if mode == "Leadership":
         subject = "URGENT: Executive Action Required for Public Schools"
-        body = (
-            f"Dear Governor DeWine, Lt. Governor Husted, and Director Dackin,\n\n"
-            f"{student_hook}\n\n"
-            f"{teacher_hook}"
-            f"I am writing to demand that you use your executive power to protect Ohio's public school system. "
-            f"The current budget trajectory—freezing public school funding inputs at 2022 levels while allowing "
-            f"unlimited spending on private school vouchers—is a failure of your constitutional duty.\n\n"
-            f"I urge you to:\n"
-            f"1. Line-item veto any further expansion of the EdChoice voucher program.\n"
-            f"2. Advocate immediately for updating the Fair School Funding Plan base costs to reflect {user_info['district']}'s actual inflation and needs.\n\n"
-            f"Sincerely,\n{user_info['name']}\nOhio Voter & Taxpayer"
-        )
-        return subject, body
-
-    # --- MODE 2: ALLIES ---
-    if mode == "Ally":
+        body = (f"Dear Governor DeWine and Leadership,\n\n{student_hook}\n\n{teacher_hook}"
+                f"I urge you to line-item veto any further voucher expansion and advocate "
+                f"for updating the Fair School Funding Plan inputs immediately.\n\n"
+                f"Sincerely,\n{user_info['name']}")
+                
+    elif mode == "Ally":
         subject = f"Thank You for Standing with {user_info['district']}"
-        body = (
-            f"Dear Legislator,\n\n"
-            f"{student_hook}\n\n"
-            f"{teacher_hook}"
-            f"I am writing to thank you for your continued defense of Ohio's public schools. "
-            f"Please continue to fight for us. We are organizing locally to ensure that representatives "
-            f"who support public education return to Columbus. We have your back.\n\n"
-            f"Sincerely,\n{user_info['name']}\nPublic Education Advocate"
-        )
-        return subject, body
-
-    # --- MODE 3: OPPONENTS ---
-    if mode == "Hostile":
+        body = (f"Dear Legislator,\n\n{student_hook}\n\n{teacher_hook}"
+                f"Thank you for defending our public schools. We are organizing locally to support "
+                f"representatives who fight for us.\n\nSincerely,\n{user_info['name']}")
+                
+    elif mode == "Hostile":
         subject = f"URGENT: Stop Undermining {user_info['district']}"
-        body = (
-            f"Dear Legislator,\n\n"
-            f"{student_hook}\n\n"
-            f"{teacher_hook}"
-            f"I am writing to express my strong opposition to budget decisions that harm our specific students and staff. "
-            f"By freezing 'base cost' inputs at 2022 levels while expanding universal EdChoice vouchers, "
-            f"you are actively dismantling the resources our students need.\n\n"
-            f"We are watching the voting records closely. I urge you to freeze new voucher appropriations "
-            f"and vote to update the Fair School Funding Plan inputs immediately.\n\n"
-            f"Sincerely,\n{user_info['name']}\nConcerned Voter"
-        )
-        return subject, body
-
-    # --- MODE 4: SINGLE REP ---
-    if target_rep.get('rep_stance') == "Hostile":
-        subject = f"URGENT: Financial Distress in {user_info['district']}"
-        body = (
-            f"Dear {target_rep['rep_role']} {target_rep['rep_name']},\n\n"
-            f"{student_hook}\n\n"
-            f"{teacher_hook}"
-            f"The decision to freeze public school funding at 2022 levels while expanding "
-            f"EdChoice vouchers is draining our classrooms.\n\n"
-        )
-        if target_rep.get('rep_career') == "Re-election":
-            body += "We are organizing locally. We need you to support public schools now."
-        else:
-            body += "Please consider your legacy. Do not be the leader who dismantled Ohio's public education."
-    else:
+        body = (f"Dear Legislator,\n\n{student_hook}\n\n{teacher_hook}"
+                f"I strongly oppose freezing public school funding while expanding vouchers. "
+                f"I urge you to vote to update the Fair School Funding Plan inputs immediately.\n\n"
+                f"Sincerely,\n{user_info['name']}")
+                
+    else: # District Rep
         subject = f"Support Needed: {user_info['district']}"
-        body = (
-            f"Dear {target_rep['rep_role']} {target_rep['rep_name']},\n\n"
-            f"{student_hook}\n\n"
-            f"Thank you for your support. Please keep fighting to update the Fair School Funding Plan inputs."
-        )
+        body = (f"Dear {target_rep.get('rep_role','Rep')} {target_rep.get('rep_name','')},\n\n{student_hook}\n\n"
+                f"Please prioritize public school funding over private voucher expansion.\n\n"
+                f"Sincerely,\n{user_info['name']}")
 
-    full_text = f"{body}\n\nSincerely,\n{user_info['name']}\n{user_info['district']} Resident"
-    return subject, full_text
+    return subject, body
 
 def create_pdf(rep, user_name, content):
     pdf = FPDF()
     pdf.add_page()
     pdf.set_font("Arial", size=11)
-    pdf.cell(0, 5, txt=f"From: {user_name}", ln=1)
-    
-    if isinstance(rep, dict) and 'rep_name' in rep: 
-        pdf.cell(0, 5, txt=f"Constituent of {rep.get('school_district', 'Ohio')}", ln=1)
-        pdf.ln(5)
-        pdf.set_font("Arial", 'B', 11)
-        pdf.cell(0, 5, txt=f"To: {rep['rep_role']} {rep['rep_name']}", ln=1)
-        pdf.set_font("Arial", size=11)
-        safe_address = str(rep.get('rep_address', 'Ohio Statehouse'))
-        pdf.cell(0, 5, txt=safe_address, ln=1)
-    else: 
-        pdf.cell(0, 5, txt="To: Ohio Leadership", ln=1)
-        
-    pdf.ln(10)
-    pdf.multi_cell(0, 6, txt=content)
+    pdf.multi_cell(0, 6, txt=f"From: {user_name}\n\n{content}")
     return pdf.output(dest='S').encode('latin-1')
 
-# --- 3. APP INTERFACE ---
+# --- 3. THE APP INTERFACE ---
 
-st.set_page_config(page_title="Ohio School Advocate", page_icon="🏫")
-
-col1, col2 = st.columns([3, 1])
+# Header Section
+col1, col2 = st.columns([4, 1])
 with col1:
-    st.title("📢 Ohio Legislator Communicator")
+    st.title("🛡️ The Ohio Ed Shield")
+    st.caption("Defend Your District. In Seconds.")
 with col2:
-    st.image("https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Seal_of_Ohio.svg/100px-Seal_of_Ohio.svg.png", width=80)
+    st.image("https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Seal_of_Ohio.svg/100px-Seal_of_Ohio.svg.png", width=70)
 
 if df.empty:
-    st.error("⚠️ System Error: CSV not found.")
+    st.error("⚠️ Error: ohio_districts.csv not found.")
     st.stop()
 
-# --- SIDEBAR: GLOBAL INPUTS ---
+# --- SIDEBAR: THE TROPHY ROOM ---
 with st.sidebar:
+    st.header("📊 Your Mission Status")
+    
+    lvl = st.session_state.badge_level
+    xp = st.session_state.xp_points
+    
+    # Visual Badge Logic
+    if lvl == "🛡️ The Observer":
+        st.info(f"Rank: **{lvl}** (XP: {xp})")
+        st.write("👉 *Take your first action to level up!*")
+        st.progress(0)
+    elif lvl == "📨 The Messenger":
+        st.warning(f"Rank: **{lvl}** (XP: {xp})")
+        st.write("🚀 *Great start! Try a Mass Email next.*")
+        st.progress(33)
+    elif lvl == "📣 The Amplifier":
+        st.success(f"Rank: **{lvl}** (XP: {xp})")
+        st.write("🔥 *You are on fire! Share the tool to reach Top Tier.*")
+        st.progress(66)
+    elif lvl == "🏆 Ohio Champion":
+        st.success(f"Rank: **{lvl}** (XP: {xp})")
+        st.write("👑 **LEGENDARY STATUS.**")
+        st.progress(100)
+        st.balloons()
+    
+    st.markdown("---")
+    
+    # Global Inputs
     st.header("1. Your Context")
     zip_code = st.text_input("Your Zip Code", max_chars=5, placeholder="45011")
     user_name = st.text_input("Your Name", "Concerned Citizen")
@@ -164,11 +160,10 @@ with st.sidebar:
     user_data = get_rep_from_zip(zip_code)
     
     user_context = {
-        "name": user_name,
-        "zip": zip_code,
+        "name": user_name, "zip": zip_code,
         "district": user_data['school_district'] if user_data else "Ohio Public Schools",
-        "enrollment": str(user_data['enrollment']) if user_data else "",
-        "poverty": str(user_data['poverty_rate']).replace("%","") if user_data else "",
+        "enrollment": str(user_data.get('enrollment','')) if user_data else "",
+        "poverty": str(user_data.get('poverty_rate','')).replace("%","") if user_data else "",
         "teacher_salary": str(user_data.get('avg_teacher_salary', '')) if user_data else "",
         "teacher_exp": str(user_data.get('avg_teacher_exp', '')) if user_data else "",
         "teacher_masters": str(user_data.get('percent_masters', '')) if user_data else ""
@@ -180,86 +175,62 @@ with st.sidebar:
         "📍 Find My Rep", 
         "🛡️ Email Defenders", 
         "🚫 Email Opponents",
-        "📢 Email Governor & Leadership"
+        "🏛️ Email Governor"
     ])
 
-# --- MAIN DISPLAY ---
+# --- MAIN DASHBOARD ---
 
 if not user_data:
-    st.info("👈 Please enter your **Zip Code** in the sidebar to load your district's statistics.")
+    st.info("👈 **Start here:** Enter your Zip Code in the sidebar.")
     st.stop()
 
-# --- DASHBOARD CARD ---
 st.success(f"📍 **Context Loaded:** {user_context['district']}")
 
-# Row 1: Student Stats
-c1, c2, c3 = st.columns(3)
-if user_context['enrollment']:
-    c1.metric("Students", user_context['enrollment'])
-    c2.metric("Econ. Disadvantaged", user_context['poverty'] + "%")
-    
-# Row 2: Teacher Stats
-if user_context['teacher_salary']:
-    c3.metric("Avg. Teacher Salary", user_context['teacher_salary'])
-    c4, c5 = st.columns(2)
-    c4.metric("Avg. Experience", user_context['teacher_exp'] + " Years")
-    c5.metric("Masters Degree", user_context['teacher_masters'])
-    
-st.markdown("---")
+# --- ACTION LOGIC ---
 
-# --- MODE 1: FIND MY REP ---
 if mode == "📍 Find My Rep":
-    st.subheader(f"Representative for {user_context['district']}")
+    st.subheader(f"Contact Rep. {user_data['rep_name']}")
+    subject, body = generate_message(user_data, user_context, mode="District")
     
-    with st.container():
-        st.markdown(f"### Rep. {user_data['rep_name']}")
-        if user_data.get('rep_stance') == "Hostile":
-            st.error(f"❌ Record: Voted for Cuts")
-        else:
-            st.success(f"✅ Record: Education Ally")
-            
-        subject, body = generate_message(user_data, user_context, mode="District")
-        
-        safe_sub = urllib.parse.quote(subject)
-        safe_body = urllib.parse.quote(body)
-        mailto = f"mailto:{user_data['rep_email']}?subject={safe_sub}&body={safe_body}"
-        
-        c1, c2 = st.columns(2)
-        with c1:
-                st.markdown(f'<a href="{mailto}" target="_blank"><button style="width:100%; padding:10px; background:#FF4B4B; color:white; border:none; border-radius:5px;">✉️ Email Rep</button></a>', unsafe_allow_html=True)
-        with c2:
-            pdf_bytes = create_pdf(user_data, user_name, body)
-            b64 = base64.b64encode(pdf_bytes).decode()
-            st.markdown(f'<a href="data:application/octet-stream;base64,{b64}" download="Letter.pdf"><button style="width:100%; padding:10px; background:#F0F2F6; border:1px solid #ccc; border-radius:5px;">📄 PDF Letter</button></a>', unsafe_allow_html=True)
-            
-        with st.expander("Preview"):
-            st.text_area("msg", body, height=200, label_visibility="collapsed")
+    # Mailto Link
+    safe_sub = urllib.parse.quote(subject)
+    safe_body = urllib.parse.quote(body)
+    mailto = f"mailto:{user_data['rep_email']}?subject={safe_sub}&body={safe_body}"
+    
+    st.markdown(f"""
+    <a href="{mailto}" target="_blank" style="text-decoration:none;">
+        <div style="width:100%; padding:15px; background-color:#FF4B4B; color:white; text-align:center; border-radius:8px; font-weight:bold; cursor:pointer;">
+        Step 1: Open Email App ✉️
+        </div>
+    </a>
+    """, unsafe_allow_html=True)
+    
+    if st.button("Step 2: ✅ I sent it! (+100 XP)", key="btn_rep"):
+        st.session_state.xp_points += 100
+        update_status()
+        st.rerun()
 
-# --- MODE 2, 3, 4: MASS EMAIL ---
 else:
+    # Mass Email Logic
+    header = "Advocacy Action"
+    msg_mode = "Leadership"
+    
     if mode == "🛡️ Email Defenders":
-        target_group = "Friendly"
-        header_title = "🛡️ Rally the Defenders"
         msg_mode = "Ally"
-        # Filter for Legislators Only
+        header = "🛡️ Rally the Defenders"
         target_emails = df[(df['rep_stance'] == "Friendly") & (df['rep_district'] != "Statewide")]['rep_email'].unique().tolist()
-
     elif mode == "🚫 Email Opponents":
-        target_group = "Hostile"
-        header_title = "🚫 Pressure the Opponents"
         msg_mode = "Hostile"
-        # Filter for Legislators Only (exclude Governor from this list)
+        header = "🚫 Pressure the Opponents"
         target_emails = df[(df['rep_stance'] == "Hostile") & (df['rep_district'] != "Statewide")]['rep_email'].unique().tolist()
-
-    else: # GOVERNOR & LEADERSHIP
-        header_title = "🏛️ Email Executive Leadership"
+    else: # Governor
         msg_mode = "Leadership"
-        # Filter for Statewide Officials
+        header = "🏛️ Email Executive Leadership"
         target_emails = df[df['rep_district'] == "Statewide"]['rep_email'].unique().tolist()
 
-    st.subheader(header_title)
+    st.subheader(header)
     
-    # Clean Email List
+    # Filter valid emails
     target_emails = [x for x in target_emails if str(x) != "nan" and str(x) != ""]
     email_string = ", ".join(target_emails)
     
@@ -267,23 +238,42 @@ else:
     
     subject, body = generate_message({}, user_context, mode=msg_mode)
     
-    st.markdown("### Step 1: Copy Email List")
-    st.caption("Paste into **BCC** line.")
-    st.text_area("Recipients", value=email_string, height=100)
-    
-    st.markdown("### Step 2: Copy Message")
-    st.text_input("Subject", value=subject)
-    st.text_area("Body", value=body, height=250)
-    
+    # Copy/Paste Tools
+    with st.expander("Show Copy/Paste Tools"):
+        st.text_area("BCC List", email_string)
+        st.text_input("Subject", subject)
+        st.text_area("Body", body, height=200)
+
+    # Mailto
     safe_sub = urllib.parse.quote(subject)
     safe_body = urllib.parse.quote(body)
     mailto_all = f"mailto:?bcc={email_string}&subject={safe_sub}&body={safe_body}"
     
-    st.markdown("---")
     st.markdown(f"""
-    <a href="{mailto_all}" target="_blank">
-        <button style="width:100%; padding:15px; background-color:#FF4B4B; color:white; border:none; border-radius:8px; font-weight:bold; cursor:pointer;">
-            🚀 Auto-Open Email (BCC)
-        </button>
+    <a href="{mailto_all}" target="_blank" style="text-decoration:none;">
+        <div style="width:100%; padding:15px; background-color:#FF4B4B; color:white; text-align:center; border-radius:8px; font-weight:bold; cursor:pointer;">
+        Step 1: Open Mass Email (BCC) 🚀
+        </div>
     </a>
     """, unsafe_allow_html=True)
+
+    if st.button("Step 2: ✅ I sent it! (+100 XP)", key="btn_mass"):
+        st.session_state.xp_points += 100
+        update_status()
+        st.rerun()
+
+# --- RECRUITMENT SECTION (Final Level) ---
+st.markdown("---")
+st.header("🤝 Recruit More Defenders")
+
+share_text = urllib.parse.quote("I just defended Ohio's public schools using the Ohio Ed Shield. Join me: https://ohio-schools-now.streamlit.app")
+twitter_link = f"https://twitter.com/intent/tweet?text={share_text}"
+
+col1, col2 = st.columns(2)
+with col1:
+    st.markdown(f"""<a href="{twitter_link}" target="_blank"><button style="width:100%; padding:10px; background:#1DA1F2; color:white; border:none; border-radius:5px;">🐦 Share on Twitter</button></a>""", unsafe_allow_html=True)
+with col2:
+    if st.button("✅ I Shared This Tool (+100 XP)"):
+        st.session_state.xp_points += 100
+        update_status()
+        st.rerun()
