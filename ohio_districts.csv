@@ -1,79 +1,239 @@
 zip_code,school_district,rep_name,rep_email,rep_role,rep_district,rep_party,rep_stance,rep_career,rep_address,enrollment,poverty_rate,minority_rate,avg_teacher_salary,avg_teacher_ex,percent_masters
-43215,Columbus City Schools,Dontavius L. Jarrells,rep01@ohiohouse.gov,State Rep,01,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",46000,100%,70%,$67800,13,68%
-43209,Bexley City Schools,Latyna M. Humphrey,rep02@ohiohouse.gov,State Rep,02,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",2400,5%,18%,$86000,17,85%
-43219,Columbus City Schools,Ismail Mohamed,rep03@ohiohouse.gov,State Rep,03,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",46000,100%,70%,$67000,11,62%
-43081,Westerville City Schools,Beryl Brown Piccolantonio,rep04@ohiohouse.gov,State Rep,04,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",15200,32%,38%,$82400,15,78%
-43110,Canal Winchester Schools,Meredith R. Lawson-Rowe,rep05@ohiohouse.gov,State Rep,05,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",3800,28%,30%,$74000,14,70%
-43206,Columbus City Schools,Christine Cockley,rep06@ohiohouse.gov,State Rep,06,D,Friendly,First Term,"77 S High St, Columbus, OH 43215",46000,100%,70%,$65500,10,58%
-43221,Upper Arlington City Schools,C. Allison Russo,rep07@ohiohouse.gov,Minority Leader,07,D,Friendly,Leadership,"77 S High St, 14th Floor, Columbus, OH 43215",6200,3%,15%,$94500,18,92%
-43085,Worthington City Schools,Anita Somani,rep08@ohiohouse.gov,State Rep,08,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",10500,18%,28%,$88000,16,84%
-43230,Gahanna-Jefferson Schools,Munira Abdullahi,rep09@ohiohouse.gov,State Rep,09,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",7800,28%,42%,$82000,15,78%
-43123,South-Western City Schools,Mark Sigrist,rep10@ohiohouse.gov,State Rep,10,D,Friendly,First Term,"77 S High St, Columbus, OH 43215",21000,48%,40%,$71000,14,70%
-43119,Hilliard City Schools,Crystal Lett,rep11@ohiohouse.gov,State Rep,11,D,Friendly,First Term,"77 S High St, Columbus, OH 43215",16000,18%,25%,$82000,15,80%
-43113,Circleville City Schools,Brian Stewart,rep12@ohiohouse.gov,State Rep,12,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",2000,50%,10%,$61000,13,60%
-44107,Lakewood City Schools,Tristan Rader,rep13@ohiohouse.gov,State Rep,13,D,Friendly,First Term,"77 S High St, Columbus, OH 43215",4500,35%,22%,$73500,15,70%
-44130,Parma City Schools,Sean P. Brennan,rep14@ohiohouse.gov,State Rep,14,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",9100,45%,20%,$68000,13,62%
-44111,Cleveland Metro Schools,Chris Glassburn,rep15@ohiohouse.gov,State Rep,15,D,Friendly,First Term,"77 S High St, Columbus, OH 43215",36000,100%,82%,$64000,11,58%
-44145,Westlake City Schools,Bride Rose Sweeney,rep16@ohiohouse.gov,State Rep,16,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",3600,8%,18%,$79000,16,80%
-44136,Strongsville City Schools,Michael D. Dovilla,rep17@ohiohouse.gov,State Rep,17,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",5400,12%,15%,$78500,15,78%
-44122,Beachwood City Schools,Juanita O. Brent,rep18@ohiohouse.gov,State Rep,18,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",1500,10%,35%,$88000,18,85%
-44139,Solon City Schools,"Phillip M. Robinson, Jr.",rep19@ohiohouse.gov,State Rep,19,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",4400,8%,42%,$92000,17,88%
-44113,Cleveland Metro Schools,Terrence Upchurch,rep20@ohiohouse.gov,State Rep,20,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",36000,100%,82%,$65000,11,60%
-44124,Mayfield City Schools,Eric Synenberg,rep21@ohiohouse.gov,State Rep,21,D,Friendly,First Term,"77 S High St, Columbus, OH 43215",3800,15%,25%,$75000,14,72%
-44117,Euclid City Schools,Darnell T. Brewer,rep22@ohiohouse.gov,State Rep,22,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",4800,98%,92%,$64000,11,55%
-44060,Mentor Exempted Village,Daniel P. Troy,rep23@ohiohouse.gov,State Rep,23,D,Friendly,Legacy,"77 S High St, Columbus, OH 43215",7300,18%,12%,$75000,15,74%
-45202,Cincinnati Public Schools,Dani Isaacsohn,rep24@ohiohouse.gov,State Rep,24,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",33000,78%,65%,$66500,12,65%
-45229,Cincinnati Public Schools,Cecil Thomas,rep25@ohiohouse.gov,State Rep,25,D,Friendly,Legacy,"77 S High St, Columbus, OH 43215",33000,78%,65%,$67000,14,68%
-44001,Amherst Exempted Village,Jodi Salvo,rep51@ohiohouse.gov,State Rep,51,R,Hostile,First Term,"77 S High St, Columbus, OH 43215",3800,18%,8%,$72000,14,75%
-44035,Elyria City Schools,Gayle Manning,rep52@ohiohouse.gov,State Rep,52,R,Hostile,Legacy,"77 S High St, Columbus, OH 43215",5900,68%,40%,$71000,16,78%
-44052,Lorain City Schools,"Joseph A. Miller, III",rep53@ohiohouse.gov,State Rep,53,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",6200,100%,75%,$64000,12,60%
-44870,Sandusky City Schools,Kellie Deeter,rep54@ohiohouse.gov,State Rep,54,R,Hostile,First Term,"77 S High St, Columbus, OH 43215",3200,75%,45%,$63000,13,58%
-44074,Oberlin City Schools,Michelle Teska,rep55@ohiohouse.gov,State Rep,55,R,Hostile,First Term,"77 S High St, Columbus, OH 43215",1000,45%,35%,$66000,14,70%
-45040,Mason City Schools,Adam Mathews,rep56@ohiohouse.gov,State Rep,56,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",10300,8%,35%,$79000,17,82%
-44094,Willoughby-Eastlake City,Jamie Callender,rep57@ohiohouse.gov,State Rep,57,R,Hostile,Legacy,"77 S High St, Columbus, OH 43215",7800,35%,18%,$69000,15,65%
-44512,Boardman Local Schools,Lauren McNally,rep58@ohiohouse.gov,State Rep,58,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",3900,38%,22%,$66000,14,65%
-44514,Poland Local Schools,Tex Fischer,rep59@ohiohouse.gov,State Rep,59,R,Hostile,First Term,"77 S High St, Columbus, OH 43215",1800,15%,8%,$68000,15,70%
-43065,Olentangy Local Schools,Brian Lorenz,rep60@ohiohouse.gov,State Rep,60,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",22500,6%,25%,$85000,15,80%
-43074,Big Walnut Local Schools,Beth Lear,rep61@ohiohouse.gov,State Rep,61,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",4100,12%,10%,$71000,13,68%
-45150,Milford Exempted Village,Jean Schmidt,rep62@ohiohouse.gov,State Rep,62,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",6400,15%,8%,$72000,14,70%
-45103,West Clermont Local,Adam C. Bird,rep63@ohiohouse.gov,State Rep,63,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",8200,42%,15%,$65000,13,62%
-44483,Warren City Schools,Nick Santucci,rep64@ohiohouse.gov,State Rep,64,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",4800,98%,45%,$61000,13,60%
-44004,Ashtabula Area City,David Thomas,rep65@ohiohouse.gov,State Rep,65,R,Hostile,First Term,"77 S High St, Columbus, OH 43215",3400,85%,25%,$59000,12,55%
-44256,Medina City Schools,Sharon A. Ray,rep66@ohiohouse.gov,State Rep,66,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",6500,15%,12%,$74000,16,78%
-44691,Wooster City Schools,Melanie Miller,rep67@ohiohouse.gov,State Rep,67,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",3600,42%,15%,$68000,14,70%
-43055,Newark City Schools,Thaddeus J. Claggett,rep68@ohiohouse.gov,State Rep,68,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",6300,75%,15%,$64000,13,58%
-43050,Mount Vernon City,Kevin D. Miller,rep69@ohiohouse.gov,State Rep,69,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",3600,45%,8%,$62000,14,62%
-45324,Fairborn City Schools,Brian Lampton,rep70@ohiohouse.gov,State Rep,70,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",4200,45%,20%,$65000,12,60%
-45385,Xenia Community Schools,Levi Dean,rep71@ohiohouse.gov,State Rep,71,R,Hostile,First Term,"77 S High St, Columbus, OH 43215",4100,55%,20%,$63000,13,62%
-43130,Lancaster City Schools,Heidi Workman,rep72@ohiohouse.gov,State Rep,72,R,Hostile,First Term,"77 S High St, Columbus, OH 43215",6000,50%,10%,$65000,14,64%
-43147,Pickerington Local Schools,Jeff LaRe,rep73@ohiohouse.gov,State Rep,73,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",10800,25%,45%,$76000,14,74%
-45503,Springfield City Schools,Bernard Willis,rep74@ohiohouse.gov,State Rep,74,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",7300,90%,40%,$60000,12,55%
-43402,Bowling Green City,Haraz N. Ghanbari,rep75@ohiohouse.gov,State Rep,75,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",2900,35%,15%,$68000,13,65%
-44902,Mansfield City Schools,Marilyn John,rep76@ohiohouse.gov,State Rep,76,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",3200,85%,40%,$61000,13,60%
-43055,Newark City Schools,Meredith Craig,rep77@ohiohouse.gov,State Rep,77,R,Hostile,First Term,"77 S High St, Columbus, OH 43215",6300,75%,15%,$64000,12,58%
-45801,Lima City Schools,Matt Huffman,rep78@ohiohouse.gov,Speaker (Designate),78,R,Hostile,Leadership,"77 S High St, 14th Floor, Columbus, OH 43215",3800,90%,55%,$61500,11,55%
-43920,East Liverpool City,Monica Robb Blasdel,rep79@ohiohouse.gov,State Rep,79,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",2100,72%,12%,$59000,13,58%
-45373,Troy City Schools,Johnathan Newman,rep80@ohiohouse.gov,State Rep,80,R,Hostile,First Term,"77 S High St, Columbus, OH 43215",4500,28%,10%,$71000,15,72%
-43512,Defiance City Schools,James M. Hoops,rep81@ohiohouse.gov,State Rep,81,R,Hostile,Legacy,"77 S High St, Columbus, OH 43215",2400,45%,25%,$62500,16,65%
-45891,Van Wert City Schools,Roy Klopfenstein,rep82@ohiohouse.gov,State Rep,82,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",2100,38%,10%,$60000,13,58%
-45840,Findlay City Schools,Ty D. Mathews,rep83@ohiohouse.gov,State Rep,83,R,Hostile,First Term,"77 S High St, Columbus, OH 43215",5300,35%,20%,$67500,13,62%
-45822,Celina City Schools,Angela N. King,rep84@ohiohouse.gov,State Rep,84,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",2600,32%,5%,$63000,14,68%
-45365,Sidney City Schools,Tim Barhorst,rep85@ohiohouse.gov,State Rep,85,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",3100,55%,18%,$64000,13,60%
-43040,Marysville Exempted Village,Tracy M. Richardson,rep86@ohiohouse.gov,State Rep,86,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",5600,18%,12%,$75000,15,70%
-44883,Tiffin City Schools,Riordan T. McClain,rep87@ohiohouse.gov,State Rep,87,R,Hostile,Legacy,"77 S High St, Columbus, OH 43215",2600,42%,15%,$61500,14,62%
-43420,Fremont City Schools,Gary Click,rep88@ohiohouse.gov,State Rep,88,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",3900,55%,35%,$62000,12,58%
-44839,Huron City Schools,D. J. Swearingen,rep89@ohiohouse.gov,State Rep,89,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1400,15%,10%,$68000,14,70%
-45662,Portsmouth City Schools,Justin Pizzulli,rep90@ohiohouse.gov,State Rep,90,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1500,95%,18%,$56000,11,55%
-43160,Washington Court House,Bob Peterson,rep91@ohiohouse.gov,State Rep,91,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",2100,55%,15%,$59000,12,58%
-45601,Chillicothe City Schools,Mark Johnson,rep92@ohiohouse.gov,State Rep,92,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",2800,60%,15%,$60000,13,62%
-45638,Ironton City Schools,Jason Stephens,rep93@ohiohouse.gov,State Rep,93,R,Hostile,Leadership,"77 S High St, 14th Floor, Columbus, OH 43215",1400,65%,12%,$58000,12,60%
-45701,Athens City Schools,Kevin Ritter,rep94@ohiohouse.gov,State Rep,94,R,Hostile,First Term,"77 S High St, Columbus, OH 43215",2500,35%,10%,$58500,14,68%
-43950,St. Clairsville-Richland,Ty Moore,rep95@ohiohouse.gov,State Rep,95,R,Hostile,First Term,"77 S High St, Columbus, OH 43215",1600,30%,8%,$60500,14,62%
-43952,Steubenville City Schools,Ron Ferguson,rep96@ohiohouse.gov,State Rep,96,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",2200,75%,35%,$59000,13,58%
-43701,Zanesville City Schools,Adam Holmes,rep97@ohiohouse.gov,State Rep,97,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",2900,85%,25%,$59500,12,58%
-43050,Mount Vernon City Schools,Mark Hiner,rep98@ohiohouse.gov,State Rep,98,R,Hostile,First Term,"77 S High St, Columbus, OH 43215",3600,45%,8%,$62500,14,62%
-44004,Ashtabula Area City,Sarah Fowler Arthur,rep99@ohiohouse.gov,State Rep,99,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",3400,85%,25%,$59500,12,55%
-00000,Ohio Executive Branch,Mike DeWine,governor@ohio.gov,Governor,Statewide,R,Hostile,Term-Limited,"77 S High St, 30th Floor, Columbus, OH 43215",1600000,48%,32%,$67000,14,68%
-00000,Ohio Executive Branch,Jon Husted,ltgovernor@ohio.gov,Lt. Governor,Statewide,R,Hostile,Career,"77 S High St, 30th Floor, Columbus, OH 43215",1600000,48%,32%,$67000,14,68%
-00000,Ohio Dept of Education,Stephen Dackin,contact.center@education.ohio.gov,Director,Statewide,N/A,Hostile,Appointed,"25 S Front St, Columbus, OH 43215",1600000,48%,32%,$67000,14,68%
-45011,Hamilton City Schools,Diane Mullins,rep47@ohiohouse.gov,State Rep,47,R,Hostile,First Term,"77 S High St, Columbus, OH 43215",8900,100%,45%,$62500,13,65%
+43001,Big Walnut Local Schools,Beth Lear,rep61@ohiohouse.gov,State Rep,61,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",4100,12,10,71000,13,68
+43002,Big Walnut Local Schools,Beth Lear,rep61@ohiohouse.gov,State Rep,61,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",4100,12,10,71000,13,68
+43003,Westerville City Schools,Beryl Brown Piccolantonio,rep04@ohiohouse.gov,State Rep,04,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",15200,32,38,82400,15,78
+43004,Westerville City Schools,Beryl Brown Piccolantonio,rep04@ohiohouse.gov,State Rep,04,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",15200,32,38,82400,15,78
+43005,Westerville City Schools,Beryl Brown Piccolantonio,rep04@ohiohouse.gov,State Rep,04,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",15200,32,38,82400,15,78
+43006,Granville Exempted Village Schools,Thaddeus J. Claggett,rep68@ohiohouse.gov,State Rep,68,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",2600,18,10,76000,16,80
+43007,Granville Exempted Village Schools,Thaddeus J. Claggett,rep68@ohiohouse.gov,State Rep,68,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",2600,18,10,76000,16,80
+43008,South-Western City Schools,Mark Sigrist,rep10@ohiohouse.gov,State Rep,10,D,Friendly,First Term,"77 S High St, Columbus, OH 43215",21000,48,40,71000,14,70
+43009,Jonathan Alder Local Schools,Beth Lear,rep61@ohiohouse.gov,State Rep,61,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",2400,12,8,72000,14,70
+43010,Westerville City Schools,Beryl Brown Piccolantonio,rep04@ohiohouse.gov,State Rep,04,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",15200,32,38,82400,15,78
+43011,Westerville City Schools,Beryl Brown Piccolantonio,rep04@ohiohouse.gov,State Rep,04,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",15200,32,38,82400,15,78
+43012,London City Schools,Beth Lear,rep61@ohiohouse.gov,State Rep,61,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",3200,42,18,68000,13,65
+43013,London City Schools,Beth Lear,rep61@ohiohouse.gov,State Rep,61,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",3200,42,18,68000,13,65
+43014,Triad Local Schools,Beth Lear,rep61@ohiohouse.gov,State Rep,61,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1400,35,12,66000,13,62
+43015,Dublin City Schools,Anita Somani,rep08@ohiohouse.gov,State Rep,08,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",16500,14,30,91000,17,88
+43016,Dublin City Schools,Anita Somani,rep08@ohiohouse.gov,State Rep,08,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",16500,14,30,91000,17,88
+43017,Dublin City Schools,Anita Somani,rep08@ohiohouse.gov,State Rep,08,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",16500,14,30,91000,17,88
+43018,Fairbanks Local Schools,Beth Lear,rep61@ohiohouse.gov,State Rep,61,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",900,28,6,65000,14,68
+43019,Big Walnut Local Schools,Beth Lear,rep61@ohiohouse.gov,State Rep,61,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",4100,12,10,71000,13,68
+43020,Granville Exempted Village Schools,Thaddeus J. Claggett,rep68@ohiohouse.gov,State Rep,68,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",2600,18,10,76000,16,80
+43021,Westerville City Schools,Beryl Brown Piccolantonio,rep04@ohiohouse.gov,State Rep,04,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",15200,32,38,82400,15,78
+43022,Granville Exempted Village Schools,Thaddeus J. Claggett,rep68@ohiohouse.gov,State Rep,68,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",2600,18,10,76000,16,80
+43023,Gahanna-Jefferson Schools,Munira Abdullahi,rep09@ohiohouse.gov,State Rep,09,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",7800,28,42,82000,15,78
+43024,Big Walnut Local Schools,Beth Lear,rep61@ohiohouse.gov,State Rep,61,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",4100,12,10,71000,13,68
+43025,Westerville City Schools,Beryl Brown Piccolantonio,rep04@ohiohouse.gov,State Rep,04,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",15200,32,38,82400,15,78
+43026,Hilliard City Schools,Crystal Lett,rep11@ohiohouse.gov,State Rep,11,D,Friendly,First Term,"77 S High St, Columbus, OH 43215",16000,18,25,82000,15,80
+43027,Hilliard City Schools,Crystal Lett,rep11@ohiohouse.gov,State Rep,11,D,Friendly,First Term,"77 S High St, Columbus, OH 43215",16000,18,25,82000,15,80
+43028,North Union Local Schools,Beth Lear,rep61@ohiohouse.gov,State Rep,61,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1600,32,10,64000,13,60
+43029,Groveport Madison Schools,Mark Sigrist,rep10@ohiohouse.gov,State Rep,10,D,Friendly,First Term,"77 S High St, Columbus, OH 43215",4800,55,38,67000,13,62
+43030,Westerville City Schools,Beryl Brown Piccolantonio,rep04@ohiohouse.gov,State Rep,04,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",15200,32,38,82400,15,78
+43101,Bloom-Carroll Local Schools,Brian Stewart,rep12@ohiohouse.gov,State Rep,12,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1800,32,8,64000,13,62
+43102,Canal Winchester Local Schools,Meredith R. Lawson-Rowe,rep05@ohiohouse.gov,State Rep,05,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",3800,28,30,74000,14,70
+43103,Teays Valley Local Schools,Brian Stewart,rep12@ohiohouse.gov,State Rep,12,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",5100,22,10,68000,14,65
+43105,Canal Winchester Local Schools,Meredith R. Lawson-Rowe,rep05@ohiohouse.gov,State Rep,05,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",3800,28,30,74000,14,70
+43106,Groveport Madison Schools,Mark Sigrist,rep10@ohiohouse.gov,State Rep,10,D,Friendly,First Term,"77 S High St, Columbus, OH 43215",4800,55,38,67000,13,62
+43107,Pickerington Local Schools,Jeff LaRe,rep73@ohiohouse.gov,State Rep,73,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",10800,25,45,76000,14,74
+43109,Columbus City Schools,Dontavius L. Jarrells,rep01@ohiohouse.gov,State Rep,01,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",46000,100,70,67800,13,68
+43110,Canal Winchester Local Schools,Meredith R. Lawson-Rowe,rep05@ohiohouse.gov,State Rep,05,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",3800,28,30,74000,14,70
+43111,Logan-Hocking Local Schools,Ron Ferguson,rep96@ohiohouse.gov,State Rep,96,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1800,48,6,61000,13,58
+43112,Groveport Madison Schools,Mark Sigrist,rep10@ohiohouse.gov,State Rep,10,D,Friendly,First Term,"77 S High St, Columbus, OH 43215",4800,55,38,67000,13,62
+43113,Circleville City Schools,Brian Stewart,rep12@ohiohouse.gov,State Rep,12,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",2000,50,10,61000,13,60
+43115,Teays Valley Local Schools,Brian Stewart,rep12@ohiohouse.gov,State Rep,12,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",5100,22,10,68000,14,65
+43116,South-Western City Schools,Mark Sigrist,rep10@ohiohouse.gov,State Rep,10,D,Friendly,First Term,"77 S High St, Columbus, OH 43215",21000,48,40,71000,14,70
+43117,South-Western City Schools,Mark Sigrist,rep10@ohiohouse.gov,State Rep,10,D,Friendly,First Term,"77 S High St, Columbus, OH 43215",21000,48,40,71000,14,70
+43119,Hilliard City Schools,Crystal Lett,rep11@ohiohouse.gov,State Rep,11,D,Friendly,First Term,"77 S High St, Columbus, OH 43215",16000,18,25,82000,15,80
+43123,South-Western City Schools,Mark Sigrist,rep10@ohiohouse.gov,State Rep,10,D,Friendly,First Term,"77 S High St, Columbus, OH 43215",21000,48,40,71000,14,70
+43125,Canal Winchester Local Schools,Meredith R. Lawson-Rowe,rep05@ohiohouse.gov,State Rep,05,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",3800,28,30,74000,14,70
+43126,Westfall Local Schools,Brian Stewart,rep12@ohiohouse.gov,State Rep,12,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1500,38,8,63000,13,60
+43127,South-Western City Schools,Mark Sigrist,rep10@ohiohouse.gov,State Rep,10,D,Friendly,First Term,"77 S High St, Columbus, OH 43215",21000,48,40,71000,14,70
+43128,South-Western City Schools,Mark Sigrist,rep10@ohiohouse.gov,State Rep,10,D,Friendly,First Term,"77 S High St, Columbus, OH 43215",21000,48,40,71000,14,70
+43130,Lancaster City Schools,Heidi Workman,rep72@ohiohouse.gov,State Rep,72,R,Hostile,First Term,"77 S High St, Columbus, OH 43215",6000,50,10,65000,14,64
+43135,Canal Winchester Local Schools,Meredith R. Lawson-Rowe,rep05@ohiohouse.gov,State Rep,05,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",3800,28,30,74000,14,70
+43136,Logan-Hocking Local Schools,Ron Ferguson,rep96@ohiohouse.gov,State Rep,96,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1800,48,6,61000,13,58
+43137,Pickerington Local Schools,Jeff LaRe,rep73@ohiohouse.gov,State Rep,73,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",10800,25,45,76000,14,74
+43138,Logan-Hocking Local Schools,Ron Ferguson,rep96@ohiohouse.gov,State Rep,96,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1800,48,6,61000,13,58
+43140,Washington Court House City Schools,Bob Peterson,rep91@ohiohouse.gov,State Rep,91,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",2100,55,15,59000,12,58
+43142,Logan-Hocking Local Schools,Ron Ferguson,rep96@ohiohouse.gov,State Rep,96,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1800,48,6,61000,13,58
+43144,Pickerington Local Schools,Jeff LaRe,rep73@ohiohouse.gov,State Rep,73,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",10800,25,45,76000,14,74
+43145,Teays Valley Local Schools,Brian Stewart,rep12@ohiohouse.gov,State Rep,12,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",5100,22,10,68000,14,65
+43146,South-Western City Schools,Mark Sigrist,rep10@ohiohouse.gov,State Rep,10,D,Friendly,First Term,"77 S High St, Columbus, OH 43215",21000,48,40,71000,14,70
+43147,Pickerington Local Schools,Jeff LaRe,rep73@ohiohouse.gov,State Rep,73,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",10800,25,45,76000,14,74
+43148,South-Western City Schools,Mark Sigrist,rep10@ohiohouse.gov,State Rep,10,D,Friendly,First Term,"77 S High St, Columbus, OH 43215",21000,48,40,71000,14,70
+43149,South-Western City Schools,Mark Sigrist,rep10@ohiohouse.gov,State Rep,10,D,Friendly,First Term,"77 S High St, Columbus, OH 43215",21000,48,40,71000,14,70
+43201,Columbus City Schools,Dontavius L. Jarrells,rep01@ohiohouse.gov,State Rep,01,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",46000,100,70,67800,13,68
+43202,Columbus City Schools,Dontavius L. Jarrells,rep01@ohiohouse.gov,State Rep,01,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",46000,100,70,67800,13,68
+43203,Columbus City Schools,Ismail Mohamed,rep03@ohiohouse.gov,State Rep,03,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",46000,100,70,67000,11,62
+43204,Columbus City Schools,Dontavius L. Jarrells,rep01@ohiohouse.gov,State Rep,01,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",46000,100,70,67800,13,68
+43205,Columbus City Schools,Ismail Mohamed,rep03@ohiohouse.gov,State Rep,03,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",46000,100,70,67000,11,62
+43206,Columbus City Schools,Christine Cockley,rep06@ohiohouse.gov,State Rep,06,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",46000,100,70,65500,10,58
+43207,Columbus City Schools,Ismail Mohamed,rep03@ohiohouse.gov,State Rep,03,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",46000,100,70,67000,11,62
+43209,Columbus City Schools,Latyna M. Humphrey,rep02@ohiohouse.gov,State Rep,02,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",46000,100,70,67800,13,68
+43210,Columbus City Schools,Christine Cockley,rep06@ohiohouse.gov,State Rep,06,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",46000,100,70,65500,10,58
+43211,Columbus City Schools,Latyna M. Humphrey,rep02@ohiohouse.gov,State Rep,02,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",46000,100,70,67800,13,68
+43212,Columbus City Schools,Dontavius L. Jarrells,rep01@ohiohouse.gov,State Rep,01,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",46000,100,70,67800,13,68
+43213,Columbus City Schools,Ismail Mohamed,rep03@ohiohouse.gov,State Rep,03,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",46000,100,70,67000,11,62
+43214,Columbus City Schools,Latyna M. Humphrey,rep02@ohiohouse.gov,State Rep,02,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",46000,100,70,67800,13,68
+43215,Columbus City Schools,C. Allison Russo,rep07@ohiohouse.gov,Minority Leader,07,D,Friendly,Leadership,"77 S High St, 14th Floor, Columbus, OH 43215",46000,100,70,94500,18,92
+43217,Columbus City Schools,Dontavius L. Jarrells,rep01@ohiohouse.gov,State Rep,01,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",46000,100,70,67800,13,68
+43218,Columbus City Schools,Latyna M. Humphrey,rep02@ohiohouse.gov,State Rep,02,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",46000,100,70,67800,13,68
+43219,Columbus City Schools,Ismail Mohamed,rep03@ohiohouse.gov,State Rep,03,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",46000,100,70,67000,11,62
+43220,Columbus City Schools,Anita Somani,rep08@ohiohouse.gov,State Rep,08,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",46000,100,70,88000,16,84
+43221,Upper Arlington City Schools,C. Allison Russo,rep07@ohiohouse.gov,Minority Leader,07,D,Friendly,Leadership,"77 S High St, 14th Floor, Columbus, OH 43215",6200,3,15,94500,18,92
+43222,Columbus City Schools,Dontavius L. Jarrells,rep01@ohiohouse.gov,State Rep,01,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",46000,100,70,67800,13,68
+43223,Columbus City Schools,Dontavius L. Jarrells,rep01@ohiohouse.gov,State Rep,01,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",46000,100,70,67800,13,68
+43224,Columbus City Schools,Latyna M. Humphrey,rep02@ohiohouse.gov,State Rep,02,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",46000,100,70,67800,13,68
+43227,Columbus City Schools,Ismail Mohamed,rep03@ohiohouse.gov,State Rep,03,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",46000,100,70,67000,11,62
+43228,Columbus City Schools,Dontavius L. Jarrells,rep01@ohiohouse.gov,State Rep,01,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",46000,100,70,67800,13,68
+43229,Columbus City Schools,Latyna M. Humphrey,rep02@ohiohouse.gov,State Rep,02,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",46000,100,70,67800,13,68
+43230,Gahanna-Jefferson Schools,Munira Abdullahi,rep09@ohiohouse.gov,State Rep,09,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",7800,28,42,82000,15,78
+43301,Marion City Schools,Melanie Miller,rep67@ohiohouse.gov,State Rep,67,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",4500,65,18,61000,13,58
+43302,Marion City Schools,Melanie Miller,rep67@ohiohouse.gov,State Rep,67,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",4500,65,18,61000,13,58
+43306,Elgin Local Schools,Melanie Miller,rep67@ohiohouse.gov,State Rep,67,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1600,32,10,64000,14,62
+43310,River Valley Local Schools,Melanie Miller,rep67@ohiohouse.gov,State Rep,67,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1900,28,8,65000,14,65
+43311,River Valley Local Schools,Melanie Miller,rep67@ohiohouse.gov,State Rep,67,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1900,28,8,65000,14,65
+43314,North Union Local Schools,Beth Lear,rep61@ohiohouse.gov,State Rep,61,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1600,32,10,64000,13,60
+43315,North Union Local Schools,Beth Lear,rep61@ohiohouse.gov,State Rep,61,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1600,32,10,64000,13,60
+43316,Hardin Northern Local Schools,Beth Lear,rep61@ohiohouse.gov,State Rep,61,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1200,35,6,62000,13,58
+43317,Upper Scioto Valley Local Schools,Beth Lear,rep61@ohiohouse.gov,State Rep,61,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1400,30,8,63000,14,60
+43318,Upper Scioto Valley Local Schools,Beth Lear,rep61@ohiohouse.gov,State Rep,61,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1400,30,8,63000,14,60
+43319,Hardin Northern Local Schools,Beth Lear,rep61@ohiohouse.gov,State Rep,61,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1200,35,6,62000,13,58
+43320,River Valley Local Schools,Melanie Miller,rep67@ohiohouse.gov,State Rep,67,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1900,28,8,65000,14,65
+43321,River Valley Local Schools,Melanie Miller,rep67@ohiohouse.gov,State Rep,67,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1900,28,8,65000,14,65
+43322,Upper Scioto Valley Local Schools,Beth Lear,rep61@ohiohouse.gov,State Rep,61,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1400,30,8,63000,14,60
+43323,Upper Scioto Valley Local Schools,Beth Lear,rep61@ohiohouse.gov,State Rep,61,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1400,30,8,63000,14,60
+43324,North Union Local Schools,Beth Lear,rep61@ohiohouse.gov,State Rep,61,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1600,32,10,64000,13,60
+43325,Hardin Northern Local Schools,Beth Lear,rep61@ohiohouse.gov,State Rep,61,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1200,35,6,62000,13,58
+43326,Upper Scioto Valley Local Schools,Beth Lear,rep61@ohiohouse.gov,State Rep,61,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1400,30,8,63000,14,60
+43330,Upper Scioto Valley Local Schools,Beth Lear,rep61@ohiohouse.gov,State Rep,61,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1400,30,8,63000,14,60
+43331,Hardin Northern Local Schools,Beth Lear,rep61@ohiohouse.gov,State Rep,61,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1200,35,6,62000,13,58
+43332,North Union Local Schools,Beth Lear,rep61@ohiohouse.gov,State Rep,61,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1600,32,10,64000,13,60
+43333,Upper Scioto Valley Local Schools,Beth Lear,rep61@ohiohouse.gov,State Rep,61,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1400,30,8,63000,14,60
+43401,Bowling Green City Schools,Haraz N. Ghanbari,rep75@ohiohouse.gov,State Rep,75,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",2900,35,15,68000,13,65
+43402,Bowling Green City Schools,Haraz N. Ghanbari,rep75@ohiohouse.gov,State Rep,75,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",2900,35,15,68000,13,65
+43403,Bowling Green City Schools,Haraz N. Ghanbari,rep75@ohiohouse.gov,State Rep,75,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",2900,35,15,68000,13,65
+43406,Elmwood Local Schools,Haraz N. Ghanbari,rep75@ohiohouse.gov,State Rep,75,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1600,28,10,66000,14,68
+43407,Lakota Local Schools,Haraz N. Ghanbari,rep75@ohiohouse.gov,State Rep,75,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",900,32,8,64000,13,60
+43408,Eastwood Local Schools,Haraz N. Ghanbari,rep75@ohiohouse.gov,State Rep,75,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1900,30,12,65000,14,62
+43410,Lake Local Schools,Haraz N. Ghanbari,rep75@ohiohouse.gov,State Rep,75,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",2200,26,10,67000,14,66
+43412,Otsego Local Schools,Haraz N. Ghanbari,rep75@ohiohouse.gov,State Rep,75,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1800,24,8,66000,14,64
+43413,Woodmore Local Schools,Haraz N. Ghanbari,rep75@ohiohouse.gov,State Rep,75,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1500,22,6,65500,14,62
+43416,Oak Harbor Schools,Gary Click,rep88@ohiohouse.gov,State Rep,88,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1700,38,14,63000,12,58
+43420,Fremont City Schools,Gary Click,rep88@ohiohouse.gov,State Rep,88,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",3900,55,35,62000,12,58
+43430,Gibsonburg Exempted Village Schools,Gary Click,rep88@ohiohouse.gov,State Rep,88,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1100,34,12,64000,13,60
+43431,Clyde-Green Springs Schools,Gary Click,rep88@ohiohouse.gov,State Rep,88,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1600,40,18,63500,12,58
+43432,Woodmore Local Schools,Haraz N. Ghanbari,rep75@ohiohouse.gov,State Rep,75,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1500,22,6,65500,14,62
+43433,Genoa Area Local Schools,Gary Click,rep88@ohiohouse.gov,State Rep,88,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",2100,28,10,65000,13,60
+43434,Clyde-Green Springs Schools,Gary Click,rep88@ohiohouse.gov,State Rep,88,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1600,40,18,63500,12,58
+43435,Fremont City Schools,Gary Click,rep88@ohiohouse.gov,State Rep,88,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",3900,55,35,62000,12,58
+43436,Oak Harbor Schools,Gary Click,rep88@ohiohouse.gov,State Rep,88,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1700,38,14,63000,12,58
+43437,Gibsonburg Exempted Village Schools,Gary Click,rep88@ohiohouse.gov,State Rep,88,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1100,34,12,64000,13,60
+43438,Woodmore Local Schools,Haraz N. Ghanbari,rep75@ohiohouse.gov,State Rep,75,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1500,22,6,65500,14,62
+43501,Anthony Wayne Local Schools,Josh Williams,rep44@ohiohouse.gov,State Rep,44,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",5200,18,12,72000,15,72
+43502,Swanton Local Schools,Josh Williams,rep44@ohiohouse.gov,State Rep,44,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1600,24,10,66000,14,66
+43504,Archbold Area Local Schools,James M. Hoops,rep81@ohiohouse.gov,State Rep,81,R,Hostile,Legacy,"77 S High St, Columbus, OH 43215",1900,22,8,67000,16,65
+43506,Bryan City Schools,James M. Hoops,rep81@ohiohouse.gov,State Rep,81,R,Hostile,Legacy,"77 S High St, Columbus, OH 43215",2100,35,12,62500,16,65
+43510,Evergreen Local Schools,James M. Hoops,rep81@ohiohouse.gov,State Rep,81,R,Hostile,Legacy,"77 S High St, Columbus, OH 43215",1800,26,10,64000,15,62
+43511,Springfield Local Schools (Lucas),Josh Williams,rep44@ohiohouse.gov,State Rep,44,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",5100,28,18,70000,15,70
+43512,Defiance City Schools,James M. Hoops,rep81@ohiohouse.gov,State Rep,81,R,Hostile,Legacy,"77 S High St, Columbus, OH 43215",2400,45,25,62500,16,65
+43515,Delta Local Schools,James M. Hoops,rep81@ohiohouse.gov,State Rep,81,R,Hostile,Legacy,"77 S High St, Columbus, OH 43215",1700,30,12,63500,15,62
+43516,North Central Local Schools,James M. Hoops,rep81@ohiohouse.gov,State Rep,81,R,Hostile,Legacy,"77 S High St, Columbus, OH 43215",1100,38,10,62000,15,60
+43517,Evergreen Local Schools,James M. Hoops,rep81@ohiohouse.gov,State Rep,81,R,Hostile,Legacy,"77 S High St, Columbus, OH 43215",1800,26,10,64000,15,62
+43518,Springfield Local Schools (Lucas),Josh Williams,rep44@ohiohouse.gov,State Rep,44,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",5100,28,18,70000,15,70
+43519,Bryan City Schools,James M. Hoops,rep81@ohiohouse.gov,State Rep,81,R,Hostile,Legacy,"77 S High St, Columbus, OH 43215",2100,35,12,62500,16,65
+43521,Archbold Area Local Schools,James M. Hoops,rep81@ohiohouse.gov,State Rep,81,R,Hostile,Legacy,"77 S High St, Columbus, OH 43215",1900,22,8,67000,16,65
+43522,North Central Local Schools,James M. Hoops,rep81@ohiohouse.gov,State Rep,81,R,Hostile,Legacy,"77 S High St, Columbus, OH 43215",1100,38,10,62000,15,60
+43524,Evergreen Local Schools,James M. Hoops,rep81@ohiohouse.gov,State Rep,81,R,Hostile,Legacy,"77 S High St, Columbus, OH 43215",1800,26,10,64000,15,62
+43525,Swanton Local Schools,Josh Williams,rep44@ohiohouse.gov,State Rep,44,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1600,24,10,66000,14,66
+43526,Anthony Wayne Local Schools,Josh Williams,rep44@ohiohouse.gov,State Rep,44,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",5200,18,12,72000,15,72
+43527,Archbold Area Local Schools,James M. Hoops,rep81@ohiohouse.gov,State Rep,81,R,Hostile,Legacy,"77 S High St, Columbus, OH 43215",1900,22,8,67000,16,65
+43528,Evergreen Local Schools,James M. Hoops,rep81@ohiohouse.gov,State Rep,81,R,Hostile,Legacy,"77 S High St, Columbus, OH 43215",1800,26,10,64000,15,62
+43529,Springfield Local Schools (Lucas),Josh Williams,rep44@ohiohouse.gov,State Rep,44,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",5100,28,18,70000,15,70
+43530,Delta Local Schools,James M. Hoops,rep81@ohiohouse.gov,State Rep,81,R,Hostile,Legacy,"77 S High St, Columbus, OH 43215",1700,30,12,63500,15,62
+43601,Toledo Public Schools,Erika White,rep41@ohiohouse.gov,State Rep,41,D,Friendly,First Term,"77 S High St, Columbus, OH 43215",23000,72,62,65500,12,60
+43604,Toledo Public Schools,Erika White,rep41@ohiohouse.gov,State Rep,41,D,Friendly,First Term,"77 S High St, Columbus, OH 43215",23000,72,62,65500,12,60
+43605,Toledo Public Schools,Elgin Rogers, Jr.,rep42@ohiohouse.gov,State Rep,42,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",23000,75,65,65000,12,58
+43606,Toledo Public Schools,Elgin Rogers, Jr.,rep42@ohiohouse.gov,State Rep,42,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",23000,75,65,65000,12,58
+43607,Toledo Public Schools,Erika White,rep41@ohiohouse.gov,State Rep,41,D,Friendly,First Term,"77 S High St, Columbus, OH 43215",23000,72,62,65500,12,60
+43608,Toledo Public Schools,Elgin Rogers, Jr.,rep42@ohiohouse.gov,State Rep,42,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",23000,75,65,65000,12,58
+43609,Toledo Public Schools,Phil Plummer,rep39@ohiohouse.gov,State Rep,39,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",23000,70,60,64000,13,58
+43610,Toledo Public Schools,Elgin Rogers, Jr.,rep42@ohiohouse.gov,State Rep,42,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",23000,75,65,65000,12,58
+43611,Washington Local Schools,Josh Williams,rep44@ohiohouse.gov,State Rep,44,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",6200,22,18,72000,15,72
+43612,Toledo Public Schools,Erika White,rep41@ohiohouse.gov,State Rep,41,D,Friendly,First Term,"77 S High St, Columbus, OH 43215",23000,72,62,65500,12,60
+43613,Washington Local Schools,Josh Williams,rep44@ohiohouse.gov,State Rep,44,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",6200,22,18,72000,15,72
+43614,Toledo Public Schools,Phil Plummer,rep39@ohiohouse.gov,State Rep,39,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",23000,70,60,64000,13,58
+43615,Springfield Local Schools (Lucas),Josh Williams,rep44@ohiohouse.gov,State Rep,44,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",5100,28,18,70000,15,70
+43616,Toledo Public Schools,Phil Plummer,rep39@ohiohouse.gov,State Rep,39,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",23000,70,60,64000,13,58
+43617,Washington Local Schools,Josh Williams,rep44@ohiohouse.gov,State Rep,44,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",6200,22,18,72000,15,72
+43619,Toledo Public Schools,Elgin Rogers, Jr.,rep42@ohiohouse.gov,State Rep,42,D,Friendly,Re-election,"77 S High St, Columbus, OH 43215",23000,75,65,65000,12,58
+43620,Toledo Public Schools,Erika White,rep41@ohiohouse.gov,State Rep,41,D,Friendly,First Term,"77 S High St, Columbus, OH 43215",23000,72,62,65500,12,60
+43623,Washington Local Schools,Josh Williams,rep44@ohiohouse.gov,State Rep,44,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",6200,22,18,72000,15,72
+43701,Zanesville City Schools,Adam Holmes,rep97@ohiohouse.gov,State Rep,97,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",2900,85,25,59500,12,58
+43702,Zanesville City Schools,Adam Holmes,rep97@ohiohouse.gov,State Rep,97,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",2900,85,25,59500,12,58
+43711,West Muskingum Local Schools,Adam Holmes,rep97@ohiohouse.gov,State Rep,97,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1700,42,10,63000,14,62
+43713,John Glenn Local Schools,Adam Holmes,rep97@ohiohouse.gov,State Rep,97,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",2200,38,8,64000,14,64
+43716,Tri-Valley Local Schools,Adam Holmes,rep97@ohiohouse.gov,State Rep,97,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",2800,40,12,65000,14,65
+43717,Tri-Valley Local Schools,Adam Holmes,rep97@ohiohouse.gov,State Rep,97,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",2800,40,12,65000,14,65
+43718,East Muskingum Local Schools,Adam Holmes,rep97@ohiohouse.gov,State Rep,97,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1300,35,6,62000,13,60
+43719,West Muskingum Local Schools,Adam Holmes,rep97@ohiohouse.gov,State Rep,97,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1700,42,10,63000,14,62
+43720,Tri-Valley Local Schools,Adam Holmes,rep97@ohiohouse.gov,State Rep,97,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",2800,40,12,65000,14,65
+43721,John Glenn Local Schools,Adam Holmes,rep97@ohiohouse.gov,State Rep,97,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",2200,38,8,64000,14,64
+43722,West Muskingum Local Schools,Adam Holmes,rep97@ohiohouse.gov,State Rep,97,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1700,42,10,63000,14,62
+43723,East Muskingum Local Schools,Adam Holmes,rep97@ohiohouse.gov,State Rep,97,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1300,35,6,62000,13,60
+43724,Tri-Valley Local Schools,Adam Holmes,rep97@ohiohouse.gov,State Rep,97,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",2800,40,12,65000,14,65
+43725,West Muskingum Local Schools,Adam Holmes,rep97@ohiohouse.gov,State Rep,97,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1700,42,10,63000,14,62
+43727,Rolling Hills Local Schools,Adam Holmes,rep97@ohiohouse.gov,State Rep,97,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1500,36,8,62500,13,60
+43728,East Muskingum Local Schools,Adam Holmes,rep97@ohiohouse.gov,State Rep,97,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1300,35,6,62000,13,60
+43730,Tri-Valley Local Schools,Adam Holmes,rep97@ohiohouse.gov,State Rep,97,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",2800,40,12,65000,14,65
+43731,Rolling Hills Local Schools,Adam Holmes,rep97@ohiohouse.gov,State Rep,97,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1500,36,8,62500,13,60
+43732,John Glenn Local Schools,Adam Holmes,rep97@ohiohouse.gov,State Rep,97,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",2200,38,8,64000,14,64
+43733,Rolling Hills Local Schools,Adam Holmes,rep97@ohiohouse.gov,State Rep,97,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1500,36,8,62500,13,60
+43734,East Muskingum Local Schools,Adam Holmes,rep97@ohiohouse.gov,State Rep,97,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1300,35,6,62000,13,60
+43801,Coshocton City Schools,Adam Holmes,rep97@ohiohouse.gov,State Rep,97,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",3200,55,8,61000,13,60
+43802,River View Local Schools,Adam Holmes,rep97@ohiohouse.gov,State Rep,97,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1800,38,6,62500,14,62
+43803,River View Local Schools,Adam Holmes,rep97@ohiohouse.gov,State Rep,97,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1800,38,6,62500,14,62
+43804,River View Local Schools,Adam Holmes,rep97@ohiohouse.gov,State Rep,97,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1800,38,6,62500,14,62
+43805,East Holmes Local Schools,Josh Williams,rep44@ohiohouse.gov,State Rep,44,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",3200,42,4,64000,14,64
+43811,River View Local Schools,Adam Holmes,rep97@ohiohouse.gov,State Rep,97,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1800,38,6,62500,14,62
+43812,Keene Local Schools,Adam Holmes,rep97@ohiohouse.gov,State Rep,97,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",900,32,4,62000,13,60
+43821,River View Local Schools,Adam Holmes,rep97@ohiohouse.gov,State Rep,97,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1800,38,6,62500,14,62
+43822,East Holmes Local Schools,Josh Williams,rep44@ohiohouse.gov,State Rep,44,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",3200,42,4,64000,14,64
+43824,River View Local Schools,Adam Holmes,rep97@ohiohouse.gov,State Rep,97,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1800,38,6,62500,14,62
+43828,River View Local Schools,Adam Holmes,rep97@ohiohouse.gov,State Rep,97,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1800,38,6,62500,14,62
+43830,West Holmes Local Schools,Josh Williams,rep44@ohiohouse.gov,State Rep,44,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",2900,40,3,63500,14,62
+43832,East Holmes Local Schools,Josh Williams,rep44@ohiohouse.gov,State Rep,44,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",3200,42,4,64000,14,64
+43836,River View Local Schools,Adam Holmes,rep97@ohiohouse.gov,State Rep,97,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1800,38,6,62500,14,62
+43837,Keene Local Schools,Adam Holmes,rep97@ohiohouse.gov,State Rep,97,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",900,32,4,62000,13,60
+43840,Newcomerstown Exempted Village Schools,Adam Holmes,rep97@ohiohouse.gov,State Rep,97,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1400,45,6,61000,13,58
+43842,West Holmes Local Schools,Josh Williams,rep44@ohiohouse.gov,State Rep,44,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",2900,40,3,63500,14,62
+43843,Keene Local Schools,Adam Holmes,rep97@ohiohouse.gov,State Rep,97,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",900,32,4,62000,13,60
+43844,Newcomerstown Exempted Village Schools,Adam Holmes,rep97@ohiohouse.gov,State Rep,97,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1400,45,6,61000,13,58
+43901,Martins Ferry City Schools,Ty Moore,rep95@ohiohouse.gov,State Rep,95,R,Hostile,First Term,"77 S High St, Columbus, OH 43215",1700,55,8,60000,13,58
+43902,Bridgeport Exempted Village Schools,Ty Moore,rep95@ohiohouse.gov,State Rep,95,R,Hostile,First Term,"77 S High St, Columbus, OH 43215",900,48,6,59000,12,55
+43903,St. Clairsville-Richland City Schools,Ty Moore,rep95@ohiohouse.gov,State Rep,95,R,Hostile,First Term,"77 S High St, Columbus, OH 43215",1600,30,5,62000,14,62
+43905,Martins Ferry City Schools,Ty Moore,rep95@ohiohouse.gov,State Rep,95,R,Hostile,First Term,"77 S High St, Columbus, OH 43215",1700,55,8,60000,13,58
+43906,Bellaire Local Schools,Ty Moore,rep95@ohiohouse.gov,State Rep,95,R,Hostile,First Term,"77 S High St, Columbus, OH 43215",1200,60,7,58500,12,55
+43907,Bridgeport Exempted Village Schools,Ty Moore,rep95@ohiohouse.gov,State Rep,95,R,Hostile,First Term,"77 S High St, Columbus, OH 43215",900,48,6,59000,12,55
+43908,Shadyside Local Schools,Ty Moore,rep95@ohiohouse.gov,State Rep,95,R,Hostile,First Term,"77 S High St, Columbus, OH 43215",1100,28,4,63000,14,64
+43910,Harrison Hills City Schools,Ron Ferguson,rep96@ohiohouse.gov,State Rep,96,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1500,42,6,60000,13,58
+43912,Union Local Schools,Ron Ferguson,rep96@ohiohouse.gov,State Rep,96,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",2300,38,5,61000,13,60
+43913,Buckeye Local Schools (Jefferson),Ron Ferguson,rep96@ohiohouse.gov,State Rep,96,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",2800,45,6,60500,13,58
+43914,Union Local Schools,Ron Ferguson,rep96@ohiohouse.gov,State Rep,96,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",2300,38,5,61000,13,60
+43915,Buckeye Local Schools (Jefferson),Ron Ferguson,rep96@ohiohouse.gov,State Rep,96,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",2800,45,6,60500,13,58
+43916,Harrison Hills City Schools,Ron Ferguson,rep96@ohiohouse.gov,State Rep,96,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1500,42,6,60000,13,58
+43917,East Richland Christian Schools,Ty Moore,rep95@ohiohouse.gov,State Rep,95,R,Hostile,First Term,"77 S High St, Columbus, OH 43215",600,22,3,64000,14,66
+43920,East Liverpool City Schools,Monica Robb Blasdel,rep79@ohiohouse.gov,State Rep,79,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",2100,72,12,59000,13,58
+43930,Wellsville Local Schools,Monica Robb Blasdel,rep79@ohiohouse.gov,State Rep,79,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1300,68,10,58500,12,55
+43931,Wellsville Local Schools,Monica Robb Blasdel,rep79@ohiohouse.gov,State Rep,79,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1300,68,10,58500,12,55
+43932,Beaver Local Schools,Monica Robb Blasdel,rep79@ohiohouse.gov,State Rep,79,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",2600,35,6,62000,14,62
+43933,East Palestine City Schools,Monica Robb Blasdel,rep79@ohiohouse.gov,State Rep,79,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1700,32,5,63000,14,64
+43934,Wellsville Local Schools,Monica Robb Blasdel,rep79@ohiohouse.gov,State Rep,79,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",1300,68,10,58500,12,55
+43935,East Liverpool City Schools,Monica Robb Blasdel,rep79@ohiohouse.gov,State Rep,79,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",2100,72,12,59000,13,58
+43940,Steubenville City Schools,Ron Ferguson,rep96@ohiohouse.gov,State Rep,96,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",2200,75,35,59000,13,58
+43942,Indian Creek Local Schools,Ron Ferguson,rep96@ohiohouse.gov,State Rep,96,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",2400,40,8,61000,14,60
+43943,Indian Creek Local Schools,Ron Ferguson,rep96@ohiohouse.gov,State Rep,96,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",2400,40,8,61000,14,60
+43945,Indian Creek Local Schools,Ron Ferguson,rep96@ohiohouse.gov,State Rep,96,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",2400,40,8,61000,14,60
+43947,Buckeye Local Schools (Jefferson),Ron Ferguson,rep96@ohiohouse.gov,State Rep,96,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",2800,45,6,60500,13,58
+43948,Indian Creek Local Schools,Ron Ferguson,rep96@ohiohouse.gov,State Rep,96,R,Hostile,Re-election,"77 S High St, Columbus, OH 43215",2400,40,8,61000,14,60
+43950,St. Clairsville-Richland City Schools,Ty Moore,rep95@ohiohouse.gov,State Rep,95,R,Hostile,First Term,"77 S High St, Columbus, OH 43215",1600,30,5,62000,14,62
