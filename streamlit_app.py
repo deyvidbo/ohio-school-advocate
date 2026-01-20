@@ -97,7 +97,7 @@ with col1:
     st.markdown("<h1 style='color:#B22234;'>⚖️ CLASS ACTION</h1>", unsafe_allow_html=True)
     st.markdown("<h4 style='color:#3C3B6E;'>Don't just watch. Take action.</h4>", unsafe_allow_html=True)
 with col2:
-    # REPLACE THIS LINK WITH YOUR RAW GITHUB LINK AFTER UPLOADING
+    # --- YOUR LINK IS PASTED HERE ---
     logo_url = "https://github.com/deyvidbo/ohio-school-advocate/blob/main/Class_action_Logo.jpg?raw=true"
     try:
         st.image(logo_url, width=100)
@@ -138,108 +138,4 @@ with st.sidebar:
     st.markdown("---")
     if xp > 0:
         st.write("**Don't lose your rank!**")
-        if st.button("🔖 Bookmark My Progress"):
-            st.toast("📌 **Action Required!** Press Ctrl+D (or Cmd+D) to bookmark this page right now. Use that bookmark to return with your rank!", icon="💾")
-            st.info("Your unique 'save code' is now in your browser's address bar.")
-
-    st.markdown("---")
-    
-    # Inputs
-    st.header("1. Your Context")
-    zip_code = st.text_input("Your Zip Code", max_chars=5, placeholder="45011")
-    user_name = st.text_input("Your Name", "Concerned Citizen")
-    
-    user_data = get_rep_from_zip(zip_code)
-    
-    user_context = {
-        "name": user_name, "zip": zip_code,
-        "district": user_data['school_district'] if user_data else "Ohio Public Schools",
-        "enrollment": str(user_data.get('enrollment','')) if user_data else ""
-    }
-
-    st.markdown("---")
-    st.header("2. Select Action")
-    mode = st.radio("Choose Task:", [
-        "📍 Find My Rep", 
-        "🛡️ Email Defenders", 
-        "🚫 Email Opponents",
-        "🏛️ Email Governor"
-    ])
-
-# --- MAIN DASHBOARD ---
-
-if not user_data:
-    st.info("👈 **Class is in session.** Enter your Zip Code in the sidebar to begin.")
-    st.stop()
-
-st.success(f"📍 **District Loaded:** {user_context['district']}")
-
-# --- ACTION LOGIC (With XP Gain) ---
-
-if mode == "📍 Find My Rep":
-    st.subheader(f"Task: Contact Rep. {user_data['rep_name']}")
-    subject, body = generate_message(user_data, user_context, mode="District")
-    
-    safe_sub = urllib.parse.quote(subject)
-    safe_body = urllib.parse.quote(body)
-    mailto = f"mailto:{user_data['rep_email']}?subject={safe_sub}&body={safe_body}"
-    
-    st.markdown(f"""<a href="{mailto}" target="_blank" style="text-decoration:none;"><div style="width:100%; padding:15px; background-color:#B22234; color:white; text-align:center; border-radius:8px; font-weight:bold; cursor:pointer;">Step 1: Open Email App ✉️</div></a>""", unsafe_allow_html=True)
-    
-    if st.button("Step 2: ✅ I sent it! (+100 XP)", key="btn_rep"):
-        st.session_state.xp_points += 100
-        update_status()
-        st.rerun()
-
-else:
-    # Mass Email Logic
-    header = "Task: Mass Advocacy"
-    msg_mode = "Leadership"
-    target_emails = []
-    
-    if mode == "🛡️ Email Defenders":
-        msg_mode = "Ally"
-        header = "🛡️ Rally the Defenders"
-        target_emails = df[(df['rep_stance'] == "Friendly") & (df['rep_district'] != "Statewide")]['rep_email'].unique().tolist()
-    elif mode == "🚫 Email Opponents":
-        msg_mode = "Hostile"
-        header = "🚫 Pressure the Opponents"
-        target_emails = df[(df['rep_stance'] == "Hostile") & (df['rep_district'] != "Statewide")]['rep_email'].unique().tolist()
-    else: # Governor
-        msg_mode = "Leadership"
-        header = "🏛️ Email Executive Leadership"
-        target_emails = df[df['rep_district'] == "Statewide"]['rep_email'].unique().tolist()
-
-    st.subheader(header)
-    target_emails = [x for x in target_emails if str(x) != "nan" and str(x) != ""]
-    email_string = ", ".join(target_emails)
-    st.write(f"**Targeting {len(target_emails)} officials.**")
-    
-    subject, body = generate_message({}, user_context, mode=msg_mode)
-    
-    safe_sub = urllib.parse.quote(subject)
-    safe_body = urllib.parse.quote(body)
-    mailto_all = f"mailto:?bcc={email_string}&subject={safe_sub}&body={safe_body}"
-    
-    st.markdown(f"""<a href="{mailto_all}" target="_blank" style="text-decoration:none;"><div style="width:100%; padding:15px; background-color:#B22234; color:white; text-align:center; border-radius:8px; font-weight:bold; cursor:pointer;">Step 1: Open Mass Email (BCC) 🚀</div></a>""", unsafe_allow_html=True)
-
-    if st.button("Step 2: ✅ I sent it! (+100 XP)", key="btn_mass"):
-        st.session_state.xp_points += 100
-        update_status()
-        st.rerun()
-
-# --- RECRUITMENT SECTION ---
-st.markdown("---")
-st.header("🤝 Final Assignment: Recruit")
-
-share_text = urllib.parse.quote("I just took Class Action for Ohio's public schools. Join me and grade your reps: https://ohio-schools-now.streamlit.app")
-twitter_link = f"https://twitter.com/intent/tweet?text={share_text}"
-
-col1, col2 = st.columns(2)
-with col1:
-    st.markdown(f"""<a href="{twitter_link}" target="_blank"><button style="width:100%; padding:10px; background:#1DA1F2; color:white; border:none; border-radius:5px;">🐦 Share on Twitter</button></a>""", unsafe_allow_html=True)
-with col2:
-    if st.button("✅ I Shared It (+100 XP)"):
-        st.session_state.xp_points += 100
-        update_status()
-        st.rerun()
+        if st.button("🔖 Bookmark My Progress
