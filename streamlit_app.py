@@ -10,9 +10,10 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# --- 2. SESSION STATE & URL MAGIC ---
+# --- 2. SESSION STATE & URL MAGIC (Save System) ---
 params = st.query_params
 if 'xp_points' not in st.session_state:
+    # Load XP from URL if it exists, otherwise start at 0
     start_xp = int(params.get("xp", 0))
     st.session_state.xp_points = start_xp
 
@@ -21,7 +22,9 @@ if 'badge_level' not in st.session_state:
 
 def update_status():
     xp = st.session_state.xp_points
+    # Update URL so user can bookmark their progress
     st.query_params["xp"] = str(xp)
+    
     if xp >= 300:
         st.session_state.badge_level = "🎓 The Superintendent"
     elif xp >= 200:
@@ -33,7 +36,7 @@ def update_status():
 
 update_status()
 
-# --- 3. DATA LOADER ---
+# --- 3. DATA LOADER & UTILS ---
 @st.cache_data
 def load_data():
     try:
@@ -62,31 +65,34 @@ def generate_message(target_rep, user_info, mode):
         body = (f"Dear Governor DeWine,\n\n{student_hook}\n\nI urge you to line-item veto voucher expansion and update the Fair School Funding Plan inputs.\n\nSincerely,\n{user_info['name']}")
     elif mode == "Ally":
         subject = f"Thank You standing with {user_info['district']}"
-        body = (f"Dear Legislator,\n\n{student_hook}\n\nThank you for defending public schools.\n\nSincerely,\n{user_info['name']}")
+        body = (f"Dear Legislator,\n\n{student_hook}\n\nThank you for defending public schools and our students.\n\nSincerely,\n{user_info['name']}")
     elif mode == "Hostile":
         subject = f"URGENT: Stop Undermining {user_info['district']}"
-        body = (f"Dear Legislator,\n\n{student_hook}\n\nI oppose freezing public school funding while expanding vouchers.\n\nSincerely,\n{user_info['name']}")
+        body = (f"Dear Legislator,\n\n{student_hook}\n\nI oppose freezing public school funding while expanding vouchers. Please support our local schools.\n\nSincerely,\n{user_info['name']}")
     else:
         subject = f"Support Needed: {user_info['district']}"
-        body = (f"Dear {target_rep.get('rep_role','Rep')} {target_rep.get('rep_name','')},\n\n{student_hook}\n\nPlease prioritize public school funding.\n\nSincerely,\n{user_info['name']}")
+        body = (f"Dear {target_rep.get('rep_role','Rep')} {target_rep.get('rep_name','')},\n\n{student_hook}\n\nPlease prioritize public school funding over private voucher expansion.\n\nSincerely,\n{user_info['name']}")
     return subject, body
 
 # --- 5. APP INTERFACE ---
 
-# HEADER
+# HEADER SECTION
 col1, col2 = st.columns([4, 1])
 with col1:
     st.markdown("<h1 style='color:#B22234;'>⚖️ CLASS ACTION</h1>", unsafe_allow_html=True)
     st.markdown("<h4 style='color:#3C3B6E;'>Don't just watch. Take action.</h4>", unsafe_allow_html=True)
 with col2:
     logo_url = "https://github.com/deyvidbo/ohio-school-advocate/blob/main/Class_action_Logo.jpg?raw=true"
-    st.image(logo_url, width=100)
+    try:
+        st.image(logo_url, width=100)
+    except:
+        st.write("⚖️")
 
 if df.empty:
-    st.error("⚠️ Error: ohio_districts.csv missing.")
+    st.error("⚠️ Error: ohio_districts.csv missing from repository.")
     st.stop()
 
-# MAIN INPUT SECTION (Now in the middle of the page!)
+# MAIN INPUTS (Centered for easy access)
 st.markdown("---")
 st.header("1. Identify Your District")
 c1, c2 = st.columns(2)
@@ -97,18 +103,22 @@ with c2:
 
 user_data = get_rep_from_zip(zip_code)
 
-# SIDEBAR (Faculty Lounge Display Only)
+# SIDEBAR (Faculty Lounge Display)
 with st.sidebar:
     st.header("📋 Faculty Lounge")
-    st.info(f"Rank: **{st.session_state.badge_level}** (XP: {st.session_state.xp_points})")
+    st.info(f"Rank: **{st.session_state.badge_level}**")
+    st.write(f"XP Gained: **{st.session_state.xp_points}**")
     st.progress(min(st.session_state.xp_points / 300, 1.0))
+    
+    st.markdown("---")
     if st.session_state.xp_points > 0:
-        if st.button("🔖 Bookmark My Progress"):
-            st.toast("Press Ctrl+D to bookmark!", icon="💾")
+        st.write("💾 **Save Your Rank**")
+        if st.button("🔖 Bookmark Progress"):
+            st.toast("📌 Press Ctrl+D (or Cmd+D) now to bookmark this page and save your rank!", icon="💾")
 
 # --- 6. ACTION SECTION ---
 if not zip_code:
-    st.info("👆 Enter your Zip Code above to find your representatives and start your mission.")
+    st.info("👆 Enter your Zip Code above to find your representatives and begin your mission.")
     st.stop()
 
 user_context = {
@@ -120,9 +130,9 @@ user_context = {
 st.success(f"📍 District Loaded: **{user_context['district']}**")
 
 st.header("2. Take Action")
-mode = st.radio("Choose Task:", ["📍 Find My Rep", "🛡️ Email Defenders", "🚫 Email Opponents", "🏛️ Email Governor"], horizontal=True)
+mode = st.radio("Select Your Advocacy Task:", ["📍 Find My Rep", "🛡️ Email Defenders", "🚫 Email Opponents", "🏛️ Email Governor"], horizontal=True)
 
-# Generate Email Logic
+# Email Routing Logic
 target_emails = []
 if mode == "📍 Find My Rep":
     target_emails = [user_data['rep_email']] if user_data else []
@@ -130,20 +140,53 @@ if mode == "📍 Find My Rep":
 elif mode == "🛡️ Email Defenders":
     target_emails = df[df['rep_stance'] == "Friendly"]['rep_email'].unique().tolist()
     subject, body = generate_message({}, user_context, mode="Ally")
+elif mode == "🚫 Email Opponents":
+    target_emails = df[df['rep_stance'] == "Hostile"]['rep_email'].unique().tolist()
+    subject, body = generate_message({}, user_context, mode="Hostile")
 else:
-    # (Simplified for space - logic remains same)
+    target_emails = ["governor@ohio.gov"] # Placeholder for Governor
     subject, body = generate_message({}, user_context, mode="Leadership")
-    target_emails = ["governor@ohio.gov"]
 
-# Display Buttons
-email_string = ",".join([str(e) for e in target_emails if str(e) != "nan"])
+# Email Launch Button
+email_string = ",".join([str(e) for e in target_emails if str(e) != "nan" and str(e) != ""])
 safe_sub = urllib.parse.quote(subject)
 safe_body = urllib.parse.quote(body)
 mailto_link = f"mailto:?bcc={email_string}&subject={safe_sub}&body={safe_body}"
 
-st.markdown(f'<a href="{mailto_link}" target="_blank" style="text-decoration:none;"><div style="background-color:#B22234;color:white;padding:15px;text-align:center;border-radius:10px;font-weight:bold;">Step 1: Open Email ✉️</div></a>', unsafe_allow_html=True)
+st.markdown(f"""
+    <a href="{mailto_link}" target="_blank" style="text-decoration:none;">
+        <div style="background-color:#B22234;color:white;padding:20px;text-align:center;border-radius:10px;font-weight:bold;font-size:1.2em;">
+            STEP 1: OPEN EMAIL CLIENT ✉️
+        </div>
+    </a>
+    """, unsafe_allow_html=True)
 
-if st.button("Step 2: ✅ I sent it! (+100 XP)"):
+st.write("")
+if st.button("STEP 2: ✅ I SENT IT! (+100 XP)"):
     st.session_state.xp_points += 100
     update_status()
+    st.balloons()
+    st.rerun()
+
+# --- 7. SOCIAL SHARING ---
+st.markdown("---")
+st.header("3. Spread the Word")
+st.write(f"Current Rank: **{st.session_state.badge_level}**")
+
+share_text = f"I just reached the rank of {st.session_state.badge_level} on Class Action! I'm standing up for Ohio's public schools. Join me: https://ohio-advocate.streamlit.app"
+encoded_share = urllib.parse.quote(share_text)
+
+col_fb, col_tw = st.columns(2)
+with col_fb:
+    fb_url = "https://www.facebook.com/sharer/sharer.php?u=https://ohio-advocate.streamlit.app"
+    st.markdown(f'<a href="{fb_url}" target="_blank" style="text-decoration:none;"><div style="background-color:#1877F2;color:white;padding:10px;text-align:center;border-radius:5px;font-weight:bold;">Post to Facebook</div></a>', unsafe_allow_html=True)
+
+with col_tw:
+    tw_url = f"https://twitter.com/intent/tweet?text={encoded_share}"
+    st.markdown(f'<a href="{tw_url}" target="_blank" style="text-decoration:none;"><div style="background-color:#000000;color:white;padding:10px;text-align:center;border-radius:5px;font-weight:bold;">Share on X (Twitter)</div></a>', unsafe_allow_html=True)
+
+if st.button("✅ I Shared My Rank! (+100 XP)"):
+    st.session_state.xp_points += 100
+    update_status()
+    st.success("Rank XP updated! Keep it up.")
     st.rerun()
