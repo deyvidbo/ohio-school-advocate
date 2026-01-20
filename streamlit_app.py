@@ -8,14 +8,12 @@ from datetime import date
 st.set_page_config(
     page_title="Class Action Ohio",
     page_icon="⚖️",
-    layout="centered"
+    layout="wide"  # Wider layout for the new Dashboard
 )
 
 # --- 2. SESSION STATE ---
-params = st.query_params
 if 'xp_points' not in st.session_state:
-    st.session_state.xp_points = int(params.get("xp", 0))
-
+    st.session_state.xp_points = 0
 if 'district_stats' not in st.session_state:
     st.session_state.district_stats = {}
 
@@ -23,6 +21,7 @@ if 'district_stats' not in st.session_state:
 @st.cache_data
 def load_data():
     try:
+        # Expected columns: zip_code, school_district, enrollment, voucher_loss, rep_name, rep_email, rep_address, rep_stance
         df = pd.read_csv("ohio_districts.csv", dtype={'zip_code': str})
         df.fillna("", inplace=True)
         return df
@@ -32,143 +31,132 @@ def load_data():
 df = load_data()
 
 # --- 4. PROFESSIONAL BLOCK FORMAT PDF GENERATOR ---
-# Follows guidelines from LiveAbout for formal business correspondence
 def create_professional_letter(target_rep, user_info, content):
-    # US Letter size (8.5x11), Portrait, units in Inches
     pdf = FPDF(orientation='P', unit='in', format='Letter')
     pdf.add_page()
-    
-    # Font: Times New Roman, 12pt
     pdf.set_font("Times", '', 12)
     pdf.set_left_margin(1.0)
     pdf.set_right_margin(1.0)
     
-    # A. Writer's Contact Information
+    # Sender Block
     pdf.cell(0, 0.2, txt=user_info['name'], ln=True)
     pdf.cell(0, 0.2, txt=user_info['title'], ln=True)
     pdf.cell(0, 0.2, txt=f"Zip Code: {user_info['zip']}", ln=True)
-    pdf.ln(0.2) # Space after contact info
+    pdf.ln(0.2)
     
-    # B. Date
+    # Date
     pdf.cell(0, 0.2, txt=date.today().strftime("%B %d, %Y"), ln=True)
-    pdf.ln(0.2) # Space before recipient info
+    pdf.ln(0.2)
     
-    # C. Recipient's Contact Information
+    # Recipient Block
     pdf.set_font("Times", 'B', 12)
     pdf.cell(0, 0.2, txt=f"{target_rep.get('rep_role', 'Honorable')} {target_rep.get('rep_name', 'Legislator')}", ln=True)
     pdf.set_font("Times", '', 12)
     pdf.multi_cell(0, 0.2, txt=target_rep.get('rep_address', '77 S. High St, Columbus, OH 43215'))
-    pdf.ln(0.2) # Space before salutation
+    pdf.ln(0.2)
     
-    # D. Salutation (Colon used for formal letters)
+    # Salutation
     rep_last_name = target_rep.get('rep_name', 'Legislator').split()[-1]
     pdf.cell(0, 0.2, txt=f"Dear {target_rep.get('rep_role', 'Representative')} {rep_last_name}:", ln=True)
-    pdf.ln(0.2) # Space before body
+    pdf.ln(0.2)
     
-    # E. Body of Letter: Left-justified, single-spaced paragraphs
+    # Body (Single spaced, double spaced between paragraphs)
     paragraphs = content.split('\n\n')
     for p in paragraphs:
         pdf.multi_cell(0, 0.2, txt=p.strip(), align='L')
-        pdf.ln(0.2) # Double space between paragraphs
+        pdf.ln(0.2)
     
-    # F. Closing & Signature Block
+    # Closing
     pdf.cell(0, 0.2, txt="Sincerely,", ln=True)
-    pdf.ln(0.8) # 4 spaces for handwritten signature
+    pdf.ln(0.8) # Space for handwritten signature
     pdf.set_font("Times", 'B', 12)
     pdf.cell(0, 0.2, txt=user_info['name'], ln=True)
     
     return pdf.output(dest="S").encode("latin-1")
 
-# --- 5. ADVOCACY CONTENT GENERATOR ---
-def generate_content(target_rep, user_info, mode):
-    # Paragraph 1: Introduction and Teacher Identity
-    intro = (f"My name is {user_info['name']}, and I am writing to you today as a {user_info['title']} and a voter "
-             f"in the {user_info['district']} (Zip: {user_info['zip']}).")
-    
-    # Paragraph 2: Details and Background
-    detail = (f"As a visual arts educator at Linden Elementary, I see firsthand how the Fair School Funding Plan "
-              f"supports our {user_info['enrollment']} students. I am deeply concerned that diverting public dollars "
-              f"toward private voucher expansion will undermine our ability to provide essential arts education.")
-    
-    # Paragraph 3: Call to Action and Thank You
-    conclusion = ("I urge you to prioritize local public school funding to protect the programs that help our children thrive. "
-                  "Thank you for considering my request and for your service to the people of Ohio.")
-    
-    return f"{intro}\n\n{detail}\n\n{conclusion}"
-
-# --- 6. APP INTERFACE ---
+# --- 5. APP INTERFACE ---
 logo_url = "https://github.com/deyvidbo/ohio-school-advocate/blob/main/Class_action_Logo.jpg?raw=true"
 st.markdown("<center>", unsafe_allow_html=True)
 try:
-    st.image(logo_url, width=350) 
+    st.image(logo_url, width=300) 
 except:
     st.title("⚖️ CLASS ACTION")
-st.markdown("<h1 style='text-align: center; color:#B22234; margin-top:-20px;'>CLASS ACTION</h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center; color:#B22234; margin-top:-20px;'>CLASS ACTION ADVOCACY DASHBOARD</h1>", unsafe_allow_html=True)
 st.markdown("</center>", unsafe_allow_html=True)
 
-# DASHBOARD
-st.info(f"🏆 Rank: **{st.session_state.xp_points} XP** | Mission: Advocate for {df['school_district'].nunique() if not df.empty else 'Ohio'} Districts")
-
-# INPUTS
-st.header("1. Your Information")
-c1, c2 = st.columns(2)
-with c1:
+# SIDEBAR: STATS & PROGRESS
+with st.sidebar:
+    st.header("📋 Mission Status")
+    st.metric("Your Total XP", f"{st.session_state.xp_points}")
+    st.markdown("---")
+    st.write("**Teacher Demographics**")
     user_name = st.text_input("Full Name", value="David M. Bothast")
-    zip_code = st.text_input("Zip Code", max_chars=5, value="45056")
-with c2:
-    # Explicit teacher demographic inclusion
     user_title = st.text_input("Professional Title", value="K-8 Visual Arts Teacher")
+    zip_code = st.text_input("Home Zip Code", max_chars=5, value="45056")
 
-if zip_code:
-    res = df[df['zip_code'] == zip_code]
-    if not res.empty:
-        user_data = res.iloc[0].to_dict()
-        dist_name = user_data['school_district']
-        user_info = {
-            "name": user_name, "zip": zip_code, "title": user_title,
-            "district": dist_name, "enrollment": user_data.get('enrollment', '')
-        }
+# MAIN PAGE: DISTRICT SEARCH
+st.header("1. District Funding Gap Analysis")
+if not df.empty:
+    all_districts = sorted(df['school_district'].unique())
+    selected_district = st.selectbox("Search for your School District:", ["Select a District..."] + all_districts)
+
+    if selected_district != "Select a District...":
+        dist_data = df[df['school_district'] == selected_district].iloc[0]
         
-        st.success(f"📍 Loaded District: **{dist_name}**")
-        
+        # Dashboard Display
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            st.metric("Students Served", dist_data['enrollment'])
+        with col2:
+            # Highlight funding loss for advocacy
+            st.metric("Voucher Funding Loss", f"${dist_data.get('voucher_loss', 'Unknown')}", delta="- Funding Gap", delta_color="inverse")
+        with col3:
+            st.metric("Academic Standards", "Ohio Visual Arts", help="Focusing on 5.1PE Incorporate constructive feedback")
+
+        st.markdown("---")
         st.header("2. Take Action")
-        mode = st.radio("Choose Recipient:", ["📍 Local Rep", "🛡️ Defenders", "🚫 Opponents", "🏛️ Governor"], horizontal=True)
-        
-        subject, content = generate_content(user_data, user_info, mode)
-        
-        # --- EMAIL ACTION (Mobile-Friendly mailto:) ---
-        # The mailto: protocol automatically opens the default email app on mobile devices
-        safe_body = urllib.parse.quote(content)
-        target_email = user_data['rep_email'] if mode == "📍 Local Rep" else "governor@ohio.gov"
-        mailto_link = f"mailto:{target_email}?subject=Advocacy from {dist_name}&body={safe_body}"
+        mode = st.radio("Select Recipient:", ["📍 Local Rep", "🏛️ Governor", "🛡️ Defenders", "🚫 Opponents"], horizontal=True)
+
+        # Generate Content with Data Hooks
+        intro = f"My name is {user_name}, and I am a {user_title} writing to you regarding the {selected_district}."
+        detail = (f"Our district serves {dist_data['enrollment']} students. Currently, we face a projected funding gap of "
+                  f"${dist_data.get('voucher_loss', '0')} due to voucher expansion. This loss directly impacts our ability "
+                  f"to meet state standards, such as 5.1PE, which ensures students receive quality arts instruction.")
+        action = "I urge you to prioritize public education funding. Thank you for your consideration."
+        full_content = f"{intro}\n\n{detail}\n\n{action}"
+
+        # --- MOBILE FRIENDLY EMAIL (mailto:) ---
+        safe_body = urllib.parse.quote(full_content)
+        target_email = dist_data['rep_email'] if mode == "📍 Local Rep" else "governor@ohio.gov"
+        mailto_link = f"mailto:{target_email}?subject=Advocacy for {selected_district}&body={safe_body}"
         
         st.markdown(f'''
             <a href="{mailto_link}" style="text-decoration:none;">
-                <div style="background-color:#B22234;color:white;padding:15px;text-align:center;border-radius:10px;font-weight:bold;font-size:1.1em;">
+                <div style="background-color:#B22234;color:white;padding:15px;text-align:center;border-radius:10px;font-weight:bold;">
                     ✉️ OPEN EMAIL APP (Mobile-Ready)
                 </div>
             </a>
         ''', unsafe_allow_html=True)
         
         st.write("")
-        
-        # --- PDF ACTION (Block Format Letter) ---
-        pdf_data = create_professional_letter(user_data, user_info, content)
+
+        # --- PROFESSIONAL PRINTABLE LETTER ---
+        pdf_data = create_professional_letter(dist_data, {"name": user_name, "title": user_title, "zip": zip_code}, full_content)
         st.download_button(
-            label="📄 GENERATE PRINTABLE LETTER (Professional Block Format)",
+            label="📄 DOWNLOAD PROFESSIONAL BLOCK LETTER",
             data=pdf_data,
-            file_name=f"Class_Action_Letter_{dist_name}.pdf",
+            file_name=f"Letter_{selected_district}.pdf",
             mime="application/pdf"
         )
-        
-        if st.button("✅ I Sent My Message! (+100 XP)"):
+
+        if st.button("✅ I Completed This Mission! (+100 XP)"):
             st.session_state.xp_points += 100
-            st.session_state.district_stats[dist_name] = st.session_state.district_stats.get(dist_name, 0) + 1
+            st.session_state.district_stats[selected_district] = st.session_state.district_stats.get(selected_district, 0) + 1
             st.rerun()
 
-# --- 7. LEADERBOARD ---
+# LEADERBOARD
 st.markdown("---")
 if st.session_state.district_stats:
-    st.header("🏆 Most Active Districts")
+    st.header("🏆 Most Active Advocacy Districts")
     leader_df = pd.DataFrame(list(st.session_state.district_stats.items()), columns=['District', 'Actions'])
     st.table(leader_df.sort_values(by='Actions', ascending=False).head(5))
