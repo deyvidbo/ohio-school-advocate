@@ -5,89 +5,187 @@ from fpdf import FPDF
 from datetime import date
 import io
 
-# --- 1. CONFIGURATION & THEME ---
+# --- 1. CONFIGURATION & WAR ROOM THEME ---
 st.set_page_config(page_title="Class Action Ohio", page_icon="⚖️", layout="wide")
 
 st.markdown("""
     <style>
-    .rank-card { background-color: #1e3a8a; color: white; padding: 20px; border-radius: 15px; text-align: center; border: 2px solid #facc15; }
-    .deploy-btn { 
-        display: block; width: 100%; padding: 15px; background-color: #B22234; 
-        color: white !important; text-align: center; border-radius: 10px; 
-        font-weight: bold; text-decoration: none; margin-bottom: 10px;
+    /* War Room Styling */
+    .rank-card { 
+        background-color: #1e3a8a; 
+        color: white; 
+        padding: 20px; 
+        border-radius: 15px; 
+        text-align: center; 
+        border: 2px solid #facc15;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     }
-    .deploy-btn:hover { background-color: #8b1a29; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+    .rank-title { font-size: 1.2em; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
+    .xp-display { font-size: 2em; font-weight: bold; color: #facc15; margin: 0; }
+    
+    /* Action Buttons */
+    .deploy-btn { 
+        display: block; width: 100%; padding: 15px; 
+        background-color: #B22234; color: white !important; 
+        text-align: center; border-radius: 8px; 
+        font-weight: bold; text-decoration: none; 
+        margin-bottom: 10px; transition: all 0.3s;
+    }
+    .deploy-btn:hover { background-color: #8b1a29; transform: translateY(-2px); }
     </style>
     """, unsafe_allow_html=True)
 
-# --- 2. PERSISTENT SESSION STATE ---
+# --- 2. PERSISTENT SESSION STATE (Memory) ---
 if 'xp_points' not in st.session_state: st.session_state.xp_points = 0
 if 'u_targets' not in st.session_state: st.session_state.u_targets = []
 
+# Universal Defaults (No Personal Data)
 defaults = {
-    'u_name': "David M. Bothast", 'u_role': "K-8 Visual Arts Teacher",
-    'is_parent': False, 'child_count': 0, 'is_homeowner': True,
-    'is_taxpayer': True, 'is_voter': True, 'years_ohio': 0, 'years_district': 0,
+    'u_name': "", 'u_role': "", 
+    'is_parent': False, 'child_count': 0, 'is_homeowner': False, 'is_renter': False,
+    'is_taxpayer': False, 'is_voter': False, 'years_ohio': 0, 'years_district': 0,
     'custom_note': ""
 }
 for key, val in defaults.items():
     if key not in st.session_state: st.session_state[key] = val
 
-# --- 3. DATA ENGINE ---
+# --- 3. AUDIT-PROTECTED DATA ENGINE ---
 @st.cache_data
 def load_data():
-    # Audit-Verified: quotechar='"' handles suffixes like "Jr." and multi-line addresses
     try:
+        # Robust parsing for names with suffixes and multi-line addresses
         df = pd.read_csv("ohio_districts.csv", dtype={'zip_code': str, 'rep_district': str}, quotechar='"', on_bad_lines='warn')
         df.fillna("N/A", inplace=True)
         return df
     except Exception as e:
-        st.error(f"Data Connection Error: {e}")
+        st.error(f"System Error: Could not load district data. Ensure 'ohio_districts.csv' is present. {e}")
         return pd.DataFrame()
 
 df = load_data()
 
-# --- 4. SIDEBAR: MISSION CONTROL ---
+# --- 4. BULK PDF GENERATOR (Professional Block Format) ---
+def create_bulk_pdf(recipients_list, user_info, data, id_badges, custom_text):
+    pdf = FPDF(orientation='P', unit='in', format='Letter')
+    pdf.set_margins(left=1.0, top=1.0, right=1.0)
+    pdf.set_auto_page_break(auto=True, margin=1.0)
+    
+    # 1. Build Identity Sentence
+    badges = [b for b, active in [("active voter", id_badges['voter']), ("dedicated taxpayer", id_badges['taxpayer']), ("homeowner", id_badges['homeowner']), ("local resident", id_badges['renter'])] if active]
+    
+    id_base = ", ".join(badges[:-1]) + (" and " + badges[-1] if len(badges) > 1 else badges[0] if badges else "resident")
+    parent_part = f" and a parent of {id_badges['count']} children," if id_badges['parent'] else ","
+    residency_part = f" Having lived in Ohio for {id_badges['y_ohio']} years and within this district for {id_badges['y_dist']} years,"
+    
+    for rec in recipients_list:
+        pdf.add_page()
+        pdf.set_font("Times", '', 12)
+        
+        # SENDER BLOCK
+        pdf.cell(0, 0.2, txt=user_info['name'], ln=True)
+        pdf.cell(0, 0.2, txt=user_info['role'], ln=True)
+        pdf.cell(0, 0.2, txt=f"Zip Code: {user_info['zip']}", ln=True); pdf.ln(0.2)
+        pdf.cell(0, 0.2, txt=date.today().strftime("%B %d, %Y"), ln=True); pdf.ln(0.3)
+        
+        # RECIPIENT BLOCK
+        pdf.set_font("Times", 'B', 12)
+        pdf.cell(0, 0.2, txt=f"{rec['role']} {rec['name']}", ln=True); pdf.set_font("Times", '', 12)
+        pdf.multi_cell(0, 0.2, txt=rec['address']); pdf.ln(0.3)
+        
+        # SALUTATION
+        last_name = rec['name'].split()[-1]
+        pdf.cell(0, 0.2, txt=f"Dear {rec['role']} {last_name}:"); pdf.ln(0.3)
+        
+        # BODY CONSTRUCTION
+        opening = f"My name is {user_info['name']}. I live in House District {data['rep_district']}, home of the {data['school_district']}."
+        identity_line = f"As an {id_base}{parent_part}{residency_part} I am writing to you today regarding the future of our public schools."
+        
+        # Custom Bridge (Seamless)
+        custom_section = f"To provide a personal perspective: {custom_text.strip()}" if custom_text.strip() else ""
+        if custom_section and not custom_section.endswith(('.', '!', '?')): custom_section += "."
+
+        # ODEW Data Integration
+        fiscal_detail = (f"Currently, {data['school_district']} serves {data['enrollment']} students with a poverty rate of {data['poverty_rate']}. "
+                         f"Our instructional quality is driven by a workforce averaging {data['avg_teacher_ex']} years of experience, "
+                         f"with {data['percent_masters']} of our faculty holding Master's degrees and an average salary of {data['avg_teacher_salary']}. "
+                         "Voucher expansion threatens this stability.")
+        
+        full_body = [opening, identity_line]
+        if custom_section: full_body.append(custom_section)
+        full_body.extend([fiscal_detail, "I urge you to prioritize public education funding. Thank you."])
+        
+        for p in full_body:
+            # Clean smart quotes for PDF safety
+            safe_p = p.replace('’', "'").replace('“', '"').replace('”', '"')
+            pdf.multi_cell(0, 0.2, txt=safe_p, align='L')
+            pdf.ln(0.2)
+        
+        # SIGN OFF
+        pdf.ln(0.2); pdf.cell(0, 0.2, txt="Sincerely,", ln=True); pdf.ln(0.8) 
+        pdf.set_font("Times", 'B', 12); pdf.cell(0, 0.2, txt=user_info['name'], ln=True)
+        
+    return pdf.output(dest="S").encode('latin-1', 'replace')
+
+# --- 5. SIDEBAR: MISSION CONTROL ---
 with st.sidebar:
-    # Verified Ranking Logic
+    # Rank Logic
     rank = "Substitute" if st.session_state.xp_points < 100 else "Teacher" if st.session_state.xp_points < 500 else "THE SUPERINTENDENT"
-    st.markdown(f"""<div class='rank-card'><h3>{rank}</h3><p>{st.session_state.xp_points} ACTION XP</p></div>""", unsafe_allow_html=True)
+    
+    st.markdown(f"""
+        <div class='rank-card'>
+            <div class='rank-title'>{rank}</div>
+            <div class='xp-display'>{st.session_state.xp_points} XP</div>
+        </div>
+    """, unsafe_allow_html=True)
+    
+    # Dynamic Progress Bar
+    next_goal = 100 if rank == "Substitute" else 500 if rank == "Teacher" else 1000
+    st.progress(min(st.session_state.xp_points / next_goal, 1.0))
     
     st.markdown("---")
     st.subheader("📢 Share Your Rank")
-    site_url = "https://classactionohio.org"
-    share_text = urllib.parse.quote(f"I just reached the rank of {rank} on Class Action Ohio! Join me in defending our public schools: {site_url}")
     
-    # Corrected Sidebar Links
-    st.markdown(f"🐦 [Post to X/Twitter](https://twitter.com/intent/tweet?text={share_text})")
+    # Universal Sharing Links
+    site_url = "https://classactionohio.org"
+    msg = urllib.parse.quote(f"I reached the rank of {rank} on Class Action Ohio! Join the mission: {site_url}")
+    
+    st.markdown(f"🐦 [Post to X/Twitter](https://twitter.com/intent/tweet?text={msg})")
     st.markdown(f"👥 [Share on Facebook](https://www.facebook.com/sharer/sharer.php?u={site_url})")
-    st.markdown(f"📱 [Text a Friend](sms:?&body={share_text})")
-    st.markdown(f"✉️ [Email Coworkers](mailto:?subject=Advocacy%20Mission&body={share_text})")
+    st.markdown(f"✉️ [Email Coworkers](mailto:?subject=Join%20the%20Mission&body={msg})")
+    st.markdown(f"📱 [Text a Friend](sms:?&body={msg})")
+    
+    if st.button("🔄 Reset User Data"):
+        for key, val in defaults.items(): st.session_state[key] = val
+        st.rerun()
 
-# --- 5. MAIN INTERFACE ---
+# --- 6. MAIN DASHBOARD ---
 logo_url = "https://github.com/deyvidbo/ohio-school-advocate/blob/main/Class_action_Logo.jpg?raw=true"
-col_logo, col_title = st.columns([1, 4])
-with col_logo:
-    try: st.image(logo_url, width=180)
+c_logo, c_head = st.columns([1, 4])
+with c_logo:
+    try: st.image(logo_url, width=160)
     except: st.title("⚖️")
-with col_title:
-    st.markdown("<h1 style='margin-bottom:0;'>CLASS ACTION: OHIO</h1>", unsafe_allow_html=True)
-    st.markdown("<h4 style='color: #666; margin-top:0;'>The Statewide Public Education Advocacy Engine</h4>", unsafe_allow_html=True)
+with c_head:
+    st.markdown("# CLASS ACTION: OHIO")
+    st.markdown("### The Statewide Public Education Advocacy Engine")
 
+# Zip Code Entry (The Trigger)
 zip_input = st.text_input("📍 DEPLOY BY ZIP CODE:", max_chars=5, help="Enter your 5-digit Ohio zip code.")
 
 if zip_input and not df.empty:
     res = df[df['zip_code'] == zip_input]
     if not res.empty:
         data = res.iloc[0].to_dict()
-        st.info(f"Target Acquired: {data['school_district']} (House District {data['rep_district']})")
         
+        # SUCCESS BANNER
+        st.success(f"TARGET ACQUIRED: {data['school_district']} (House District {data['rep_district']})")
+        
+        # TABBED WORKFLOW
         t_id, t_msg, t_deploy = st.tabs(["👤 IDENTITY", "📝 MESSAGE", "🚀 DEPLOY"])
         
+        # TAB 1: IDENTITY
         with t_id:
             c1, c2 = st.columns(2)
-            with c1: st.session_state.u_name = st.text_input("Name:", value=st.session_state.u_name)
-            with c2: st.session_state.u_role = st.text_input("Title:", value=st.session_state.u_role)
+            with c1: st.session_state.u_name = st.text_input("Full Name:", value=st.session_state.u_name)
+            with c2: st.session_state.u_role = st.text_input("Title (e.g. Teacher, Parent):", value=st.session_state.u_role)
             
             st.subheader("Constituent Badges")
             b1, b2, b3 = st.columns(3)
@@ -97,46 +195,83 @@ if zip_input and not df.empty:
             with b2:
                 st.session_state.is_homeowner = st.checkbox("Homeowner", value=st.session_state.is_homeowner)
                 st.session_state.is_parent = st.checkbox("Parent", value=st.session_state.is_parent)
+                if st.session_state.is_parent:
+                    st.session_state.child_count = st.number_input("Children:", min_value=1, value=max(1, st.session_state.child_count))
             with b3:
                 st.session_state.years_ohio = st.number_input("Years in Ohio:", value=st.session_state.years_ohio)
                 st.session_state.years_district = st.number_input(f"Years in Dist. {data['rep_district']}:", value=st.session_state.years_district)
 
+        # TAB 2: MESSAGE & TARGETS
         with t_msg:
-            st.session_state.custom_note = st.text_area("Personal Anecdote (Seamlessly integrated):", value=st.session_state.custom_note)
-            if st.button("Select All Targets"): st.session_state.u_targets = ["📍 Local Rep", "🏛️ Governor", "🛡️ Friendly Caucus", "🚫 Opposition Leadership"]
-            st.session_state.u_targets = st.multiselect("Recipients:", ["📍 Local Rep", "🏛️ Governor", "🛡️ Friendly Caucus", "🚫 Opposition Leadership"], default=st.session_state.u_targets)
+            st.markdown("#### Add Your Voice")
+            st.session_state.custom_note = st.text_area("Personal Anecdote (Integrated into your letter):", value=st.session_state.custom_note)
+            
+            st.markdown("#### Select Targets")
+            all_options = ["📍 Local Rep", "🏛️ Governor", "🛡️ Friendly Caucus", "🚫 Opposition Leadership"]
+            
+            c_all, c_clear = st.columns([1, 4])
+            with c_all: 
+                if st.button("Select All"): 
+                    st.session_state.u_targets = all_options
+                    st.rerun()
+            with c_clear:
+                if st.button("Clear Selection"): 
+                    st.session_state.u_targets = []
+                    st.rerun()
+            
+            st.session_state.u_targets = st.multiselect("Recipients:", all_options, default=st.session_state.u_targets)
 
+        # TAB 3: DEPLOYMENT (Action Center)
         with t_deploy:
             if st.session_state.u_targets:
-                # 2026 Leadership Mappings Verified
+                # 2026 Leadership Logic (Updated 136th GA)
                 target_map = {
                     "📍 Local Rep": {"name": data['rep_name'], "email": data['rep_email'], "address": data['rep_address'], "role": data['rep_role']},
                     "🏛️ Governor": {"name": "Mike DeWine", "email": "governor@ohio.gov", "address": "77 S. High St, 30th Floor, Columbus, OH 43215", "role": "Governor"},
-                    "🛡️ Friendly Caucus": {"name": "Dani Isaacsohn", "email": "rep24@ohiohouse.gov", "address": "77 S. High St, 14th Floor, Columbus, OH 43215", "role": "Minority Leader"},
+                    "🛡️ Friendly Caucus": {"name": "Allison Russo", "email": "rep07@ohiohouse.gov", "address": "77 S. High St, 14th Floor, Columbus, OH 43215", "role": "Minority Leader"},
                     "🚫 Opposition Leadership": {"name": "Matt Huffman", "email": "rep78@ohiohouse.gov", "address": "77 S. High St, 14th Floor, Columbus, OH 43215", "role": "Speaker"}
                 }
                 selected = [target_map[t] for t in st.session_state.u_targets]
                 
-                c_mail, c_print = st.columns(2)
+                c_email, c_pdf = st.columns(2)
                 
-                with c_mail:
+                # OPTION A: DIGITAL BLAST
+                with c_email:
                     st.subheader("Digital Advocacy")
-                    bcc_emails = ",".join([r['email'] for r in selected])
-                    email_subj = urllib.parse.quote(f"Constituent Support: {data['school_district']} (District {data['rep_district']})")
-                    email_body = urllib.parse.quote(f"I am writing as a constituent regarding House District {data['rep_district']}.\n\n{st.session_state.custom_note}")
+                    bcc_list = ",".join([r['email'] for r in selected])
+                    email_subj = urllib.parse.quote(f"Constituent Support for {data['school_district']}")
+                    email_body = urllib.parse.quote(f"Please see my attached advocacy letter regarding House District {data['rep_district']}.\n\n{st.session_state.custom_note}")
                     
-                    mailto_url = f"mailto:?bcc={bcc_emails}&subject={email_subj}&body={email_body}"
+                    # Universal Mailto Link
+                    mailto_url = f"mailto:?bcc={bcc_list}&subject={email_subj}&body={email_body}"
                     st.markdown(f'<a href="{mailto_url}" class="deploy-btn">✉️ SEND BCC EMAIL BLAST</a>', unsafe_allow_html=True)
-                    st.caption("Recommended for instant impact. Targets are BCC'd for privacy.")
+                    st.caption("Opens your default mail app. Recipients are BCC'd for privacy.")
 
-                with c_print:
+                # OPTION B: PHYSICAL MAIL
+                with c_pdf:
                     st.subheader("Physical Mail")
-                    st.info("Download a bulk PDF pack where each letter is custom-addressed in professional block format.")
-                    # [PDF logic integrated here as previously agreed]
-                    st.button("📄 DOWNLOAD BULK PDF")
+                    id_badges = {'voter': st.session_state.is_voter, 'taxpayer': st.session_state.is_taxpayer, 
+                                 'homeowner': st.session_state.is_homeowner, 'renter': st.session_state.is_renter, 
+                                 'parent': st.session_state.is_parent, 'count': st.session_state.child_count, 
+                                 'y_ohio': st.session_state.years_ohio, 'y_dist': st.session_state.years_district}
+                    
+                    pdf_bytes = create_bulk_pdf(selected, {"name": st.session_state.u_name, "role": st.session_state.u_role, "zip": zip_input}, data, id_badges, st.session_state.custom_note)
+                    
+                    st.download_button(
+                        label=f"📄 DOWNLOAD {len(selected)} LETTERS (PDF)", 
+                        data=pdf_bytes, 
+                        file_name="Ohio_Advocacy_Pack.pdf", 
+                        mime="application/pdf"
+                    )
+                    st.caption("Generates a print-ready packet with one letter per recipient.")
 
-                if st.button("🏁 FINALIZE MISSION (+100 XP per target)"):
+                # FINALIZATION
+                st.markdown("---")
+                if st.button("✅ COMPLETE MISSION & LOG XP"):
                     st.session_state.xp_points += (100 * len(selected))
-                    st.balloons(); st.rerun()
+                    st.balloons()
+                    st.rerun()
+            else:
+                st.warning("Please select at least one target in the 'MESSAGE' tab to deploy.")
     else:
-        st.error("Zip code not found in our 2026 database. Please check the 'ohio_districts.csv' file.")
+        st.error("District data not found. Please check your zip code.")
