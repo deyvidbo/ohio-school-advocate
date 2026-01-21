@@ -165,6 +165,23 @@ def init_state():
 
 
 init_state()
+# -----------------------------
+# 3A) LOCAL-FIRST ROSTER LOAD
+# -----------------------------
+def load_local_roster():
+    try:
+        return pd.read_csv(
+            "Representatives/ohio_house_roster_2026.csv",
+            dtype=str
+        )
+    except Exception as e:
+        return None
+
+# Seed roster_df from local file if not already set
+if st.session_state.roster_df is None:
+    local_roster = load_local_roster()
+    if local_roster is not None and not local_roster.empty:
+        st.session_state.roster_df = local_roster
 
 
 # -----------------------------
@@ -818,19 +835,30 @@ with st.sidebar:
     st.divider()
     st.header("Roster")
 
-    refresh_roster = st.button("Refresh Ohio House roster")
-    if refresh_roster:
-        fetch_ohio_house_roster.clear()
+    st.subheader("Roster")
 
-    roster_df = None
-    roster_url = ""
-    roster_fetched_at = ""
+# Show status of local roster
+if st.session_state.roster_df is not None:
+    st.success("Using local Ohio House roster.")
+else:
+    st.warning("No local roster loaded.")
+
+# Optional live refresh (manual only)
+if st.button("Attempt live roster refresh"):
     try:
-        roster_df, roster_url, roster_fetched_at = fetch_ohio_house_roster()
-        st.session_state.roster_df = roster_df
-    except Exception as e:
-        st.session_state.roster_df = None
-        st.error(f"Roster fetch failed: {e}")
+        new_df, roster_url, roster_fetched_at = fetch_ohio_house_roster()
+        if new_df is not None and not new_df.empty:
+            new_df.to_csv(
+                "Representatives/ohio_house_roster_2026.csv",
+                index=False
+            )
+            st.session_state.roster_df = new_df
+            st.success("Roster refreshed and saved locally.")
+        else:
+            st.warning("Live fetch returned no data. Keeping local roster.")
+    except Exception:
+        st.warning("Live fetch failed. Continuing with local roster.")
+
 
     if st.session_state.roster_df is not None and not st.session_state.roster_df.empty:
         st.caption("Roster source")
