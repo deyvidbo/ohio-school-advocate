@@ -1,19 +1,37 @@
 # streamlit_app.py
-# Class Action: Ohio (Streamlit)
-# Single-file master app:
-# - CSV upload + cleaning
-# - No KeyError on display_label
-# - Removes commas from names
-# - Live Ohio House roster fetch (used for statewide BCC list)
+# Class Action: Ohio (Streamlit) — Single-file master app
+#
+# Features:
+# - CSV upload + cleaning (no KeyError on display_label)
+# - Removes commas from names (safe CSV/code handling)
+# - Live Ohio House roster fetch (statewide BCC list)
+# - Address-based targeting (NO ZIP guessing)
+#   Address -> geocode -> point-in-polygon -> House district -> roster join
 # - Letter PDFs
 # - Email Draft PDFs where body text matches the Letter PDF text exactly
 # - BCC batching into multiple email drafts (respects common recipient caps)
-# - ZIP export
+# - ZIP bundle export
 # - Gamified XP + rank
+#
+# IMPORTANT DATA FILES YOU MUST PROVIDE FOR MAP ACCURACY:
+# - Ohio House district boundary file (GeoJSON or Shapefile ZIP)
+#   Recommended: upload a GeoJSON (simplest) or a ZIP containing .shp/.shx/.dbf/.prj
+#   Sidebar -> "District map file" upload.
+#
+# Dependencies (add to requirements.txt if deploying):
+# streamlit
+# pandas
+# requests
+# fpdf2 (or fpdf)
+# geopy
+# geopandas
+# shapely
 
 import io
+import os
 import re
 import zipfile
+import tempfile
 from datetime import date, datetime
 from typing import List, Dict, Tuple, Optional
 
@@ -22,9 +40,25 @@ import requests
 import streamlit as st
 
 try:
-    from fpdf import FPDF
+    from fpdf import FPDF  # works with fpdf2 as well
 except Exception:
     FPDF = None
+
+# Address -> lat/lon
+try:
+    from geopy.geocoders import Nominatim
+    from geopy.extra.rate_limiter import RateLimiter
+except Exception:
+    Nominatim = None
+    RateLimiter = None
+
+# District polygon lookup
+try:
+    import geopandas as gpd
+    from shapely.geometry import Point
+except Exception:
+    gpd = None
+    Point = None
 
 
 # -----------------------------
@@ -91,6 +125,24 @@ REQUIRED_COLUMNS_MIN = [
     "rep_party",
 ]
 
+# Always-included, mandatory policy impact block
+REQUIRED_RIF_CONTEXT_BLOCK = (
+    "Hamilton City School District has publicly announced a major Reduction in Force due to budget shortfalls.\n"
+    "This decision impacts educators, support staff, and students directly.\n\n"
+    "Hamilton is not alone.\n\n"
+    "Other Ohio public school districts have announced or publicly discussed staff reductions, program cuts, or deficit-driven restructuring due to insufficient state funding.\n\n"
+    "These actions follow legislative budget decisions that did not fully fund the Fair School Funding Plan and reduced or capped critical aid streams relied upon by public schools.\n\n"
+    "The result is predictable.\n"
+    "Districts are forced to cut staff, increase class sizes, reduce services, and destabilize schools.\n\n"
+    "These are policy outcomes.\n"
+)
+
+LOCKED_CONSTITUENT_SENTENCE = (
+    "I am a constituent in your legislative district, as defined by the Ohio General Assembly's official district maps."
+)
+
+DEFAULT_STATE = "OH"
+
 
 # -----------------------------
 # 3) SESSION STATE
@@ -106,6 +158,10 @@ def init_state():
         st.session_state.loaded_df = None
     if "roster_df" not in st.session_state:
         st.session_state.roster_df = None
+    if "house_gdf" not in st.session_state:
+        st.session_state.house_gdf = None
+    if "house_map_meta" not in st.session_state:
+        st.session_state.house_map_meta = None
 
 
 init_state()
@@ -328,12 +384,139 @@ def add_action(action_type: str, detail: str, xp_gain: int):
 
 
 # -----------------------------
-# 7) LETTER + EMAIL TEXT (PDF SOURCE OF TRUTH)
+# 7) ADDRESS -> LAT/LON -> HOUSE DISTRICT
+# -----------------------------
+@st.cache_data(show_spinner=False)
+def geocode_address(street: str, city: str, state: str, zip_code: str) -> Tuple[Optional[float], Optional[float], str]:
+    if Nominatim is None or RateLimiter is None:
+        return None, None, "Geocoding dependency not installed (geopy)."
+
+    street = clean_whitespace(street)
+    city = clean_whitespace(city)
+    state = clean_whitespace(state)
+    zip_code = safe_zip(zip_code)
+
+    if not street or not city or not state:
+        return None, None, "Missing address fields."
+
+    query = f"{street}, {city}, {state} {zip_code}".strip()
+
+    try:
+        geolocator = Nominatim(user_agent="class_action_ohio")
+        geocode = RateLimiter(geolocator.geocode, min_delay_seconds=1)
+        loc = geocode(query)
+        if not loc:
+            return None, None, "Address not found."
+        return float(loc.latitude), float(loc.longitude), ""
+    except Exception as e:
+        return None, None, f"Geocoding failed: {e}"
+
+
+def _extract_district_column(gdf) -> Optional[str]:
+    if gdf is None:
+        return None
+    candidates = []
+    for c in list(gdf.columns):
+        cl = str(c).lower()
+        if "district" in cl or "dist" == cl or cl.endswith("dist") or "house" in cl:
+            candidates.append(c)
+    # Prefer common names
+    for pref in ["district", "dist", "house_dist", "house_district", "distric"]:
+        for c in candidates:
+            if pref in str(c).lower():
+                return c
+    return candidates[0] if candidates else None
+
+
+@st.cache_resource
+def load_house_districts_from_upload(file_bytes: bytes, filename: str):
+    if gpd is None or Point is None:
+        return None, "Map dependency not installed (geopandas/shapely)."
+
+    if not file_bytes:
+        return None, "No map file provided."
+
+    fn = (filename or "").lower()
+    try:
+        with tempfile.TemporaryDirectory() as td:
+            if fn.endswith(".geojson") or fn.endswith(".json"):
+                path = os.path.join(td, "districts.geojson")
+                with open(path, "wb") as f:
+                    f.write(file_bytes)
+                gdf = gpd.read_file(path)
+            elif fn.endswith(".zip"):
+                zpath = os.path.join(td, "districts.zip")
+                with open(zpath, "wb") as f:
+                    f.write(file_bytes)
+                with zipfile.ZipFile(zpath, "r") as z:
+                    z.extractall(td)
+                # Find a .shp inside extracted
+                shp_path = None
+                for root, _, files in os.walk(td):
+                    for n in files:
+                        if n.lower().endswith(".shp"):
+                            shp_path = os.path.join(root, n)
+                            break
+                    if shp_path:
+                        break
+                if not shp_path:
+                    return None, "ZIP did not contain a .shp file."
+                gdf = gpd.read_file(shp_path)
+            else:
+                return None, "Unsupported map format. Use GeoJSON or a Shapefile ZIP."
+
+            # Ensure lat/lon CRS
+            try:
+                gdf = gdf.to_crs(epsg=4326)
+            except Exception:
+                # Some files have no CRS; assume 4326 as last resort
+                gdf.set_crs(epsg=4326, inplace=True)
+
+            dist_col = _extract_district_column(gdf)
+            if not dist_col:
+                return None, "Could not find a district number column in the map file."
+
+            # Keep only geometry + district column (smaller + faster)
+            gdf = gdf[[dist_col, "geometry"]].copy()
+            gdf.rename(columns={dist_col: "house_district"}, inplace=True)
+
+            # Make sure district values parse to int
+            def _to_int(v):
+                m = re.search(r"(\d+)", str(v))
+                return int(m.group(1)) if m else None
+
+            gdf["house_district"] = gdf["house_district"].apply(_to_int)
+            gdf = gdf.dropna(subset=["house_district"]).copy()
+            gdf["house_district"] = gdf["house_district"].astype(int)
+
+            return gdf, ""
+    except Exception as e:
+        return None, f"Failed to load map file: {e}"
+
+
+def house_district_from_point(lat: float, lon: float, house_gdf) -> Optional[int]:
+    if house_gdf is None or Point is None:
+        return None
+    try:
+        pt = Point(float(lon), float(lat))
+        match = house_gdf[house_gdf.geometry.contains(pt)]
+        if match.empty:
+            return None
+        return int(match.iloc[0]["house_district"])
+    except Exception:
+        return None
+
+
+# -----------------------------
+# 8) LETTER + EMAIL TEXT (PDF SOURCE OF TRUTH)
 # -----------------------------
 def build_letter_text(
     sender_name: str,
+    sender_street: str,
     sender_city: str,
+    sender_state: str,
     sender_zip: str,
+    sender_school_district: str,
     rep_name: str,
     rep_role: str,
     rep_district: str,
@@ -349,13 +532,34 @@ def build_letter_text(
     sender_name = remove_commas_from_name(sender_name)
     rep_name = remove_commas_from_name(rep_name)
 
+    sender_street = clean_whitespace(sender_street)
+    sender_city = clean_whitespace(sender_city)
+    sender_state = clean_whitespace(sender_state)
+    sender_zip = safe_zip(sender_zip)
+    sender_school_district = clean_whitespace(sender_school_district)
+
     header = f"{today_str}\n\n{rep_name}\n{rep_role} — District {rep_district}\n"
+
+    # Address block: full address required; ZIP is validation only but included in letter as part of address
+    sender_line_1 = f"My name is {sender_name}."
+    sender_line_2 = f"I live at {sender_street}, {sender_city}, {sender_state} {sender_zip}."
+    sender_line_3 = f"My public school district is {sender_school_district}." if sender_school_district else ""
 
     body = (
         f"Dear {rep_name},\n\n"
-        f"My name is {sender_name}. I live in {sender_city}, Ohio {sender_zip}.\n\n"
-        f"I am writing about: {clean_whitespace(issue)}\n\n"
+        f"{LOCKED_CONSTITUENT_SENTENCE}\n\n"
+        f"{sender_line_1}\n"
+        f"{sender_line_2}\n"
     )
+    if sender_line_3:
+        body += f"{sender_line_3}\n"
+    body += "\n"
+
+    # Mandatory block
+    body += REQUIRED_RIF_CONTEXT_BLOCK + "\n"
+
+    # User issue/stated purpose
+    body += f"I am writing about: {clean_whitespace(issue)}\n\n"
 
     if story.strip():
         body += f"My experience:\n{story.strip()}\n\n"
@@ -408,7 +612,7 @@ def build_email_text_with_bcc(
 
 
 # -----------------------------
-# 8) PDF + ZIP
+# 9) PDF + ZIP
 # -----------------------------
 def pdf_from_text(title: str, text: str) -> bytes:
     if FPDF is None:
@@ -450,7 +654,7 @@ def make_bundle_zip(files: List[Tuple[str, bytes]]) -> bytes:
 
 
 # -----------------------------
-# 9) LIVE OHIO HOUSE ROSTER (STATEWIDE BCC SOURCE)
+# 10) LIVE OHIO HOUSE ROSTER (STATEWIDE BCC SOURCE)
 # -----------------------------
 def rep_email_for_district(d: int) -> str:
     return f"rep{d:02d}@ohiohouse.gov"
@@ -471,11 +675,9 @@ def fetch_ohio_house_roster() -> Tuple[pd.DataFrame, str, str]:
 
     html = r.text
 
-    # Try tables first
     rows = []
     try:
         tables = pd.read_html(html)
-        # Look for a table that has "District" and "Member" columns
         best = None
         for t in tables:
             cols = [str(c).lower() for c in t.columns]
@@ -523,7 +725,6 @@ def fetch_ohio_house_roster() -> Tuple[pd.DataFrame, str, str]:
     except Exception:
         rows = []
 
-    # Fallback regex parse
     if not rows:
         pattern = re.compile(r">([^<]+?)\s+District\s+(\d+)\s*\|\s*([DRI])", re.IGNORECASE)
         matches = pattern.findall(html)
@@ -588,9 +789,33 @@ def school_districts_by_house_district(local_df: pd.DataFrame) -> pd.DataFrame:
 
 
 # -----------------------------
-# 10) SIDEBAR
+# 11) SIDEBAR
 # -----------------------------
 with st.sidebar:
+    st.header("District mapping")
+
+    map_file = st.file_uploader(
+        "District map file (GeoJSON or Shapefile ZIP)",
+        type=["geojson", "json", "zip"],
+        help="Upload Ohio House district boundaries. ZIP must include .shp/.shx/.dbf/.prj.",
+    )
+
+    if map_file is not None:
+        gdf, err = load_house_districts_from_upload(map_file.getvalue(), map_file.name)
+        if err:
+            st.session_state.house_gdf = None
+            st.session_state.house_map_meta = None
+            st.error(err)
+        else:
+            st.session_state.house_gdf = gdf
+            st.session_state.house_map_meta = f"{map_file.name} ({len(gdf)} polygons)"
+            st.success("District map loaded.")
+            st.caption(st.session_state.house_map_meta)
+    else:
+        if st.session_state.house_gdf is None:
+            st.warning("Upload a district map file to enable address-based targeting.")
+
+    st.divider()
     st.header("Roster")
 
     refresh_roster = st.button("Refresh Ohio House roster")
@@ -614,17 +839,20 @@ with st.sidebar:
         st.write(roster_fetched_at)
 
     st.divider()
-    st.header("Data")
+    st.header("Data (optional)")
 
-    uploaded = st.file_uploader("Upload CSV", type=["csv"])
+    uploaded = st.file_uploader("Upload master CSV (ZIP/school district mapping)", type=["csv"])
     sample_btn = st.button("Load sample data")
 
     st.divider()
-    st.header("Your info")
+    st.header("Your info (full address required)")
 
     sender_name = st.text_input("Your name", value="")
+    sender_street = st.text_input("Street address", value="")
     sender_city = st.text_input("City", value="Hamilton")
-    sender_zip = st.text_input("ZIP", value="45011")
+    sender_state = st.text_input("State", value=DEFAULT_STATE)
+    sender_zip = st.text_input("ZIP (validation only)", value="45011")
+    sender_school_district = st.text_input("Public school district (optional)", value="Hamilton City School District")
 
     st.divider()
     st.header("Mission")
@@ -632,9 +860,9 @@ with st.sidebar:
     issue = st.text_input("Issue (short)", value="Protect public schools and retain educators")
     story = st.text_area("Your experience (short)", value="", height=120)
 
-    ask_1 = st.text_input("Ask 1", value="Support a fair evaluation and staffing process that protects students.")
-    ask_2 = st.text_input("Ask 2", value="Oppose policy changes that weaken teacher quality or stability.")
-    ask_3 = st.text_input("Ask 3", value="Meet with local educators and families in this zip code.")
+    ask_1 = st.text_input("Ask 1", value="Support a school funding approach that stabilizes staffing and services.")
+    ask_2 = st.text_input("Ask 2", value="Oppose budget moves that shift costs onto local communities and classrooms.")
+    ask_3 = st.text_input("Ask 3", value="Meet with local educators and families impacted by staffing reductions.")
 
     closing = st.text_area(
         "Closing line",
@@ -647,7 +875,7 @@ with st.sidebar:
 
 
 # -----------------------------
-# 11) LOAD DATA
+# 12) LOAD DATA (optional master CSV)
 # -----------------------------
 def load_sample_df() -> pd.DataFrame:
     return pd.DataFrame(
@@ -693,10 +921,11 @@ except Exception as e:
 
 df = st.session_state.loaded_df
 roster_df = st.session_state.roster_df
+house_gdf = st.session_state.house_gdf
 
 
 # -----------------------------
-# 12) HEADER + DASHBOARD
+# 13) HEADER + DASHBOARD
 # -----------------------------
 st.title("Class Action: Ohio")
 st.write("Draft letters. Draft emails. Export clean packets. Track your progress.")
@@ -724,7 +953,7 @@ st.divider()
 
 
 # -----------------------------
-# 13) TABS
+# 14) TABS
 # -----------------------------
 tab_roster, tab_warroom, tab_builder, tab_logs = st.tabs(
     ["Ohio House Roster", "War Room", "Builder", "Logs"]
@@ -780,8 +1009,11 @@ with tab_roster:
 with tab_warroom:
     st.subheader("Targets")
 
+    st.write("Primary targeting is address-based in Builder.")
+    st.write("This War Room tab is an optional explorer for your uploaded master CSV.")
+
     if df is None:
-        st.info("Upload a CSV to begin. Or load sample data in the sidebar.")
+        st.info("Upload a master CSV to use this tab. Or use Builder for address-based targeting.")
         st.stop()
 
     zips = sorted([z for z in df["zip_code"].dropna().unique().tolist() if z])
@@ -815,44 +1047,79 @@ with tab_warroom:
             st.dataframe(view_df[keep_cols], use_container_width=True, hide_index=True)
 
 with tab_builder:
-    st.subheader("Draft builder")
+    st.subheader("Draft builder (address-based, deterministic)")
 
-    if df is None:
-        st.info("Upload a CSV to begin. Or load sample data in the sidebar.")
-        st.stop()
-
-    zips = sorted([z for z in df["zip_code"].dropna().unique().tolist() if z])
-    districts = sorted([d for d in df["school_district"].dropna().unique().tolist() if d])
-
-    b1, b2 = st.columns(2)
-    with b1:
-        zip_choice_b = st.selectbox("ZIP (builder)", [""] + zips, index=0, key="zip_builder")
-    with b2:
-        district_choice_b = st.selectbox(
-            "School district (builder)", [""] + districts, index=0, key="dist_builder"
-        )
-
-    reps_b = reps_from_df(df, zip_choice_b, district_choice_b)
-    if not reps_b:
-        st.warning("No representatives found for that filter.")
-        st.stop()
-
-    labels_b = [r["display_label"] for r in reps_b]
-    selected_label_b = st.selectbox("Primary target (preview)", labels_b, index=0)
-
-    chosen_rep = reps_b[labels_b.index(selected_label_b)]
-
-    sender_zip_clean = safe_zip(sender_zip)
-    sender_city_clean = clean_whitespace(sender_city)
+    # Step 1: Full address required
     sender_name_clean = remove_commas_from_name(sender_name) if sender_name else "A concerned constituent"
+    sender_street_clean = clean_whitespace(sender_street)
+    sender_city_clean = clean_whitespace(sender_city)
+    sender_state_clean = clean_whitespace(sender_state) or DEFAULT_STATE
+    sender_zip_clean = safe_zip(sender_zip)
+    sender_school_district_clean = clean_whitespace(sender_school_district)
 
+    missing_fields = []
+    if not sender_street_clean:
+        missing_fields.append("Street address")
+    if not sender_city_clean:
+        missing_fields.append("City")
+    if not sender_state_clean:
+        missing_fields.append("State")
+
+    if missing_fields:
+        st.warning("Enter a full address to continue: " + ", ".join(missing_fields))
+        st.stop()
+
+    if house_gdf is None:
+        st.error("District map not loaded. Upload a district map file in the sidebar to enable address targeting.")
+        st.stop()
+
+    if roster_df is None or roster_df.empty:
+        st.error("Ohio House roster not available right now.")
+        st.stop()
+
+    # Step 2: Geocode
+    lat, lon, geo_err = geocode_address(sender_street_clean, sender_city_clean, sender_state_clean, sender_zip_clean)
+    if geo_err:
+        st.error(geo_err)
+        st.stop()
+
+    # Step 4: Point-in-polygon
+    house_district = house_district_from_point(lat, lon, house_gdf)
+    if house_district is None:
+        st.error("Address did not match a House district boundary in the uploaded map.")
+        st.stop()
+
+    # Step 5: District -> roster join
+    rep_match = roster_df[roster_df["rep_district"].astype(int) == int(house_district)]
+    if rep_match.empty:
+        st.error(f"No representative found for House District {house_district}.")
+        st.stop()
+
+    chosen_rep = rep_match.iloc[0].to_dict()
+    chosen_rep_email = normalize_email(chosen_rep.get("rep_email", ""))
+    chosen_rep_name = safe_str(chosen_rep.get("rep_name", "")) or "Representative"
+    chosen_rep_role = safe_str(chosen_rep.get("rep_role", "")) or "State Rep"
+    chosen_rep_dist = safe_str(chosen_rep.get("rep_district", "")) or str(house_district)
+
+    # Display verification
+    st.markdown("Verification")
+    v1, v2, v3, v4 = st.columns(4)
+    v1.metric("Latitude", f"{lat:.5f}")
+    v2.metric("Longitude", f"{lon:.5f}")
+    v3.metric("House District", str(house_district))
+    v4.metric("Target", chosen_rep_name)
+
+    # Step 6: Letter text with locked language + required context
     letter_text = build_letter_text(
         sender_name=sender_name_clean,
+        sender_street=sender_street_clean,
         sender_city=sender_city_clean,
+        sender_state=sender_state_clean,
         sender_zip=sender_zip_clean,
-        rep_name=chosen_rep.get("rep_name", ""),
-        rep_role=chosen_rep.get("rep_role", ""),
-        rep_district=chosen_rep.get("rep_district", ""),
+        sender_school_district=sender_school_district_clean,
+        rep_name=chosen_rep_name,
+        rep_role=chosen_rep_role,
+        rep_district=chosen_rep_dist,
         issue=issue,
         story=story,
         ask_1=ask_1,
@@ -863,7 +1130,7 @@ with tab_builder:
 
     email_subject = build_email_subject(issue)
 
-    # BCC settings
+    # Step 7: BCC settings
     st.divider()
     st.subheader("BCC settings")
 
@@ -877,16 +1144,15 @@ with tab_builder:
     )
 
     statewide_bcc = build_bcc_list_from_roster(roster_df) if bcc_enabled else []
-    primary_to = normalize_email(chosen_rep.get("rep_email", ""))
-    statewide_bcc = [e for e in statewide_bcc if e != primary_to]
+    statewide_bcc = [e for e in statewide_bcc if e != chosen_rep_email]
     bcc_batches = chunk_list(statewide_bcc, int(bcc_batch_size)) if statewide_bcc else [[]]
 
     st.write(f"Total statewide BCC emails: {len(statewide_bcc)}")
     st.write(f"Email draft batches: {len(bcc_batches)}")
 
-    # Build an email draft preview for batch 1
+    # Email draft preview for batch 1
     email_text_preview = build_email_text_with_bcc(
-        to_email=primary_to,
+        to_email=chosen_rep_email,
         subject=email_subject,
         bcc_emails=bcc_batches[0] if bcc_batches else [],
         body_text_same_as_letter=letter_text,
@@ -900,6 +1166,7 @@ with tab_builder:
         st.markdown("Email draft preview (matches PDFs)")
         st.text_area("", value=email_text_preview, height=420, key="email_preview")
 
+    # Step 8: Safeguards already enforced above (stop on failures)
     st.divider()
     st.subheader("Generate files")
 
@@ -909,14 +1176,14 @@ with tab_builder:
     with colB:
         gen_email_pdfs = st.button("Generate email draft PDF(s)")
     with colC:
-        gen_bundle = st.button("Generate ZIP (letters + email drafts)")
+        gen_bundle = st.button("Generate ZIP (letter + email drafts)")
 
     ext = "pdf" if FPDF is not None else "txt"
 
     if gen_letter_pdf:
-        title = f"Letter — {chosen_rep.get('rep_name','Representative')}"
+        title = f"Letter — {chosen_rep_name}"
         data = pdf_from_text(title, letter_text)
-        add_action("Letter draft", f"{chosen_rep.get('rep_name','')}", XP_PER_LETTER)
+        add_action("Letter draft", f"{chosen_rep_name}", XP_PER_LETTER)
         st.download_button(
             "Download letter file",
             data=data,
@@ -925,20 +1192,19 @@ with tab_builder:
         )
 
     if gen_email_pdfs:
-        # One PDF per batch
         files_out = []
         for i, bcc_batch in enumerate(bcc_batches, start=1):
             email_text = build_email_text_with_bcc(
-                to_email=primary_to,
+                to_email=chosen_rep_email,
                 subject=email_subject,
                 bcc_emails=bcc_batch,
                 body_text_same_as_letter=letter_text,
             )
-            title = f"Email Draft — {chosen_rep.get('rep_name','Representative')} — Batch {i:03d}"
+            title = f"Email Draft — {chosen_rep_name} — Batch {i:03d}"
             data = pdf_from_text(title, email_text)
             files_out.append((f"{filename_safe(title)}.{ext}", data))
 
-        add_action("Email drafts", f"{chosen_rep.get('rep_name','')} ({len(files_out)} batch)", XP_PER_EMAIL)
+        add_action("Email drafts", f"{chosen_rep_name} ({len(files_out)} batch)", XP_PER_EMAIL)
 
         if len(files_out) == 1:
             st.download_button(
@@ -957,59 +1223,30 @@ with tab_builder:
             )
 
     if gen_bundle:
-        batch_reps = reps_b
         files: List[Tuple[str, bytes]] = []
 
-        # Build statewide list once per bundle
-        statewide_bcc_all = build_bcc_list_from_roster(roster_df) if bcc_enabled else []
+        # Letter
+        letter_title = f"Letter — {chosen_rep_name}"
+        files.append((f"letters/{filename_safe(letter_title)}.{ext}", pdf_from_text(letter_title, letter_text)))
 
-        for r in batch_reps:
-            rep_name = safe_str(r.get("rep_name")) or "Representative"
-            rep_role = safe_str(r.get("rep_role"))
-            rep_dist = safe_str(r.get("rep_district"))
-            rep_email = normalize_email(r.get("rep_email", ""))
-
-            lt = build_letter_text(
-                sender_name=sender_name_clean,
-                sender_city=sender_city_clean,
-                sender_zip=sender_zip_clean,
-                rep_name=rep_name,
-                rep_role=rep_role,
-                rep_district=rep_dist,
-                issue=issue,
-                story=story,
-                ask_1=ask_1,
-                ask_2=ask_2,
-                ask_3=ask_3,
-                closing=closing,
+        # Emails (bcc batches)
+        for i, bcc_batch in enumerate(bcc_batches, start=1):
+            email_text = build_email_text_with_bcc(
+                to_email=chosen_rep_email,
+                subject=email_subject,
+                bcc_emails=bcc_batch,
+                body_text_same_as_letter=letter_text,
             )
+            email_title = f"Email Draft — {chosen_rep_name} — Batch {i:03d}"
+            files.append((f"emails/{filename_safe(email_title)}.{ext}", pdf_from_text(email_title, email_text)))
 
-            subj = build_email_subject(issue)
-
-            # Letter PDF
-            letter_title = f"Letter — {rep_name}"
-            files.append((f"letters/{filename_safe(letter_title)}.{ext}", pdf_from_text(letter_title, lt)))
-
-            # Email Draft PDFs in BCC batches (body equals letter text)
-            bcc_list = [e for e in unique_emails(statewide_bcc_all) if e and e != rep_email]
-            batches = chunk_list(bcc_list, int(bcc_batch_size)) if bcc_list else [[]]
-
-            for i, bcc_batch in enumerate(batches, start=1):
-                email_text = build_email_text_with_bcc(
-                    to_email=rep_email,
-                    subject=subj,
-                    bcc_emails=bcc_batch,
-                    body_text_same_as_letter=lt,
-                )
-                email_title = f"Email Draft — {rep_name} — Batch {i:03d}"
-                files.append((f"emails/{filename_safe(email_title)}.{ext}", pdf_from_text(email_title, email_text)))
-
+        # Log
         if st.session_state.actions:
             log_df = pd.DataFrame(st.session_state.actions)
             files.append(("action_log.csv", log_df.to_csv(index=False).encode("utf-8")))
 
         bundle = make_bundle_zip(files)
-        add_action("Export", f"{len(batch_reps)} targets", XP_PER_EXPORT)
+        add_action("Export", f"House District {house_district} target", XP_PER_EXPORT)
         st.session_state.last_export_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
         st.download_button(
@@ -1040,11 +1277,14 @@ with tab_logs:
 
 
 # -----------------------------
-# 14) DATA HEALTH CHECKS
+# 15) DATA HEALTH CHECKS
 # -----------------------------
 with st.expander("Data health checks", expanded=False):
+    st.write("Map file status:")
+    st.write(st.session_state.house_map_meta or "No map loaded")
+
     if df is None:
-        st.write("No dataset loaded.")
+        st.write("No master CSV dataset loaded.")
     else:
         st.write("Columns found:")
         st.write(list(df.columns))
