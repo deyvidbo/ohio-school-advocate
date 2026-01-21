@@ -1,0 +1,453 @@
+school_district,rep_name,rep_district,rep_email,rep_party,rep_stance,rep_role,rep_address,enrollment,poverty_rate,minority_rate
+Akron City Schools,Scott Oelslager,48,rep48@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",20000,72,38
+Alexander Local Schools,Kevin Ritter,94,rep94@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",1800,28,6
+Amherst Exempted Village Schools,Jodi Salvo,51,rep51@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",3800,18,8
+Anthony Wayne Local Schools,Josh Williams,44,rep44@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",5200,18,12
+Archbold Area Local Schools,James M. Hoops,81,rep81@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",1900,22,8
+Ashland City Schools,Melanie Miller,67,rep67@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",3600,42,10
+Ashtabula Area City Schools,David Thomas,65,rep65@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",3400,85,25
+Athens City Schools,Kevin Ritter,94,rep94@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",2500,35,10
+Aurora City Schools,Scott Oelslager,48,rep48@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",3800,6,8
+Austintown Local Schools,Lauren McNally,58,rep58@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",4700,42,25
+Avon Lake City Schools,"Joseph A. Miller, III",53,rep53@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",4200,8,12
+Barberton City Schools,Scott Oelslager,48,rep48@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",4200,48,18
+Bay Village City Schools,Erika White,41,rep41@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",2500,6,10
+Beachwood City Schools,Juanita O. Brent,18,rep18@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",1500,10,35
+Beaver Local Schools,Monica Robb Blasdel,79,rep79@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",2600,35,6
+Bedford City Schools,Erika White,41,rep41@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",2400,38,35
+Bellaire Local Schools,Ty Moore,95,rep95@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",1200,60,7
+Berea City Schools,Phil Plummer,39,rep39@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",3000,18,22
+Bethel-Tate Local Schools,Adam C. Bird,63,rep63@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",2000,35,10
+Big Walnut Local Schools,Beth Lear,61,rep61@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",4100,12,10
+Bloom-Carroll Local Schools,Brian Stewart,12,rep12@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",1800,32,8
+Boardman Local Schools,Lauren McNally,58,rep58@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",3900,38,22
+Bowling Green City Schools,Haraz N. Ghanbari,75,rep75@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",2900,35,15
+Brecksville-Broadview Heights City Schools,Phil Plummer,39,rep39@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",5200,10,12
+Brooklyn City Schools,Erika White,41,rep41@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",1800,22,25
+Brunswick City Schools,Sharon A. Ray,66,rep66@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",7800,18,14
+Bryan City Schools,James M. Hoops,81,rep81@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",2100,35,12
+Buckeye Central Local Schools,Melanie Miller,67,rep67@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",1200,30,6
+Buckeye Local Schools (Jefferson),Ron Ferguson,96,rep96@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",2800,45,6
+Bucyrus City Schools,Melanie Miller,67,rep67@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",2300,48,12
+Canal Winchester Local Schools,Meredith R. Lawson-Rowe,5,rep05@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",3800,28,30
+Canfield Local Schools,Nick Santucci,64,rep64@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",3200,18,8
+Canton City Schools,Marilyn John,76,rep76@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",7800,68,32
+Chagrin Falls Exempted Village Schools,Juanita O. Brent,18,rep18@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",1900,6,22
+Champion Local Schools,Nick Santucci,64,rep64@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",2800,22,6
+Chillicothe City Schools,Mark Johnson,92,rep92@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",2800,60,15
+Cincinnati Public Schools,Dani Isaacsohn,24,rep24@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",33000,78,65
+Cincinnati Public Schools,Cecil Thomas,25,rep25@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",33000,78,65
+Cincinnati Public Schools,Ashley Bryant Bailey,26,rep26@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",33000,78,65
+Cincinnati Public Schools,Rachel B. Baker,27,rep27@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",33000,78,65
+Cincinnati Public Schools,Cindy Abrams,29,rep29@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",33000,78,65
+Circleville City Schools,Brian Stewart,12,rep12@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",2000,50,10
+Cleveland Heights-University Heights City Schools,Juanita O. Brent,18,rep18@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",5100,28,48
+Cleveland Metropolitan School District,Chris Glassburn,15,rep15@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",36000,100,82
+Cleveland Metropolitan School District,Juanita O. Brent,18,rep18@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",36000,100,82
+Cleveland Metropolitan School District,Terrence Upchurch,20,rep20@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",36000,100,82
+Cloverleaf Local Schools,Sharon A. Ray,66,rep66@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",2400,22,10
+Columbus City Schools,Dontavius L. Jarrells,1,rep01@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",46000,100,70
+Columbus City Schools,Latyna M. Humphrey,2,rep02@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",46000,100,70
+Columbus City Schools,Ismail Mohamed,3,rep03@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",46000,100,70
+Columbus City Schools,Christine Cockley,6,rep06@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",46000,100,70
+Columbus City Schools,C. Allison Russo,7,rep07@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",46000,100,70
+Columbus City Schools,Anita Somani,8,rep08@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",46000,100,70
+Coshocton City Schools,Adam Holmes,97,rep97@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",3200,55,8
+Dayton City Schools,Desiree Tims,38,rep38@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",12000,72,58
+Defiance City Schools,James M. Hoops,81,rep81@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",2400,45,25
+Dublin City Schools,Anita Somani,8,rep08@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",16500,14,30
+East Liverpool City Schools,Monica Robb Blasdel,79,rep79@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",2100,72,12
+Elyria City Schools,Gayle Manning,52,rep52@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",5900,68,40
+Euclid City Schools,Darnell T. Brewer,22,rep22@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",4800,98,92
+Fairfield City Schools,Jennifer Gross,45,rep45@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",9000,40,35
+Fremont City Schools,Gary Click,88,rep88@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",3900,55,35
+Gahanna-Jefferson Schools,Munira Abdullahi,9,rep09@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",7800,28,42
+Galion City Schools,Melanie Miller,67,rep67@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",3200,52,18
+Gallia County Local Schools,Jason Stephens,93,rep93@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",2600,52,10
+Garfield Heights City Schools,Erika White,41,rep41@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",3300,48,38
+Granville Exempted Village Schools,Thaddeus J. Claggett,68,rep68@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",2600,18,10
+Groveport Madison Schools,Mark Sigrist,10,rep10@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",4800,55,38
+Hamilton City Schools,Thomas Hall,46,rep46@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",9600,65,45
+Hilliard City Schools,Crystal Lett,11,rep11@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",16000,18,25
+Huber Heights City Schools,Phil Plummer,39,rep39@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",6300,28,18
+Ironton City Schools,Jason Stephens,93,rep93@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",1400,65,12
+Jackson City Schools,Justin Pizzulli,90,rep90@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",2600,75,18
+John Glenn Local Schools,Adam Holmes,97,rep97@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",2200,38,8
+Jonathan Alder Local Schools,Beth Lear,61,rep61@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",2400,12,8
+Kenston Local Schools,Juanita O. Brent,18,rep18@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",2900,8,18
+Kent City Schools,Scott Oelslager,48,rep48@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",4500,38,22
+Lakewood City Schools,Tristan Rader,13,rep13@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",4500,35,22
+Lakota Local Schools,Haraz N. Ghanbari,75,rep75@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",900,32,8
+Lancaster City Schools,Heidi Workman,72,rep72@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",6000,50,10
+Lexington Local Schools,Marilyn John,76,rep76@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",4600,18,8
+Logan-Hocking Local Schools,Ron Ferguson,96,rep96@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",1800,48,6
+London City Schools,Beth Lear,61,rep61@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",3200,42,18
+Lorain City Schools,"Joseph A. Miller, III",53,rep53@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",6200,100,75
+Madison Local Schools,Daniel P. Troy,23,rep23@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",3100,35,15
+Mansfield City Schools,Marilyn John,76,rep76@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",3200,85,40
+Marion City Schools,Melanie Miller,67,rep67@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",4500,65,18
+Mayfield City Schools,Eric Synenberg,21,rep21@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",3800,15,25
+Medina City Schools,Sharon A. Ray,66,rep66@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",6500,15,12
+Mentor Exempted Village Schools,Daniel P. Troy,23,rep23@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",7300,18,12
+Milford Exempted Village Schools,Jean Schmidt,62,rep62@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",6400,15,8
+Niles City Schools,Nick Santucci,64,rep64@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",2300,52,14
+Nordonia Hills City Schools,Scott Oelslager,48,rep48@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",3700,18,12
+North Canton City Schools,Marilyn John,76,rep76@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",4900,10,12
+North Olmsted City Schools,Bride Rose Sweeney,16,rep16@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",4000,14,20
+North Ridgeville City Schools,Bride Rose Sweeney,16,rep16@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",6000,12,18
+North Royalton City Schools,Phil Plummer,39,rep39@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",4600,12,15
+Northmont City Schools,Phil Plummer,39,rep39@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",5800,18,10
+Oakwood City Schools,Phil Plummer,39,rep39@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",2200,6,10
+  Oberlin City Schools,Michelle Teska,55,rep55@ohiohouse.gov,R,Hostile,State Rep,Re-election,"77 S High St, Columbus, OH 43215",1000,45,35,62000,14,65
+Olmsted Falls City Schools,Phil Plummer,39,rep39@ohiohouse.gov,R,Hostile,State Rep,Re-election,"77 S High St, Columbus, OH 43215",2500,10,12,74000,15,76
+Ontario Local Schools,Marilyn John,76,rep76@ohiohouse.gov,R,Hostile,State Rep,Re-election,"77 S High St, Columbus, OH 43215",4200,28,10,66000,14,68
+Orange City Schools,Juanita O. Brent,18,rep18@ohiohouse.gov,D,Friendly,State Rep,Re-election,"77 S High St, Columbus, OH 43215",2100,8,28,88000,18,85
+Otsego Local Schools,Haraz N. Ghanbari,75,rep75@ohiohouse.gov,R,Hostile,State Rep,Re-election,"77 S High St, Columbus, OH 43215",1800,24,8,64000,13,60
+Painesville City Local Schools,Daniel P. Troy,23,rep23@ohiohouse.gov,D,Friendly,State Rep,Re-election,"77 S High St, Columbus, OH 43215",7200,42,22,65000,12,60
+Parma City Schools,Sean P. Brennan,14,rep14@ohiohouse.gov,D,Friendly,State Rep,Re-election,"77 S High St, Columbus, OH 43215",9100,45,20,72000,14,70
+Perry Local Schools,Daniel P. Troy,23,rep23@ohiohouse.gov,D,Friendly,State Rep,Re-election,"77 S High St, Columbus, OH 43215",2100,28,12,74000,15,72
+Perry Local Schools,Marilyn John,76,rep76@ohiohouse.gov,R,Hostile,State Rep,Re-election,"77 S High St, Columbus, OH 43215",4200,18,10,76000,16,80
+Pickerington Local Schools,Jeff LaRe,73,rep73@ohiohouse.gov,R,Hostile,State Rep,Re-election,"77 S High St, Columbus, OH 43215",10800,25,45,72000,13,65
+Plain Local Schools,Marilyn John,76,rep76@ohiohouse.gov,R,Hostile,State Rep,Re-election,"77 S High St, Columbus, OH 43215",6000,22,18,70000,15,68
+Plymouth-Shiloh Local Schools,Melanie Miller,67,rep67@ohiohouse.gov,R,Hostile,State Rep,Re-election,"77 S High St, Columbus, OH 43215",1700,38,6,62000,13,58
+Poland Local Schools,Tex Fischer,59,rep59@ohiohouse.gov,R,Hostile,State Rep,Re-election,"77 S High St, Columbus, OH 43215",1800,15,8,70000,15,70
+Revere Local Schools,Phil Plummer,39,rep39@ohiohouse.gov,R,Hostile,State Rep,Re-election,"77 S High St, Columbus, OH 43215",3600,12,10,72000,15,74
+River Valley Local Schools,Melanie Miller,67,rep67@ohiohouse.gov,R,Hostile,State Rep,Re-election,"77 S High St, Columbus, OH 43215",1900,28,8,64000,14,64
+River View Local Schools,Adam Holmes,97,rep97@ohiohouse.gov,R,Hostile,State Rep,Re-election,"77 S High St, Columbus, OH 43215",1800,38,6,61000,13,60
+Rocky River City Schools,Bride Rose Sweeney,16,rep16@ohiohouse.gov,D,Friendly,State Rep,Re-election,"77 S High St, Columbus, OH 43215",2600,6,12,80000,16,78
+Rolling Hills Local Schools,Adam Holmes,97,rep97@ohiohouse.gov,R,Hostile,State Rep,Re-election,"77 S High St, Columbus, OH 43215",1500,36,8,60000,13,58
+Sebring Local Schools,Nick Santucci,64,rep64@ohiohouse.gov,R,Hostile,State Rep,Re-election,"77 S High St, Columbus, OH 43215",1100,38,6,62000,13,60
+Shadyside Local Schools,Ty Moore,95,rep95@ohiohouse.gov,R,Hostile,State Rep,Re-election,"77 S High St, Columbus, OH 43215",1100,28,4,57000,13,58
+Sheffield-Sheffield Lake City Schools,"Joseph A. Miller, III",53,rep53@ohiohouse.gov,D,Friendly,State Rep,Re-election,"77 S High St, Columbus, OH 43215",3300,38,22,65000,13,60
+Solon City Schools,"Phillip M. Robinson, Jr.",19,rep19@ohiohouse.gov,D,Friendly,State Rep,Re-election,"77 S High St, Columbus, OH 43215",4400,8,42,92000,17,88
+South Central Local Schools,Melanie Miller,67,rep67@ohiohouse.gov,R,Hostile,State Rep,Re-election,"77 S High St, Columbus, OH 43215",1300,42,6,62000,13,60
+South Range Local Schools,Nick Santucci,64,rep64@ohiohouse.gov,R,Hostile,State Rep,Re-election,"77 S High St, Columbus, OH 43215",1500,12,5,65000,14,64
+South Range Local Schools,David Thomas,65,rep65@ohiohouse.gov,R,Hostile,State Rep,Re-election,"77 S High St, Columbus, OH 43215",1500,28,8,60000,13,58
+South-Western City Schools,Mark Sigrist,10,rep10@ohiohouse.gov,D,Friendly,State Rep,Re-election,"77 S High St, Columbus, OH 43215",21000,48,40,75000,13,65
+Springfield Local Schools (Lucas),Josh Williams,44,rep44@ohiohouse.gov,R,Hostile,State Rep,Re-election,"77 S High St, Columbus, OH 43215",5100,28,18,68000,13,62
+St. Clairsville-Richland City Schools,Ty Moore,95,rep95@ohiohouse.gov,R,Hostile,State Rep,Re-election,"77 S High St, Columbus, OH 43215",1600,30,5,57000,13,58
+Steubenville City Schools,Ron Ferguson,96,rep96@ohiohouse.gov,R,Hostile,State Rep,Re-election,"77 S High St, Columbus, OH 43215",2200,75,35,59000,13,60
+Stow-Munroe Falls City Schools,Scott Oelslager,48,rep48@ohiohouse.gov,R,Hostile,State Rep,Re-election,"77 S High St, Columbus, OH 43215",5200,14,12,74000,15,72
+Strongsville City Schools,Michael D. Dovilla,17,rep17@ohiohouse.gov,R,Hostile,State Rep,Re-election,"77 S High St, Columbus, OH 43215",5400,12,15,80000,16,80
+Swanton Local Schools,Josh Williams,44,rep44@ohiohouse.gov,R,Hostile,State Rep,Re-election,"77 S High St, Columbus, OH 43215",1600,24,10,68000,13,62
+Tallmadge City Schools,Scott Oelslager,48,rep48@ohiohouse.gov,R,Hostile,State Rep,Re-election,"77 S High St, Columbus, OH 43215",3500,22,10,70000,15,68
+Teays Valley Local Schools,Brian Stewart,12,rep12@ohiohouse.gov,R,Hostile,State Rep,Re-election,"77 S High St, Columbus, OH 43215",5100,22,10,62000,12,60
+Toledo Public Schools,Phil Plummer,39,rep39@ohiohouse.gov,R,Hostile,State Rep,Re-election,"77 S High St, Columbus, OH 43215",23000,70,60,68000,13,62
+Toledo Public Schools,Erika White,41,rep41@ohiohouse.gov,D,Friendly,State Rep,Re-election,"77 S High St, Columbus, OH 43215",23000,72,62,68000,13,62
+Toledo Public Schools,"Elgin Rogers, Jr.",42,rep42@ohiohouse.gov,D,Friendly,State Rep,Re-election,"77 S High St, Columbus, OH 43215",23000,75,65,68000,13,62
+Tri-Valley Local Schools,Adam Holmes,97,rep97@ohiohouse.gov,R,Hostile,State Rep,Re-election,"77 S High St, Columbus, OH 43215",2800,40,12,60000,13,58
+Triad Local Schools,Beth Lear,61,rep61@ohiohouse.gov,R,Hostile,State Rep,Re-election,"77 S High St, Columbus, OH 43215",1400,35,12,62000,13,58
+Union Local Schools,Ron Ferguson,96,rep96@ohiohouse.gov,R,Hostile,State Rep,Re-election,"77 S High St, Columbus, OH 43215",2300,38,5,60500,13,58
+Upper Arlington City Schools,C. Allison Russo,7,rep07@ohiohouse.gov,D,Friendly,Minority Leader,"77 S High St, Columbus, OH 43215",6200,3,15,94500,18,92
+Upper Scioto Valley Local Schools,Beth Lear,61,rep61@ohiohouse.gov,R,Hostile,State Rep,Re-election,"77 S High St, Columbus, OH 43215",1400,30,8,62000,13,58
+Wadsworth City Schools,Sharon A. Ray,66,rep66@ohiohouse.gov,R,Hostile,State Rep,Re-election,"77 S High St, Columbus, OH 43215",4700,12,10,74000,15,72
+Washington Court House City Schools,Bob Peterson,91,rep91@ohiohouse.gov,R,Hostile,State Rep,Re-election,"77 S High St, Columbus, OH 43215",2100,55,15,60000,14,60
+Washington Local Schools,Josh Williams,44,rep44@ohiohouse.gov,R,Hostile,State Rep,Re-election,"77 S High St, Columbus, OH 43215",6200,22,18,68000,13,62
+Wellsville Local Schools,Monica Robb Blasdel,79,rep79@ohiohouse.gov,R,Hostile,State Rep,Re-election,"77 S High St, Columbus, OH 43215",1300,68,10,59000,13,58
+West Clermont Local Schools,Adam C. Bird,63,rep63@ohiohouse.gov,R,Hostile,State Rep,Re-election,"77 S High St, Columbus, OH 43215",8200,42,15,72000,13,68
+West Holmes Local Schools,Josh Williams,44,rep44@ohiohouse.gov,R,Hostile,State Rep,Re-election,"77 S High St, Columbus, OH 43215",2900,40,3,64000,14,64
+West Muskingum Local Schools,Adam Holmes,97,rep97@ohiohouse.gov,R,Hostile,State Rep,Re-election,"77 S High St, Columbus, OH 43215",1700,42,10,62000,13,60
+Western Brown Local Schools,Jean Schmidt,62,rep62@ohiohouse.gov,R,Hostile,State Rep,Re-election,"77 S High St, Columbus, OH 43215",2300,48,8,61000,12,58
+Westerville City Schools,Beryl Brown Piccolantonio,4,rep04@ohiohouse.gov,D,Friendly,State Rep,Re-election,"77 S High St, Columbus, OH 43215",15200,32,38,82400,15,78
+Westfall Local Schools,Brian Stewart,12,rep12@ohiohouse.gov,R,Hostile,State Rep,Re-election,"77 S High St, Columbus, OH 43215",1500,38,8,62000,12,60
+Westlake City Schools,Bride Rose Sweeney,16,rep16@ohiohouse.gov,D,Friendly,State Rep,Re-election,"77 S High St, Columbus, OH 43215",3600,8,18,80000,16,80
+Willoughby-Eastlake City Schools,Jamie Callender,57,rep57@ohiohouse.gov,R,Hostile,State Rep,Re-election,"77 S High St, Columbus, OH 43215",7800,35,18,65000,12,60
+Woodmore Local Schools,Haraz N. Ghanbari,75,rep75@ohiohouse.gov,R,Hostile,State Rep,Re-election,"77 S High St, Columbus, OH 43215",1500,22,6,64000,13,60
+Woodridge Local Schools,Scott Oelslager,48,rep48@ohiohouse.gov,R,Hostile,State Rep,Re-election,"77 S High St, Columbus, OH 43215",1900,26,12,70000,15,68
+Youngstown City Schools,Veronica R. Sims,33,rep33@ohiohouse.gov,D,Friendly,State Rep,Re-election,"77 S High St, Columbus, OH 43215",6000,85,72,60000,13,55
+Zanesville City Schools,Adam Holmes,97,rep97@ohiohouse.gov,R,Hostile,State Rep,Re-election,"77 S High St, Columbus, OH 43215",2900,85,25,60000,13,58
+  "Ada Exempted Village School District","Ty D. Mathews",83,rep83@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Adams County/Ohio Valley School District","Justin Pizzulli",90,rep90@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Adena Local School District","Mark Johnson",92,rep92@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Akron Public Schools","Veronica R. Sims",33,rep33@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Allen East Local School District","Angela N. King",84,rep84@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Alliance City School District","Matthew Kishman",50,rep50@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Amanda-Clearcreek Local School District","Brian Stewart",12,rep12@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Anna Local School District","Tim Barhorst",85,rep85@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Ansonia Local School District","Angela N. King",84,rep84@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Antwerp Local School District","Roy Klopfenstein",82,rep82@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Arcadia Local Schools","Ty D. Mathews",83,rep83@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Arcanum-Butler Local School District","Angela N. King",84,rep84@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Arlington Local Schools","Ty D. Mathews",83,rep83@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Ashland City School District","Melanie Miller",67,rep67@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Ashtabula Area City School District","Sarah Fowler Arthur",99,rep99@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Athens City School District","Kevin Ritter",94,rep94@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Aurora City School District","Heidi Workman",72,rep72@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Austintown Local School District","Tex Fischer",59,rep59@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Avon Lake City School District","Gayle Manning",52,rep52@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Avon Local School District","Gayle Manning",52,rep52@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Ayersville Local School District","James M. Hoops",81,rep81@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Barberton City School District","Bill Roemer",31,rep31@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Barnesville Exempted Village School District","Ty Moore",95,rep95@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Batavia Local School District","Adam C. Bird",63,rep63@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Bath Local Schools","Angela N. King",84,rep84@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Bay Village City School District","Bride Rose Sweeney",16,rep16@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Beachwood City School District","Juanita O. Brent",18,rep18@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Beavercreek City School District","Brian Lampton",70,rep70@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Beaver Local School District","Monica Robb Blasdel",79,rep79@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Bedford City School District","Juanita O. Brent",18,rep18@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Bellaire Local School District","Ty Moore",95,rep95@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Bellbrook-Sugarcreek Local School District","Brian Lampton",70,rep70@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Bellefontaine City School District","Tracy M. Richardson",86,rep86@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Bellevue City School District","D. J. Swearingen",89,rep89@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Belpre City School District","Kevin Ritter",94,rep94@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Benjamin Logan Local School District","Tracy M. Richardson",86,rep86@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Benton-Carroll-Salem Local School District","D. J. Swearingen",89,rep89@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Berea City School District","Michael D. Dovilla",17,rep17@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Berkshire Local School District","Sarah Fowler Arthur",99,rep99@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Berne Union Local School District","Brian Stewart",12,rep12@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Bethel Local School District","Johnathan Newman",80,rep80@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Bethel-Tate Local School District","Adam C. Bird",63,rep63@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Bexley City School District","Dontavius L. Jarrells",1,rep01@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Big Walnut Local School District","Beth Lear",61,rep61@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Black River Local School District","Melanie Miller",67,rep67@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Blanchester Local School District","Bob Peterson",91,rep91@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Bloom-Carroll Local School District","Brian Stewart",12,rep12@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Bloomfield-Mespo Local School District","Sarah Fowler Arthur",99,rep99@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Bloom-Vernon Local School District","Justin Pizzulli",90,rep90@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Bluffton Exempted Village School District","Angela N. King",84,rep84@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Boardman Local School District","Tex Fischer",59,rep59@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Botkins Local School District","Tim Barhorst",85,rep85@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Bowling Green City School District","Haraz N. Ghanbari",75,rep75@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Bradford Exempted Village School District","Johnathan Newman",80,rep80@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Brecksville-Broadview Heights City School District","Bill Roemer",31,rep31@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Bridgeport Exempted Village School District","Ty Moore",95,rep95@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Bright Local School District","Bob Peterson",91,rep91@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Bristol Local School District","Nick Santucci",64,rep64@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Brookfield Local School District","Nick Santucci",64,rep64@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Brooklyn City School District","Tristan Rader",13,rep13@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Brookville Local School District","Phil Plummer",39,rep39@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Brown Local School District","Monica Robb Blasdel",79,rep79@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Brunswick City School District","Sharon A. Ray",66,rep66@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Bryan City School District","James M. Hoops",81,rep81@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Buckeye Central Local School District","Riordan T. McClain",87,rep87@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Buckeye Local School District (Ashtabula County)","Sarah Fowler Arthur",99,rep99@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Buckeye Local School District (Jefferson County)","Ty Moore",95,rep95@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Buckeye Local School District (Medina County)","Ty Moore",95,rep95@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Buckeye Valley Local School District","Beth Lear",61,rep61@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Bucyrus City School District","Riordan T. McClain",87,rep87@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Caldwell Exempted Village School District","Ty Moore",95,rep95@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Cambridge City School District","Adam Holmes",97,rep97@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Campbell City School District","Lauren McNally",58,rep58@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Canal Winchester Local School District","Meredith R. Lawson-Rowe",5,rep05@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Canfield Local School District","Tex Fischer",59,rep59@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Canton City Schools","Jim Thomas",49,rep49@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Canton Local School District","Scott Oelslager",48,rep48@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Cardinal Local School District","Sarah Fowler Arthur",99,rep99@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Cardington-Lincoln Local School District","Riordan T. McClain",87,rep87@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Carey Exempted Village School District","Gary Click",88,rep88@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Carlisle Local School District","Michelle Teska",55,rep55@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Carrollton Exempted Village School District","Monica Robb Blasdel",79,rep79@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Cedar Cliff Local School District","Brian Lampton",70,rep70@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Celina City School District","Angela N. King",84,rep84@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Centerburg Local School District","Thaddeus J. Claggett",68,rep68@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Centerville City School District","Tom Young",37,rep37@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Central Local School District","James M. Hoops",81,rep81@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Chagrin Falls Exempted Village School District","Steve Demetriou",35,rep35@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Champion Local School District","Nick Santucci",64,rep64@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Chardon Local School District","Sarah Fowler Arthur",99,rep99@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Chesapeake Union Exempted Village School District","Jason Stephens",93,rep93@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Chillicothe City School District","Mark Johnson",92,rep92@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Chippewa Local School District","Mark Hiner",98,rep98@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Cincinnati Public Schools","Dani Isaacsohn",24,rep24@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Circleville City School District","Brian Stewart",12,rep12@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Clark-Shawnee Local School District","Bernard Willis",74,rep74@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Clay Local School District","Justin Pizzulli",90,rep90@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Claymont City School District","Justin Pizzulli",90,rep90@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Clear Fork Valley Local School District","Marilyn John",76,rep76@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Clearview Local School District","Joseph A. Miller, III",53,rep53@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Clermont Northeastern Local School District","Jean Schmidt",62,rep62@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Cleveland Heights-University Heights City School District","Juanita O. Brent",18,rep18@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Cleveland Metropolitan School District","Terrence Upchurch",20,rep20@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Clinton-Massie Local School District","Bob Peterson",91,rep91@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Cloverleaf Local School District","Sharon A. Ray",66,rep66@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Clyde-Green Springs Exempted Village School District","Gary Click",88,rep88@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Coldwater Exempted Village School District","Angela N. King",84,rep84@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"College Corner Local School District","Rodney Creech",40,rep40@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Colonel Crawford Local School District","Riordan T. McClain",87,rep87@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Columbia Local School District","Joseph A. Miller, III",53,rep53@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Columbiana Exempted Village School District","Joseph A. Miller, III",53,rep53@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Columbus City Schools","Dontavius L. Jarrells",1,rep01@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Columbus Grove Local School District","Roy Klopfenstein",82,rep82@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Conneaut Area City School District","Sarah Fowler Arthur",99,rep99@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Conotton Valley Union Local School District","Mark Hiner",98,rep98@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Continental Local School District","Roy Klopfenstein",82,rep82@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Copley-Fairlawn City School District","Bill Roemer",31,rep31@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Cory-Rawson Local Schools","Ty D. Mathews",83,rep83@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Coshocton City School District","Adam Holmes",97,rep97@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Coventry Local School District","Jack K. Daniels",32,rep32@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Covington Exempted Village School District","Johnathan Newman",80,rep80@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Crestline Exempted Village School District","Riordan T. McClain",87,rep87@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Crestview Local School District","Roy Klopfenstein",82,rep82@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Crestwood Local School District","Heidi Workman",72,rep72@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Crooksville Exempted Village School District","Meredith Craig",77,rep77@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Cuyahoga Falls City School District","Jack K. Daniels",32,rep32@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Cuyahoga Heights School District","Eric Synenberg",21,rep21@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Dalton Local School District","Meredith Craig",77,rep77@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Danbury Local School District","D. J. Swearingen",89,rep89@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Danville Local School District","Mark Hiner",98,rep98@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Dawson-Bryant Local School District","Jason Stephens",93,rep93@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Dayton Public Schools","Desiree Tims",38,rep38@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Deer Park Community City School District","Karen Brownlee",28,rep28@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Defiance City School District","James M. Hoops",81,rep81@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Delaware City School District","Beth Lear",61,rep61@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Delphos City School District","Roy Klopfenstein",82,rep82@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Dover City School District","Mark Hiner",98,rep98@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Dublin City Schools","Anita Somani",8,rep08@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",,,
+"East Cleveland City School District","Terrence Upchurch",20,rep20@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",,,
+"East Clinton Local School District","Bob Peterson",91,rep91@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Eastern Local School District (Brown County)","Justin Pizzulli",90,rep90@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Eastern Local School District (Meigs County)","Kevin Ritter",94,rep94@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Eastern Local School District (Pike County)","Justin Pizzulli",90,rep90@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"East Guernsey Local School District","Adam Holmes",97,rep97@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"East Holmes Local School District","Mark Hiner",98,rep98@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"East Knox Local School District","Mark Hiner",98,rep98@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"East Liverpool City School District","Monica Robb Blasdel",79,rep79@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"East Muskingum Local School District","Adam Holmes",97,rep97@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"East Palestine City School District","Monica Robb Blasdel",79,rep79@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Eastwood Local School District","Haraz N. Ghanbari",75,rep75@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Eaton Community Schools","Rodney Creech",40,rep40@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Edgerton Local School District","James M. Hoops",81,rep81@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Edgewood City School District","Diane Mullins",47,rep47@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Edison Local School District (Erie County)","D. J. Swearingen",89,rep89@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Edison Local School District (Jefferson County)","Ron Ferguson",96,rep96@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Edon Northwest Local School District","James M. Hoops",81,rep81@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Elgin Local School District","Tracy M. Richardson",86,rep86@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Elida Local School District","Angela N. King",84,rep84@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Elmwood Local School District","Haraz N. Ghanbari",75,rep75@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Elyria City School District","Gayle Manning",52,rep52@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Euclid City School District","Darnell T. Brewer",22,rep22@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Evergreen Local School District","James M. Hoops",81,rep81@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Fairbanks Local School District","Tracy M. Richardson",86,rep86@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Fairborn City School District","Brian Lampton",70,rep70@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Fairfield City School District","Jennifer Gross",45,rep45@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Fairfield Local School District","Bob Peterson",91,rep91@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Fairfield Union Local School District","Brian Stewart",12,rep12@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Fairland Local School District","Jason Stephens",93,rep93@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Fairlawn Local School District","Tim Barhorst",85,rep85@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Fairless Local School District","Matthew Kishman",50,rep50@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Fairport Harbor Exempted Village School District","Jamie Callender",57,rep57@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Fairview Park City School District","Bride Rose Sweeney",16,rep16@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Fayette Local School District","James M. Hoops",81,rep81@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Fayetteville-Perry Local School District","James M. Hoops",81,rep81@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Federal Hocking Local School District","Kevin Ritter",94,rep94@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Felicity-Franklin Local School District","Adam C. Bird",63,rep63@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Field Local School District","Heidi Workman",72,rep72@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Findlay City School District","Ty D. Mathews",83,rep83@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Finneytown Local School District","Karen Brownlee",28,rep28@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Firelands Local School District","Joseph A. Miller, III",53,rep53@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Forest Hills School District","Rachel B. Baker",27,rep27@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Fort Frye Local School District","Kevin Ritter",94,rep94@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Fort Loramie Local School District","Tim Barhorst",85,rep85@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Fort Recovery Local School District","Angela N. King",84,rep84@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Fostoria City School District","Gary Click",88,rep88@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Franklin City School District","Michelle Teska",55,rep55@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Franklin Local School District","Adam Holmes",97,rep97@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Franklin Monroe Local School District","Johnathan Newman",80,rep80@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Fredericktown Local School District","Mark Hiner",98,rep98@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Fremont City School District","Gary Click",88,rep88@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Frontier Local School District","Kevin Ritter",94,rep94@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Gahanna-Jefferson City School District","Munira Abdullahi",9,rep09@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Galion City School District","Riordan T. McClain",87,rep87@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Gallia County Local School District","Jason Stephens",93,rep93@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Gallipolis City School District","Jason Stephens",93,rep93@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Garaway Local School District","Mark Hiner",98,rep98@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Garfield Heights City School District","Heidi Workman",72,rep72@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Geneva Area City School District","Sarah Fowler Arthur",99,rep99@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Genoa Area Local School District","D. J. Swearingen",89,rep89@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Georgetown Exempted Village School District","Justin Pizzulli",90,rep90@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Gibsonburg Exempted Village School District","Gary Click",88,rep88@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Girard City School District","Nick Santucci",64,rep64@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Goshen Local School District","Jean Schmidt",62,rep62@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Graham Local School District","Tim Barhorst",85,rep85@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Grand Valley Local School District","Sarah Fowler Arthur",99,rep99@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Grandview Heights City School District","C. Allison Russo",7,rep07@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Granville Exempted Village School District","Thaddeus J. Claggett",68,rep68@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Greeneview Local School District","Brian Lampton",70,rep70@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Greenfield Exempted Village School District","Heidi Workman",72,rep72@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Green Local School District","Bill Roemer",31,rep31@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Greenon Local School District","Bernard Willis",74,rep74@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Greenville City School District","Angela N. King",84,rep84@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Groveport-Madison Local School District","Mark Sigrist",10,rep10@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Hamilton City School District","Thomas Hall",46,rep46@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Hamilton Local School District","Mark Sigrist",10,rep10@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Hardin-Houston Local School District","Tim Barhorst",85,rep85@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Hardin Northern Local School District","Ty D. Mathews",83,rep83@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Harrison Hills City School District","Ron Ferguson",96,rep96@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Heath City School District","Thaddeus J. Claggett",68,rep68@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Hicksville Exempted Village School District","James M. Hoops",81,rep81@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Highland Local School District (Medina County)","Sharon A. Ray",66,rep66@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Highland Local School District (Morrow County)","Riordan T. McClain",87,rep87@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Hilliard City Schools","Crystal Lett",11,rep11@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Hillsboro City School District","Bob Peterson",91,rep91@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Hillsdale Local School District","Melanie Miller",67,rep67@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Holgate Local School District","James M. Hoops",81,rep81@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Hopewell-Loudon Local School District","Gary Click",88,rep88@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Howland Local School District","Nick Santucci",64,rep64@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Hubbard Exempted Village School District","Nick Santucci",64,rep64@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Huber Heights City School District","Phil Plummer",39,rep39@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Hudson City School District","Bill Roemer",31,rep31@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Huntington Local School District","Mark Johnson",92,rep92@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Huron City School District","D. J. Swearingen",89,rep89@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Independence Local School District","Michael D. Dovilla",17,rep17@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Indian Creek Local School District","Ron Ferguson",96,rep96@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Indian Hill Exempted Village School District","Rachel B. Baker",27,rep27@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Indian Lake Local School District","Tracy M. Richardson",86,rep86@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Indian Valley Local School District","Mark Hiner",98,rep98@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Ironton City School District","Jason Stephens",93,rep93@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Jackson Center Local School District","Tim Barhorst",85,rep85@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Jackson City School District","Justin Pizzulli",90,rep90@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Jackson Local School District","Scott Oelslager",48,rep48@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Jackson-Milton Local School District","Tex Fischer",59,rep59@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"James A. Garfield Local School District","Heidi Workman",72,rep72@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Jefferson Area Local School District","Sarah Fowler Arthur",99,rep99@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Jefferson Local School District","Christine Cockley",6,rep06@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Jefferson Township Local School District","Desiree Tims",38,rep38@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Jennings Local School District","Roy Klopfenstein",82,rep82@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Johnstown-Monroe Local School District","Kevin D. Miller",69,rep69@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Jonathan Alder Local School District","Beth Lear",61,rep61@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Joseph Badger Local School District","Nick Santucci",64,rep64@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Kalida Local School District","Roy Klopfenstein",82,rep82@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Kelleys Island Local School District","D. J. Swearingen",89,rep89@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Kenston Local School District","Sarah Fowler Arthur",99,rep99@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Kent City School District","Heidi Workman",72,rep72@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Kenton City School District","Heidi Workman",72,rep72@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Kettering City School District","Andrea White",36,rep36@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Keystone Local School District","Joseph A. Miller, III",53,rep53@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Kings Local School District","Adam Mathews",56,rep56@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Kirtland Local School District","Jamie Callender",57,rep57@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"LaBrae Local School District","Nick Santucci",64,rep64@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Lake Local School District","Matthew Kishman",50,rep50@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Lake Local School District","Matthew Kishman",50,rep50@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Lakeview Local School District","Nick Santucci",64,rep64@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Lakewood City School District","Tristan Rader",13,rep13@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Lakewood Local School District","Kevin D. Miller",69,rep69@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Lakota Local Schools","Jennifer Gross",45,rep45@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Lakota Local Schools","Jennifer Gross",45,rep45@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Lancaster City School District","Heidi Workman",72,rep72@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Lebanon City School District","Adam Mathews",56,rep56@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Leetonia Exempted Village School District","Monica Robb Blasdel",79,rep79@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Leipsic Local School District","Roy Klopfenstein",82,rep82@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Lexington Local School District","Marilyn John",76,rep76@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Liberty-Benton Local School District","Ty D. Mathews",83,rep83@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Liberty Center Local School District","James M. Hoops",81,rep81@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Liberty Local School District","Nick Santucci",64,rep64@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Liberty Union-Thurston Local School District","Brian Stewart",12,rep12@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Licking Heights Local School District","Kevin D. Miller",69,rep69@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Licking Valley Local School District","Kevin D. Miller",69,rep69@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Lima City School District","Matt Huffman",78,rep78@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Lincolnview Local School District","Roy Klopfenstein",82,rep82@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Lisbon Exempted Village School District","Monica Robb Blasdel",79,rep79@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Little Miami Local School District","Jean Schmidt",62,rep62@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Lockland Local School District","Karen Brownlee",28,rep28@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Logan Elm Local School District","Brian Stewart",12,rep12@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Logan-Hocking Local School District","Kevin Ritter",94,rep94@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"London City School District","Beth Lear",61,rep61@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Lorain City School District","Joseph A. Miller, III",53,rep53@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Lordstown Local School District","Nick Santucci",64,rep64@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Loudonville-Perrysville Exempted Village School District","Melanie Miller",67,rep67@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Louisville City School District","Jim Thomas",49,rep49@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Loveland City School District","Rachel B. Baker",27,rep27@ohiohouse.gov,D,Friendly,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Lowellville Local School District","Tex Fischer",59,rep59@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Lucas Local School District","Marilyn John",76,rep76@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
+"Lynchburg-Clay Local School District","Bob Peterson",91,rep91@ohiohouse.gov,R,Hostile,State Rep,"77 S High St, Columbus, OH 43215",,,
